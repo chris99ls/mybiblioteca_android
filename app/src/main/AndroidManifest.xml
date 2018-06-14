@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="it.android.j940549.mybiblioteca">
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.USE_FINGERPRINT" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_app_splash_act_96x96"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Activity_Utente.UtenteNav"
+            android:label="@string/title_activity_utente_nav"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".Activity_Esito_Ricerche.Esito_Ricerca"
+            android:label="@string/title_activity_esito__ricerca"
+            android:parentActivityName=".Activity_Utente.UtenteNav"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav" />
+        </activity>
+        <activity
+            android:name=".Activity_Gestore.GestoreNav"
+            android:label="@string/title_activity_gestore_nav"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".Catalogo_libri.Dettaglio_libro">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav" />
+        </activity>
+        <activity
+            android:name=".Activity_Gestore.Modifica_Dato"
+            android:label="@string/title_activity_modifica__dato"
+            android:parentActivityName=".Activity_Gestore.GestoreNav"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav" />
+        </activity>
+        <activity
+            android:name=".Activity_Gestore.Dettaglio_Utente"
+            android:label="@string/title_activity_dettaglio__utente"
+            android:parentActivityName=".Activity_Gestore.GestoreNav"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav" />
+        </activity>
+        <activity android:name=".SplashActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".Add_new_UtenteActivity" >
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity" />
+        </activity>
+        <activity
+            android:name=".Login_Ute_Ges_Activity"
+            android:label="@string/title_activity_login__ute__ges_"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+    </application>
+
+</manifest>

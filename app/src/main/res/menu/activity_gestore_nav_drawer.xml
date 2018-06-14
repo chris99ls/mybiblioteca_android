@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+        android:id="@+id/nav_situaz_prestiti"
+        android:icon="@drawable/ic_menu_camera"
+        android:title="Situazione Prestiti" />
+        <item
+            android:id="@+id/nav_gestione_catalogo"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Gestione Catalogo" />
+        <item
+            android:id="@+id/nav_gestione_utenti"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="Gestisci Utenti" />
+        <item
+            android:id="@+id/nav_inserisci"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="New Books" />
+
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+
+</menu>

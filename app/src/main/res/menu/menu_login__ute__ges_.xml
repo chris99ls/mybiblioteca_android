@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity">
+    <item
+        android:id="@+id/action_registrati"
+        android:orderInCategory="100"
+        android:title="registrati"
+        android:icon="@drawable/ic_add_user_50x50"
+        app:showAsAction="always" />
+</menu>

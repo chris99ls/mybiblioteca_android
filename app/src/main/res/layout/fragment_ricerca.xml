@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activity_Utente.Ricerca">
+
+    <!-- TODO: Update blank fragment layout -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/xibns"
+        android:layout_marginTop="20dp"
+
+        android:hint="ricerca per IBNS" />
+        <ImageButton
+            android:id="@+id/btn_scan_codebar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/scan_codebar"
+            android:layout_alignParentEnd="true"/>
+        </RelativeLayout>
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/xtitolo"
+            android:layout_marginTop="20dp"
+
+            android:hint="ricerca per Titolo"   />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/xautore"
+            android:layout_marginTop="20dp"
+
+            android:hint="ricerca per Autore"   />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/xmateria"
+            android:layout_marginTop="20dp"
+
+            android:hint="ricerca per materia"   />
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/xricercalibera"
+            android:layout_marginTop="20dp"
+
+            android:hint="ricerca libera"   />
+
+    <Button
+        android:id="@+id/btn_cerca"
+        style="?android:textAppearanceSmall"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:layout_gravity="right"
+        android:text="Cerca"
+        android:textStyle="bold"
+        android:textSize="20dp"/>
+    </LinearLayout>
+</FrameLayout>

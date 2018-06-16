@@ -38,7 +38,6 @@ public class Fragment_Prenotati extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    private static String LOG_TAG = "CardViewActivity";
     private Utente utenteLogin;
     ArrayList mDataset;// = new ArrayList<Libri_Prenotati>();
 
@@ -63,7 +62,7 @@ public class Fragment_Prenotati extends Fragment {
         Fragment_Prenotati fragment = new Fragment_Prenotati();
         Bundle args = new Bundle();
         args.putSerializable("utente", utenteLogin);
-//        args.putSerializable("libriprenotati", libri_prenotati);
+//        args.putSerializable("dataset", libri_prenotati);
 
         fragment.setArguments(args);
         return fragment;
@@ -72,14 +71,16 @@ public class Fragment_Prenotati extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            this.utenteLogin = (Utente) getArguments().getSerializable("utente");
-            //this.mDataset= (ArrayList) getArguments().getSerializable("libriprenotati");
-        }
-        Log.i("log_tag_arg","argumets "+utenteLogin.getNrtessera());
         mDataset = new ArrayList<Libri_Prenotati>();
 
-        caricaDati(utenteLogin.getNrtessera());
+        if (getArguments() != null) {
+            this.utenteLogin = (Utente) getArguments().getSerializable("utente");
+  //          this.mDataset= (ArrayList) getArguments().getSerializable("dataset");
+        }
+        Log.i("log_tag_arg","argumets "+utenteLogin.getNrtessera());
+
+
+      caricaDati(utenteLogin.getNrtessera());
 
 
 
@@ -97,6 +98,8 @@ public class Fragment_Prenotati extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
+        mAdapter = new MyRecyclerViewAdapter_Prenotati(getDataSet(),getActivity(),utenteLogin);
+        mRecyclerView.setAdapter(mAdapter);
 
 
         return rootView;
@@ -237,7 +240,7 @@ public class Fragment_Prenotati extends Fragment {
 
                 Log.i("log_tag", "results... prenot" + mDataset.size());
 
-                mAdapter = new MyRecyclerViewAdapter_Prenotati(getDataSet(),getActivity());
+                mAdapter = new MyRecyclerViewAdapter_Prenotati(getDataSet(),getActivity(),utenteLogin);
                 mRecyclerView.setAdapter(mAdapter);
             }
 

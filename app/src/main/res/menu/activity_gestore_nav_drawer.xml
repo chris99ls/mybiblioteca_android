@@ -5,10 +5,6 @@
 
     <group android:checkableBehavior="single">
         <item
-        android:id="@+id/nav_situaz_prestiti"
-        android:icon="@drawable/ic_menu_camera"
-        android:title="Situazione Prestiti" />
-        <item
             android:id="@+id/nav_gestione_catalogo"
             android:icon="@drawable/ic_menu_camera"
             android:title="Gestione Catalogo" />
@@ -20,6 +16,10 @@
             android:id="@+id/nav_inserisci"
             android:icon="@drawable/ic_menu_camera"
             android:title="New Books" />
+        <item
+            android:id="@+id/nav_inserisci_Gestore"
+            android:icon="@drawable/ic_menu_camera"
+            android:title="New Gestore" />
 
 
     </group>

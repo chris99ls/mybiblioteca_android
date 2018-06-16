@@ -48,21 +48,13 @@ public class Gestisci_Catalogo extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param utente Parameter 1.
-     *
-     * @return A new instance of fragment Gestisci_Catalogo.
-     */
     // TODO: Rename and change types and number of parameters
-    public static Gestisci_Catalogo newInstance(String utente) {
+    public static Gestisci_Catalogo newInstance() {
         Gestisci_Catalogo fragment = new Gestisci_Catalogo();
 
-       Bundle args = new Bundle();
+     /*  Bundle args = new Bundle();
         args.putString("utente", utente);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -93,7 +85,7 @@ public class Gestisci_Catalogo extends Fragment {
         mRecyclerView.setAdapter(mAdapter);// Inflate the layout for this fragment
      //   mRecyclerViewpiuletti.setAdapter(mAdapter);
 
-        creaLibreria();
+//        creaLibreria();
 
         searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
         CharSequence query = searchView.getQuery(); // get the query string currently in the text field

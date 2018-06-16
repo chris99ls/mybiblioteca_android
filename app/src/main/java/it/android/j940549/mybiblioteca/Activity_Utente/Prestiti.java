@@ -1,5 +1,7 @@
 package it.android.j940549.mybiblioteca.Activity_Utente;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -33,7 +35,6 @@ import java.util.ArrayList;
 import it.android.j940549.mybiblioteca.Activity_Utente.fragment_prestiti.Fragment_Gia_Letti;
 import it.android.j940549.mybiblioteca.Activity_Utente.fragment_prestiti.Fragment_In_Prestito;
 import it.android.j940549.mybiblioteca.Activity_Utente.fragment_prestiti.Fragment_Prenotati;
-import it.android.j940549.mybiblioteca.Activity_Utente.fragment_prestiti.MyRecyclerViewAdapter_gia_letti;
 import it.android.j940549.mybiblioteca.Model.Libri_In_Prestito;
 import it.android.j940549.mybiblioteca.Model.Libri_Prenotati;
 import it.android.j940549.mybiblioteca.Model.Libri_gia_letti;
@@ -45,9 +46,11 @@ public class Prestiti extends Fragment {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
     private Utente utenteLogin =null;
-    ArrayList mDatasetPrenotati = new ArrayList<Libri_Prenotati>();
-    ArrayList mDatasetGialetti = new ArrayList<Libri_gia_letti>();
-    ArrayList mDatasetinPrestito = new ArrayList<Libri_In_Prestito>();
+/*    ArrayList<Libri_Prenotati> mDatasetPrenotati ;
+    ArrayList<Libri_gia_letti> mDatasetGialetti;
+    ArrayList<Libri_In_Prestito> mDatasetinPrestito;
+    private ProgressDialog progressDialog;
+  */
 
     public Prestiti(){
 
@@ -69,7 +72,17 @@ public class Prestiti extends Fragment {
             utenteLogin= (Utente) getArguments().getSerializable("utente");
 
         }
+    /*    mDatasetPrenotati = new ArrayList<Libri_Prenotati>();
+        mDatasetGialetti = new ArrayList<Libri_gia_letti>();
+        mDatasetinPrestito = new ArrayList<Libri_In_Prestito>();
 
+        progressDialog = new ProgressDialog(getActivity());
+        progressDialog.setMessage("caricamento dati in corso");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+
+    caricaDati(utenteLogin.getNrtessera());
+*/
     }
 
     @Override
@@ -80,7 +93,8 @@ public class Prestiti extends Fragment {
 
         TextView nomealunno= (TextView) view.findViewById(R.id.nomeutente_prestiti);
         nomealunno.setText(utenteLogin.getCognome().toUpperCase()+" "+utenteLogin.getNome().toUpperCase());
-
+        TextView nrTessera= (TextView) view.findViewById(R.id.nr_tessera_utente_prestiti);
+        nrTessera.setText("Nr. Tessera: "+utenteLogin.getNrtessera());
 
 
         mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
@@ -92,7 +106,6 @@ public class Prestiti extends Fragment {
 
         TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs_prestiti);
         tabLayout.setupWithViewPager(mViewPager);
-        //caricaDati(utenteLogin.getNrtessera());
 
         return view;
     }
@@ -118,12 +131,14 @@ public class Prestiti extends Fragment {
             switch (position) {
                 case 0: {
                     fragment= new Fragment_Prenotati();
+  //                  args.putSerializable("dataset", mDatasetPrenotati);
                     fragment.setArguments(args);
 
                     break;
                 }
                 case 1: {
                     fragment= new Fragment_In_Prestito();
+    //                args.putSerializable("dataset",mDatasetinPrestito);
                     fragment.setArguments(args);
 
                     break;
@@ -131,6 +146,7 @@ public class Prestiti extends Fragment {
                 }
                 case 2: {
                     fragment= new Fragment_Gia_Letti();
+      //              args.putSerializable("dataset",mDatasetGialetti);
                     fragment.setArguments(args);
 
                     break;
@@ -162,7 +178,8 @@ public class Prestiti extends Fragment {
             return null;
         }
     }
-  /*  public void caricaDati(String nrtessera) {
+    /*
+    public void caricaDati(String nrtessera) {
         Log.i("log_tag_argcar","arumets "+nrtessera);
 
         mDatasetinPrestito.removeAll(mDatasetinPrestito);
@@ -181,6 +198,11 @@ public class Prestiti extends Fragment {
 
 
     private class HttpGetTaskPrestiti extends AsyncTask<String,String,String> {
+
+        @Override
+        protected void onPreExecute(){
+            progressDialog.show();
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -252,7 +274,7 @@ public class Prestiti extends Fragment {
                         libro_in_prestito.setPatch_img(json_data.getString("tumbnail"));
                         libro_in_prestito.setIsbn(json_data.getString("isbn"));
                         libro_in_prestito.setTitolo(json_data.getString("title"));
-                        libro_in_prestito.setData_prestito(json_data.getString("start_loan_date"));
+                        libro_in_prestito.setData_prestito(json_data.getString("dal"));
 
                         mDatasetinPrestito.add(libro_in_prestito);
 
@@ -263,6 +285,7 @@ public class Prestiti extends Fragment {
 
                 //mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet());
                 //mRecyclerView.setAdapter(mAdapter);
+                progressDialog.dismiss();
             }
 
             catch(JSONException e){
@@ -277,6 +300,10 @@ public class Prestiti extends Fragment {
     }
 
     private class HttpGetTaskPrenotati extends AsyncTask<String,String,String> {
+        @Override
+        protected void onPreExecute(){
+            progressDialog.show();
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -359,6 +386,7 @@ public class Prestiti extends Fragment {
 
                 //mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet());
                 //mRecyclerView.setAdapter(mAdapter);
+                progressDialog.dismiss();
             }
 
             catch(JSONException e){
@@ -373,6 +401,11 @@ public class Prestiti extends Fragment {
     }
 
     private class HttpGetTaskGiavisti extends AsyncTask<String,String,String> {
+
+        @Override
+        protected void onPreExecute(){
+            progressDialog.show();
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -454,6 +487,9 @@ public class Prestiti extends Fragment {
 
                 //mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet());
                 //mRecyclerView.setAdapter(mAdapter);
+                mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
+
+                progressDialog.dismiss();
             }
 
             catch(JSONException e){

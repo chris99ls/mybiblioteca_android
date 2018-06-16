@@ -1,5 +1,6 @@
 package it.android.j940549.mybiblioteca.Activity_Gestore;
 
+import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,9 +21,29 @@ import android.view.ViewGroup;
 
 import android.widget.TextView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
+
 import it.android.j940549.mybiblioteca.Activity_Gestore.fragment_dettagli_utente.Fragment_Gia_Letti;
 import it.android.j940549.mybiblioteca.Activity_Gestore.fragment_dettagli_utente.Fragment_In_Prestito;
 import it.android.j940549.mybiblioteca.Activity_Gestore.fragment_dettagli_utente.Fragment_Prenotati;
+import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
+import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
 public class Dettaglio_Utente extends AppCompatActivity {
@@ -40,12 +62,18 @@ public class Dettaglio_Utente extends AppCompatActivity {
      * The {@link ViewPager} that will host the section contents.
      */
     private ViewPager mViewPager;
+    private Utente utente;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dettaglio__utente);
-
+  //      utente= new Utente();
+        utente= (Utente) getIntent().getSerializableExtra("utente");
+        TextView txtutente=findViewById(R.id.nomeutente_dettaglio);
+        TextView txtnrTessera=findViewById(R.id.nr_tessera_utente_dettaglio);
+        txtutente.setText(utente.getUsername());
+        txtnrTessera.setText(utente.getNrtessera());
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -65,14 +93,7 @@ public class Dettaglio_Utente extends AppCompatActivity {
        /* mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
 */
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
     }
 
@@ -114,19 +135,19 @@ public class Dettaglio_Utente extends AppCompatActivity {
             Fragment fragment;
             switch (position) {
                 case 0:
-                     fragment = Fragment_Prenotati.newInstance("utente");
+                     fragment = Fragment_Prenotati.newInstance(utente);
 
                  break;
                 case 1:
-                    fragment = Fragment_In_Prestito.newInstance("utente");
+                    fragment = Fragment_In_Prestito.newInstance(utente);
                      break;
 
                 case 2:
-                    fragment = Fragment_Gia_Letti.newInstance("utente");
+                    fragment = Fragment_Gia_Letti.newInstance(utente);
 
                     break;
                 default:
-                    fragment = Fragment_Prenotati.newInstance("utente");
+                    fragment = Fragment_Prenotati.newInstance(utente);
                      break;
                 // getItem is called to instantiate the fragment for the given page.
             }
@@ -155,4 +176,6 @@ public class Dettaglio_Utente extends AppCompatActivity {
         }
 
     }
+
+
 }

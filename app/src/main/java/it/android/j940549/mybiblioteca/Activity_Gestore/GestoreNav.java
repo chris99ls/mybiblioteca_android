@@ -15,27 +15,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
+import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
 public class GestoreNav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout mDrawer;
     FragmentManager fragmentManager;
+    private Utente gestoreLogin;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestore_nav);
+
+        if(savedInstanceState!=null){
+            gestoreLogin= (Utente) savedInstanceState.getSerializable("gestore");
+        }else {
+            gestoreLogin=(Utente) getIntent().getSerializableExtra("gestore");
+        }
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
          mDrawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -46,7 +50,7 @@ public class GestoreNav extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment =   Situazione_Prestiti.newInstance("utente");
+        Fragment fragment =   Gestione_Utenti.newInstance();
 
         //inserisci il fragment rimpiazzando i frgment esitente
         fragmentManager = getSupportFragmentManager();
@@ -74,28 +78,28 @@ public class GestoreNav extends AppCompatActivity
 
         switch (item.getItemId()) {
 
-            case R.id.nav_situaz_prestiti:
-                fragment = Situazione_Prestiti.newInstance("utente");
+            case R.id.nav_inserisci_Gestore:
+                fragment = New_Gestore.newInstance();
 
                 break;
             case R.id.nav_gestione_catalogo:
-                fragment = Gestisci_Catalogo.newInstance("utente");
+                fragment = Gestisci_Catalogo.newInstance();
 
                 break;
             case R.id.nav_gestione_utenti:
-                fragment = Gestione_Utenti.newInstance("utente");
+                fragment = Gestione_Utenti.newInstance();
 
                 break;
 
             case R.id.nav_inserisci:
-                fragment = InserisciBook.newInstance("utente");
+                fragment = InserisciBook.newInstance();
 
                 break;
 
 
 
             default:
-                fragment =   Situazione_Prestiti.newInstance("utente");
+                fragment =   Situazione_Prestiti.newInstance();
 
                 break;
         }

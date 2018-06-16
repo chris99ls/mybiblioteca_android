@@ -29,6 +29,7 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
+import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
 import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
 import it.android.j940549.mybiblioteca.Crypto.Crypto_new;
 import it.android.j940549.mybiblioteca.Model.Utente;
@@ -204,14 +205,25 @@ public class Cerca_pw_utente_in_DB extends AsyncTask<String, Object, String> {
             }
 
            if (verified) {
-            Intent vaiaUtenteNav = new Intent(context, UtenteNav.class);
-            vaiaUtenteNav.putExtra("user", (Serializable) utenteLogin);
-            context.startActivity(vaiaUtenteNav);
-            //  myActivity.finish();
-        } else {
+
+               if (utenteLogin.getIs_staff() == 1) {
+                   Intent vaiaGestoreNav = new Intent(context, GestoreNav.class);
+                   vaiaGestoreNav.putExtra("gestore", (Serializable) utenteLogin);
+                   context.startActivity(vaiaGestoreNav);
+
+               }
+               if (utenteLogin.getIs_staff() == 0) {
+
+
+                   Intent vaiaUtenteNav = new Intent(context, UtenteNav.class);
+                   vaiaUtenteNav.putExtra("utente", (Serializable) utenteLogin);
+                   context.startActivity(vaiaUtenteNav);
+                   //  myActivity.finish();
+               }
+           }else {
             Toast.makeText(context, "utente o password errati", Toast.LENGTH_SHORT).show();
         }
-        //}
+
 
 
     }

@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -69,7 +70,7 @@ public class InserisciBook extends Fragment {
     // TODO: Rename and change types of parameters
     static final String ACTION_SCAN="com.google.zxing.client.android.SCAN";
     private String utente="UtenteXX";
-    private TextView txtview_isbn,txtview_descrizione,txtview_titolo,txtview_autore,txtview_genere;
+    private EditText txtview_isbn,txtview_descrizione,txtview_titolo,txtview_autore,txtview_genere;
     private ConnectivityManager mConnectivityManager;
     private String image_link, resultInsert;
     private ImageView imageView;   // private OnFragmentInteractionListener mListener;
@@ -78,20 +79,12 @@ public class InserisciBook extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param utente Parameter 1.
-     *
-     * @return A new instance of fragment InserisciBook.
-     */
     // TODO: Rename and change types and number of parameters
-    public static InserisciBook newInstance(String utente) {
+    public static InserisciBook newInstance() {
         InserisciBook fragment = new InserisciBook();
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putString("utente", utente);
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -111,11 +104,11 @@ public class InserisciBook extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_inserisci_book, container, false);
 
-        txtview_isbn=(TextView)view.findViewById(R.id.isbn_libro);
-        txtview_descrizione=(TextView)view.findViewById(R.id.descrizione_libro);
-        txtview_titolo=(TextView)view.findViewById(R.id.titolo_libro);
-        txtview_autore=(TextView)view.findViewById(R.id.autore_libro);
-        txtview_genere=(TextView)view.findViewById(R.id.genere_libro);
+        txtview_isbn=(EditText) view.findViewById(R.id.isbn_libro);
+        txtview_descrizione=(EditText)view.findViewById(R.id.descrizione_libro);
+        txtview_titolo=(EditText)view.findViewById(R.id.titolo_libro);
+        txtview_autore=(EditText)view.findViewById(R.id.autore_libro);
+        txtview_genere=(EditText)view.findViewById(R.id.genere_libro);
         imageView=view.findViewById(R.id.copertina_libro);
         ImageButton btn_scan_codbar=(ImageButton) view.findViewById(R.id.btn_scan_codebar);
         btn_scan_codbar.setOnClickListener(new View.OnClickListener() {
@@ -140,7 +133,7 @@ public class InserisciBook extends Fragment {
                 InserisciInDB inserisciInDB = new InserisciInDB();
                 inserisciInDB.execute(titolo, autore, subject, descrizione, image_link, isbn);
                 if (resultInsert.contains("successfully")) {
-                    Fragment fragment =   Gestisci_Catalogo.newInstance("utente");
+                    Fragment fragment =   Gestisci_Catalogo.newInstance();
 
                     //inserisci il fragment rimpiazzando i frgment esitente
                     android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

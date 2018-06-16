@@ -53,6 +53,7 @@ import javax.security.auth.x500.X500Principal;
 
 import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
 import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
+import it.android.j940549.mybiblioteca.Controller_DB.Cerca_pw_utente_in_DB;
 import it.android.j940549.mybiblioteca.FingerprintDialog.FingerprintAuthenticationDialogFragment;
 
 import static it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity.KEYNAME;
@@ -508,73 +509,27 @@ public class LoginGestoreFragment extends Fragment {
 
     public void loginGestore(View v) {
 
-        editnomeUser = (EditText) v.findViewById(R.id.user);
-        editPassword = (EditText) v.findViewById(R.id.password);
-        chkboxRicordami = (CheckBox) v.findViewById(R.id.chkboxRicordami);
-            Intent intent = new Intent(myActivity, GestoreNav.class);
-
-            startActivity(intent);
-        }
-        /*editnomeUser = (EditText) findViewById(R.id.user);
-        editPassword = (EditText) findViewById(R.id.password);
-
         String user = editnomeUser.getText().toString();
         String password = editPassword.getText().toString();
-        token="";
+        Log.i("login", user);
+        Log.i("login", password);
+
+//        Crypto crypto=new Crypto(getContext());
+
+        //      String PWcontrollo =crypto.encrypt(password);
+
+        Log.i("login", password);
+
         if(!user.equals("")&&!password.equals("")) {
-            String PWcontrollo = "";
-            String TKcontrollo="";
-            String TKorig="";
-            String isffpp="";
-            DBLayer dbLayer = null;
 
-            try {
-                dbLayer = new DBLayer(this);
-                dbLayer.open();
-                Cursor cursor = dbLayer.getPassword(user);
+            Cerca_pw_utente_in_DB cerca_pw_utente_in_db = new Cerca_pw_utente_in_DB(getContext());
+            cerca_pw_utente_in_db.execute(user,password);
 
-                if(cursor.getCount()>0) {
-                    cursor.moveToPosition(0);
-                    do{
-                        PWcontrollo = cursor.getString(0);
-                        token=(cursor.getString(1));
-
-                    }  while (cursor.moveToNext());
-
-                    Log.d("login encript", PWcontrollo + "-" + token);
-
-                    Crypto crypto=new Crypto(this);
-
-                    PWcontrollo=crypto.decrypt(PWcontrollo);
-                    Log.d("login decript", PWcontrollo + "-" + token);
-                    TKcontrollo=dbLayer.creaToken(user,PWcontrollo);
-
-                    if(token.length()>0) {
-
-                        TKorig = token.substring(0, token.indexOf("-"));
-                        isffpp=token.substring((token.indexOf("-")+1),token.length());
-                    }
-                    Log.d("login decrypto",PWcontrollo+"-"+token+"-??"+isffpp);
-                    if (PWcontrollo.equals(password)&&TKorig.equalsIgnoreCase(TKcontrollo)) {
-                        Intent vaiaMenu = new Intent(this, MenuActivity.class);
-                        vaiaMenu.putExtra("user", token);
-                        vaiaMenu.putExtra("isffpp", isffpp);
-                        startActivity(vaiaMenu);
-                        finish();
-                    } else {
-                        Toast.makeText(this, "utente o password errati", Toast.LENGTH_SHORT).show();
-                    }
-                }else {
-                    Toast.makeText(this, "utente non registrato", Toast.LENGTH_SHORT).show();
-                }
-            } catch (SQLException ex) {
-                Toast.makeText(this, "" + ex.toString(), Toast.LENGTH_SHORT).show();
-            }
         }else{
-            Toast.makeText(this, "inserisci i dati per il login", Toast.LENGTH_SHORT).show();
+            Toast.makeText(myActivity, "inserisci i dati per il login", Toast.LENGTH_SHORT).show();
         }
 
-    }*/
+    }
 
 
 

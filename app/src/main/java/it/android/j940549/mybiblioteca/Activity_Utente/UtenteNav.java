@@ -24,11 +24,19 @@ public class UtenteNav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawer;
     private Utente utenteLogin;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_utente_nav);
-        utenteLogin= (Utente) getIntent().getSerializableExtra("user");
+
+        if(savedInstanceState!=null){
+            utenteLogin= (Utente) savedInstanceState.getSerializable("utente");
+        }else {
+            utenteLogin=(Utente) getIntent().getSerializableExtra("utente");
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -42,7 +50,6 @@ public class UtenteNav extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        Toast.makeText(this, "tessera"+utenteLogin.getNrtessera(), Toast.LENGTH_SHORT).show();
         Fragment fragment;
         fragment= Catalogo.newInstance(utenteLogin);
 
@@ -51,6 +58,13 @@ public class UtenteNav extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.flContent_utente, fragment).commit();
 
     }
+
+   /* @Override
+    public void onSavedInstanceState(Bundle outState){
+        super.onSaveInstanceState(outState);
+        outState.putSerializable("utente", utenteLogin);
+    }*/
+
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener(){
             @Override

@@ -3,8 +3,8 @@ package it.android.j940549.mybiblioteca.Activity_Gestore.fragment_dettagli_utent
 /**
  * Created by J940549 on 30/12/2017.
  */
+import android.app.Activity;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -25,7 +28,8 @@ import it.android.j940549.mybiblioteca.R;
 public class MyRecyclerViewAdapter_gia_letti extends RecyclerView.Adapter<MyRecyclerViewAdapter_gia_letti.DataObjectHolder> {
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<Libri_gia_letti> mDataset;
-//    private static MyClickListener myClickListener;
+    private Activity mActivity;
+    //    private static MyClickListener myClickListener;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder{
     //        implements View
@@ -53,8 +57,9 @@ public class MyRecyclerViewAdapter_gia_letti extends RecyclerView.Adapter<MyRecy
         this.myClickListener = myClickListener;
     }*/
 
-    public MyRecyclerViewAdapter_gia_letti(ArrayList<Libri_gia_letti> myDataset) {
+    public MyRecyclerViewAdapter_gia_letti(ArrayList<Libri_gia_letti> myDataset, Activity activity) {
         mDataset = myDataset;
+        mActivity=activity;
     }
 
     @Override
@@ -76,14 +81,19 @@ public class MyRecyclerViewAdapter_gia_letti extends RecyclerView.Adapter<MyRecy
         try {
             url = new URL(mDataset.get(position).getPatch_img());
 
-        //Scarico l'immagine
-         image= BitmapFactory.decodeStream(url.openStream());
+            Glide.with(mActivity)
+                    .load(url)
+                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                    .skipMemoryCache(true)
+                    .into(holder.img);
+
+//         image= BitmapFactory.decodeStream(url.openStream());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        holder.img.setImageBitmap(image);
+       // holder.img.setImageBitmap(image);
     }
 
     public void addItem(Libri_gia_letti dataObj, int index) {

@@ -3,6 +3,7 @@ package it.android.j940549.mybiblioteca.Activity_Gestore;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -15,21 +16,29 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import it.android.j940549.mybiblioteca.Activity_Esito_Ricerche.Esito_Ricerca;
+import it.android.j940549.mybiblioteca.Catalogo_libri.Catalogo;
+import it.android.j940549.mybiblioteca.Catalogo_libri.MyAdapter;
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link Gestione_Utenti.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link Gestione_Utenti#newInstance} factory method to
- * create an instance of this fragment.
- */
+
+
 public class Gestione_Utenti extends Fragment {
 
     private SearchView searchView;
@@ -38,7 +47,6 @@ public class Gestione_Utenti extends Fragment {
     private RecyclerView.LayoutManager mLinearLayoutManager;
     private ArrayList<Utente> myDataset = new ArrayList<Utente>();
 
-    private String utente;
 
 
    // private OnFragmentInteractionListener mListener;
@@ -47,21 +55,13 @@ public class Gestione_Utenti extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param utente Parameter 1.
-
-     * @return A new instance of fragment Gestione_Utenti.
-     */
     // TODO: Rename and change types and number of parameters
-    public static Gestione_Utenti newInstance(String utente) {
+    public static Gestione_Utenti newInstance() {
         Gestione_Utenti fragment = new Gestione_Utenti();
-        Bundle args = new Bundle();
+     /*   Bundle args = new Bundle();
         args.putString("utente", utente);
 
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -69,10 +69,10 @@ public class Gestione_Utenti extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            utente = getArguments().getString("utente");
+           // utente = getArguments().getString("utente");
 
         }
-        creaListaUtenti();
+        caricaListaUtenti();
     }
 
     @Override
@@ -122,18 +122,109 @@ public class Gestione_Utenti extends Fragment {
         getActivity().setTitle("Gestisci_Catalogo");
     }
 
-    private void creaListaUtenti() {
-        for (int i = 0; i <= 10; i++) {
-            Utente utente = new Utente();
-            utente.setNrtessera(""+i*2541);
-            utente.setNome("nomeutente" + i);
-            utente.setCognome(i + "_cognome");
-            utente.setEmail("cognome.nome"+i+"@gmail.com");
-            myDataset.add(utente);
+    private void caricaListaUtenti() {
+//        Carica_Catalogo carica_catalogo= new Carica_Catalogo(getActivity(),mRecyclerView,mRecyclerViewpiuletti,mAdapter,myDataset);
+        //      carica_catalogo.execute();
+        Gestione_Utenti.HttpGetTask task = new Gestione_Utenti.HttpGetTask();
+        task.execute();
+    }
 
-            //  mAdapter.notifyDataSetChanged();
+
+    private class HttpGetTask extends AsyncTask<String,String,String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "";
+
+            InputStream inputStream = null;
+
+            //http post
+            try{
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpGet httpGet= new HttpGet("http://lisiangelovpn.ddns.net/mybiblioteca/carica_utenti.php");
+                HttpResponse response = httpclient.execute(httpGet);
+                HttpEntity entity = response.getEntity();
+                inputStream = entity.getContent();
+            }catch(Exception e){
+                Log.e("TEST", "Errore nella connessione http "+e.toString());
+            }
+            if(inputStream != null) {
+                //converto la risposta in stringa
+                try {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, "iso-8859-1"), 8);
+                    StringBuilder sb = new StringBuilder();
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    inputStream.close();
+
+                    result = sb.toString();
+                } catch (Exception e) {
+                    Log.e("TEST", "Errore nel convertire il risultato " + e.toString());
+                }
+
+                System.out.println(result);
+
+            }
+            else{//is è null e non ho avuto risposta
+
+            }
+
+            return result;
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            myDataset.clear();
+            // aggiorno la textview con il risultato ottenuto
+            Log.i("log_tag", "parsing data on postExec "+result.toString());
+
+            try{
+
+                Log.i("log_tag", "dato da parsare in json "+result);
+                JSONArray jArray = new JSONArray(result);
+                for(int i=0;i<jArray.length();i++){
+                    Log.i("log_tag", "ciclo parsing data on postExec .."+i);
+
+                    JSONObject json_data = jArray.getJSONObject(i);
+                    Utente utente= new Utente();
+                    utente.setNome(json_data.getString("first_name"));
+                    utente.setCognome(json_data.getString("last_name"));
+                    utente.setEmail(json_data.getString("email"));
+                    utente.setIs_superuser(json_data.getInt("is_superuser"));
+                    utente.setIs_staff(json_data.getInt("is_staff"));
+                    utente.setNrtessera(json_data.getString("id"));
+                    utente.setUsername(json_data.getString("username"));
+
+                    // Log.i("log_tag", "datobject inserito " + obj.getData() );
+
+                    myDataset.add(utente);
+
+                }
+                Log.i("log_tag", "results... " + myDataset.size());
+
+                mAdapter = new MyAdapter_Gestisci_utenti(myDataset,getActivity());
+                mRecyclerView.setAdapter(mAdapter);// Inflate the layout for this fragment
+
+            }
+
+            catch(JSONException e){
+                Log.e("log_tag", "Error parsing data "+e.toString());
+                myDataset.clear();
+                mAdapter = new MyAdapter_Gestisci_utenti(myDataset,getActivity());
+                mRecyclerView.setAdapter(mAdapter);// Inflate the layout for this fragment
+            }
+
         }
     }
+
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -170,8 +261,4 @@ public class Gestione_Utenti extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
 }

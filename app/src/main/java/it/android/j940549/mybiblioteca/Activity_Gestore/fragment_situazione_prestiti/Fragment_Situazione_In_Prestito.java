@@ -23,7 +23,7 @@ public class Fragment_Situazione_In_Prestito extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
-    private String utente;
+  //  private String utente;
     ArrayList myDataset = new ArrayList<Libri_Prenotati>();
 
 
@@ -42,12 +42,12 @@ public class Fragment_Situazione_In_Prestito extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
 
-    public static Fragment_Situazione_In_Prestito newInstance(String utente) {
+    public static Fragment_Situazione_In_Prestito newInstance() {
         Fragment_Situazione_In_Prestito fragment = new Fragment_Situazione_In_Prestito();
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putString("utente", utente);
 
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -55,11 +55,10 @@ public class Fragment_Situazione_In_Prestito extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            this.utente = getArguments().getString("utente");
-
+//            this.utente = getArguments().getString("utente");
         }
-        Log.i("log_tag_arg","argumets "+utente);
-        caricaDati(utente);
+    //    Log.i("log_tag_arg","argumets "+utente);
+        caricaDati();
 
 
 
@@ -128,7 +127,7 @@ public class Fragment_Situazione_In_Prestito extends Fragment {
         return myDataset;
     }
 
-    public void caricaDati(String utente) {
+    public void caricaDati() {
 
         for (int i = 0; i <= 10; i++) {
             Libri_In_Prestito libro = new Libri_In_Prestito();

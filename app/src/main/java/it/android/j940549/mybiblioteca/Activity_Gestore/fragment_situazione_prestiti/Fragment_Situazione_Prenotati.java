@@ -22,7 +22,7 @@ public class Fragment_Situazione_Prenotati extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
-    private String utente;
+    //private String utente;
     ArrayList myDataset = new ArrayList<Libri_Prenotati>();
 
 
@@ -42,12 +42,12 @@ public class Fragment_Situazione_Prenotati extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
 
-    public static Fragment_Situazione_Prenotati newInstance(String utente) {
+    public static Fragment_Situazione_Prenotati newInstance() {
         Fragment_Situazione_Prenotati fragment = new Fragment_Situazione_Prenotati();
-        Bundle args = new Bundle();
+      /*  Bundle args = new Bundle();
         args.putString("utente", utente);
 
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
         return fragment;
     }
 
@@ -55,11 +55,11 @@ public class Fragment_Situazione_Prenotati extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            this.utente = getArguments().getString("utente");
+            //this.utente = getArguments().getString("utente");
 
         }
-        Log.i("log_tag_arg","argumets "+utente);
-        caricaDati(utente);
+        //Log.i("log_tag_arg","argumets "+utente);
+        caricaDati();
 
 
 
@@ -129,7 +129,7 @@ public class Fragment_Situazione_Prenotati extends Fragment {
         return myDataset;
     }
 
-    public void caricaDati(String utente) {
+    public void caricaDati() {
 
 
         for (int i = 0; i <= 10; i++) {

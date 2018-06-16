@@ -4,6 +4,9 @@ package it.android.j940549.mybiblioteca.Activity_Utente.fragment_prestiti;
  * Created by J940549 on 30/12/2017.
  */
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -51,7 +54,7 @@ public class MyRecyclerViewAdapter_Prenotati extends RecyclerView.Adapter<MyRecy
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<Libri_Prenotati> mDataset;
     private Activity mActivity;
-//    private Utente utenteLogin;
+    private Utente utenteLogin;
 //    private static MyClickListener myClickListener;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder{
@@ -60,14 +63,14 @@ public class MyRecyclerViewAdapter_Prenotati extends RecyclerView.Adapter<MyRecy
         TextView isbn;
         TextView titolo;
         ImageView img;
-  //      ImageButton btn;
+        ImageButton btn;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             isbn= (TextView) itemView.findViewById(R.id.isbn_libro);
             titolo= (TextView) itemView.findViewById(R.id.titolo_libro);
             img=itemView.findViewById(R.id.copertina_libro);
-    //        btn=itemView.findViewById(R.id.btn_canc_prenotato);
+            btn=itemView.findViewById(R.id.btn_canc_prenotato);
             Log.i(LOG_TAG, "Adding Listener");
            // itemView.setOnClickListener(this);
         }
@@ -82,10 +85,10 @@ public class MyRecyclerViewAdapter_Prenotati extends RecyclerView.Adapter<MyRecy
         this.myClickListener = myClickListener;
     }*/
 
-    public MyRecyclerViewAdapter_Prenotati(ArrayList<Libri_Prenotati> myDataset, Activity activity){//, Utente utenteLogin) {
+    public MyRecyclerViewAdapter_Prenotati(ArrayList<Libri_Prenotati> myDataset, Activity activity, Utente utenteLogin) {
         mDataset = myDataset;
         mActivity=activity;
-      //  this.utenteLogin=utenteLogin;
+        this.utenteLogin=utenteLogin;
     }
 
     @Override
@@ -121,6 +124,30 @@ public class MyRecyclerViewAdapter_Prenotati extends RecyclerView.Adapter<MyRecy
             e.printStackTrace();
         }
         holder.img.setImageBitmap(image);
+        holder.btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialog= new AlertDialog.Builder(mActivity);
+                alertDialog.setCancelable(false);
+                alertDialog.setTitle("cancella prenotazione");
+                alertDialog.setMessage("Vuoi Cancelare la Prenotazione?");
+                alertDialog.setPositiveButton("Si", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        MyRecyclerViewAdapter_Prenotati.HttpGetTaskCancella cancella= new MyRecyclerViewAdapter_Prenotati.HttpGetTaskCancella();
+                        cancella.execute(utenteLogin.getNrtessera(),isbn);
+                    }
+                })
+                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        });
+                alertDialog.create().show();
+            }
+        });
     }
 
     public void addItem(Libri_Prenotati dataObj, int index) {
@@ -139,6 +166,80 @@ public class MyRecyclerViewAdapter_Prenotati extends RecyclerView.Adapter<MyRecy
     }
 
 
+    private class HttpGetTaskCancella extends AsyncTask<String,String,String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            String result = "";
+            String stringaFinale = " ";
+            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
+            nameValuePairs.add(new BasicNameValuePair("nrtessera",params[0]));
+            nameValuePairs.add(new BasicNameValuePair("isbn", params[1]));
+
+
+            InputStream is = null;
+
+            //http post
+            try{
+                HttpClient httpclient = new DefaultHttpClient();
+                HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/cancella_prenotazione.php");
+                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
+                HttpResponse response = httpclient.execute(httppost);
+                HttpEntity entity = response.getEntity();
+                is = entity.getContent();
+            }catch(Exception e){
+                Log.e("TEST", "Errore nella connessione http "+e.toString());
+            }
+            if(is != null) {
+                //converto la risposta in stringa
+                try {
+                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
+                    StringBuilder sb = new StringBuilder();
+                    String line = null;
+                    while ((line = reader.readLine()) != null) {
+                        sb.append(line + "\n");
+                    }
+                    is.close();
+
+                    result = sb.toString();
+                } catch (Exception e) {
+                    Log.e("TEST", "Errore nel convertire il risultato " + e.toString());
+                }
+
+                System.out.println(result);
+
+            }
+            else{//is è null e non ho avuto risposta
+
+            }
+
+            return result;
+
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            // aggiorno la textview con il risultato ottenuto
+            Log.i("log_tag", "parsing data on postExec giavisti"+result.toString());
+
+            if(result.contains("successfully")){
+                Intent refresh = new Intent(mActivity, UtenteNav.class);
+                refresh.putExtra("utente", utenteLogin);
+                mActivity.startActivity(refresh);
+                mActivity.finish();
+                //              mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet(),getActivity());
+//                mRecyclerView.setAdapter(mAdapter);
+            }
+
+        }
+
     }
+
+}
 
 

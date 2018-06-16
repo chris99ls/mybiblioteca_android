@@ -38,11 +38,23 @@
                         app:srcCompat="@mipmap/ic_launcher_round" />
 
                     <TextView
+                        android:id="@+id/txtisbn_libro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="isbn libro"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignRight="@+id/copertina_libro"
+                        android:layout_centerVertical="true"/>
+
+
+                    <EditText
                         android:id="@+id/isbn_libro"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginTop="20dp"
+                        android:layout_marginTop="5dp"
                         android:text="isbn libro"
                         android:layout_alignParentRight="true"
                         android:layout_alignRight="@+id/copertina_libro"
@@ -87,6 +99,14 @@
 
 
                     <TextView
+                        android:id="@+id/txttitolo_libro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="20dp"
+                        android:text="titolo libro" />
+
+                    <EditText
                         android:id="@+id/titolo_libro"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -95,19 +115,34 @@
                         android:text="titolo libro" />
 
                     <TextView
-                        android:id="@+id/autore_libro"
+                        android:id="@+id/txtautore_libro"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"
                         android:text="autore" />
 
+                    <EditText
+                        android:id="@+id/autore_libro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
+                        android:text="autore" />
+
                     <TextView
-                        android:id="@+id/genere_libro"
+                        android:id="@+id/txtgenere_libro"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="20dp"
+                        android:text="Genere" />
+                    <EditText
+                        android:id="@+id/genere_libro"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="5dp"
                         android:text="Genere" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
@@ -123,17 +158,19 @@
                 app:cardCornerRadius="5dp"
                 app:contentPadding="10dp">
 
-                <ScrollView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
                     <TextView
-
-                        android:id="@+id/descrizione_libro"
+                        android:id="@+id/txtdescrizione_libro"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:text="descrizione" />
-                </ScrollView>
+
+                <EditText
+                    android:id="@+id/descrizione_libro"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="descrizione" />
+
             </android.support.v7.widget.CardView>
             <Button
                 android:id="@+id/btn_inserisci"

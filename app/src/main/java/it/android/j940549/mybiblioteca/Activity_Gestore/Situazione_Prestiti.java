@@ -19,17 +19,17 @@ import it.android.j940549.mybiblioteca.R;
 public class Situazione_Prestiti extends Fragment {
     private SectionsPagerAdapter mSectionsPagerAdapter;
     private ViewPager mViewPager;
-    private String utente="UtenteXX";
+  //  private String utente="UtenteXX";
 
     public Situazione_Prestiti(){
 
     }
-    public static Situazione_Prestiti newInstance(String utente) {
+    public static Situazione_Prestiti newInstance() {
         Situazione_Prestiti fragment = new Situazione_Prestiti();
-        Bundle args = new Bundle();
+        /*Bundle args = new Bundle();
         args.putString("utente", utente);
 
-        fragment.setArguments(args);
+        fragment.setArguments(args);*/
 
         return fragment;
     }
@@ -38,7 +38,7 @@ public class Situazione_Prestiti extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            this.utente = getArguments().getString("utente");
+//            this.utente = getArguments().getString("utente");
 
         }
 
@@ -51,12 +51,12 @@ public class Situazione_Prestiti extends Fragment {
 
 
 
-        TextView nomealunno= (TextView) view.findViewById(R.id.nomeutente_prestiti);
-        if(utente.equals("Christian")){}
+    //    TextView nomealunno= (TextView) view.findViewById(R.id.nomeutente_prestiti);
+      //  if(utente.equals("Christian")){}
            // nomealunno.setText(getResources().getString(R.string.alunnoChris).toUpperCase());}
 
 
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager(),utente);
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getChildFragmentManager());
 
         // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) view.findViewById(R.id.container_prestiti);
@@ -77,7 +77,7 @@ public class Situazione_Prestiti extends Fragment {
      */
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
         private String unutente;
-        public SectionsPagerAdapter(FragmentManager fm, String unutente ) {
+        public SectionsPagerAdapter(FragmentManager fm) {
             super(fm);
             this.unutente=unutente;
 
@@ -85,22 +85,22 @@ public class Situazione_Prestiti extends Fragment {
 
         @Override
         public Fragment getItem(int position) {
-            Bundle args = new Bundle();
+            /*Bundle args = new Bundle();
 
-            args.putString("utente", unutente);
+            args.putString("utente", unutente);*/
 
             //Fragment fragment = null;
             switch (position) {
                 case 0: {
                     Fragment_Situazione_Prenotati fragment_situazione_prenotati = new Fragment_Situazione_Prenotati();
-                    fragment_situazione_prenotati.setArguments(args);
+                    //fragment_situazione_prenotati.setArguments(args);
 
                     return fragment_situazione_prenotati;
                     //break;
                 }
                 case 1: {
                     Fragment_Situazione_In_Prestito fragment_situazione_in_prestito = new Fragment_Situazione_In_Prestito();
-                    fragment_situazione_in_prestito.setArguments(args);
+                    //fragment_situazione_in_prestito.setArguments(args);
 
                     return fragment_situazione_in_prestito;
                     //break;

@@ -30,8 +30,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import it.android.j940549.mybiblioteca.Model.Libri_In_Prestito;
-import it.android.j940549.mybiblioteca.Model.Libri_Prenotati;
-import it.android.j940549.mybiblioteca.Model.Libri_gia_letti;
+import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
 
@@ -40,8 +39,8 @@ public class Fragment_In_Prestito extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
-    private String utente;
-    ArrayList myDataset = new ArrayList<Libri_Prenotati>();
+    private Utente utenteLogin;
+    ArrayList mDataset;// = new ArrayList<Libri_Prenotati>();
 
 
 
@@ -59,10 +58,11 @@ public class Fragment_In_Prestito extends Fragment {
      */
     // TODO: Rename and change types and number of parameters
 
-    public static Fragment_In_Prestito newInstance(String utente) {
+    public static Fragment_In_Prestito newInstance(Utente utenteLogin){//},ArrayList<Libri_In_Prestito> libri_in_prestito) {
         Fragment_In_Prestito fragment = new Fragment_In_Prestito();
         Bundle args = new Bundle();
-        args.putString("utente", utente);
+        args.putSerializable("utente", utenteLogin);
+        //args.putSerializable("dataset", libri_in_prestito);
 
         fragment.setArguments(args);
         return fragment;
@@ -71,12 +71,15 @@ public class Fragment_In_Prestito extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            this.utente = getArguments().getString("utente");
+        mDataset = new ArrayList<Libri_In_Prestito>();
 
+        if (getArguments() != null) {
+            this.utenteLogin = (Utente) getArguments().getSerializable("utente");
+          //  this.mDataset= (ArrayList) getArguments().getSerializable("dataset");
         }
-        Log.i("log_tag_arg","argumets "+utente);
-        caricaDati(utente);
+        Log.i("log_tag_arg","argumets "+utenteLogin.getNrtessera());
+
+        caricaDati(utenteLogin.getNrtessera());
 
 
 
@@ -94,8 +97,8 @@ public class Fragment_In_Prestito extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MyRecyclerViewAdapter_in_prestito(myDataset);
-        mRecyclerView.setAdapter(mAdapter);// Inflate the layout for this fragment
+        mAdapter = new MyRecyclerViewAdapter_in_prestito(getDataSet(),getActivity(),utenteLogin);
+        mRecyclerView.setAdapter(mAdapter);
 
 
         return rootView;
@@ -142,39 +145,28 @@ public class Fragment_In_Prestito extends Fragment {
 
 
     private ArrayList<Libri_In_Prestito> getDataSet() {
-        return myDataset;
-    }
-
-    public void caricaDati(String utente) {
-        for (int i = 0; i <= 10; i++) {
-            Libri_In_Prestito libro = new Libri_In_Prestito();
-            libro.setIsbn("ISBN "+i*2541);
-            libro.setPatch_img("patch." + i);
-            libro.setTitolo(i + "titolo");
-            myDataset.add(libro);
-            //Log.i("libro", libro.getIsbn()+"--"+libro.getAutore() + " - " + libro.getTitolo());
-            //  mAdapter.notifyDataSetChanged();
-        }
-    }
-}
-
-/*        Log.i("log_tag_argcar","arumets "+utente);
-
-        results.removeAll(results);
-        Fragment_In_Prestito.HttpGetTask task = new Fragment_In_Prestito.HttpGetTask();
-
-        task.execute(utente);
+        return mDataset;
     }
 
 
-    private class HttpGetTask extends AsyncTask<String,String,String> {
+    public void caricaDati(String nrtessera) {
+        Log.i("log_tag_argcar","arumets "+nrtessera);
+
+      //  mDataset.removeAll(mDataset);
+        Fragment_In_Prestito.HttpGetTaskPrestiti task1 = new Fragment_In_Prestito.HttpGetTaskPrestiti();
+
+        task1.execute(nrtessera);
+      }
+
+
+    private class HttpGetTaskPrestiti extends AsyncTask<String,String,String> {
 
         @Override
         protected String doInBackground(String... params) {
             String result = "";
             String stringaFinale = " ";
             ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("utente",params[0]));
+            nameValuePairs.add(new BasicNameValuePair("nrtessera",params[0]));
 
 
             InputStream is = null;
@@ -182,7 +174,7 @@ public class Fragment_In_Prestito extends Fragment {
             //http post
             try{
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/myre/richiesta_compiti.php");
+                HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/prestiti_utente.php");
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
@@ -225,7 +217,7 @@ public class Fragment_In_Prestito extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             // aggiorno la textview con il risultato ottenuto
-            Log.i("log_tag", "parsing data on postExec "+result.toString());
+            Log.i("log_tag", "parsing data on postExec prestiti "+result.toString());
 
             try{
 
@@ -235,32 +227,33 @@ public class Fragment_In_Prestito extends Fragment {
                     Log.i("log_tag", "ciclo parsing data on postExec .."+i);
 
                     JSONObject json_data = jArray.getJSONObject(i);
-                    Log.i("log_tag","data: "+json_data.getString("data")+
-                            ", compiti: "+json_data.getString("compiti"));
+                    Libri_In_Prestito libro_in_prestito= new Libri_In_Prestito();
+                    libro_in_prestito.setPatch_img(json_data.getString("tumbnail"));
+                    libro_in_prestito.setIsbn(json_data.getString("isbn"));
+                    libro_in_prestito.setTitolo(json_data.getString("title"));
+                    libro_in_prestito.setData_prestito(json_data.getString("dal"));
 
-                    String a = json_data.getString("data");
-                    String b = json_data.getString("compiti");
-                    Libri_Prenotati obj = new Libri_Prenotati();
-                    // Log.i("log_tag", "datobject inserito " + obj.getData() );
+                    if(json_data.getString("al")!=null) {
+                        mDataset.add(libro_in_prestito);
+                    }
 
-                    results.add(obj);
 
                 }
-                Log.i("log_tag", "results... " + results.size());
+                Log.i("log_tag", "results... --inpre-"+mDataset);
 
-                mAdapter = new MyRecyclerViewAdapter_in_prestito(getDataSet());
+                mAdapter = new MyRecyclerViewAdapter_in_prestito(getDataSet(),getActivity(),utenteLogin);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
             catch(JSONException e){
                 Log.e("log_tag", "Error parsing data "+e.toString());
-                results.clear();
-                mAdapter = new MyRecyclerViewAdapter_Prenotati(results);
-                mRecyclerView.setAdapter(mAdapter);
+                mDataset.clear();
+                //mAdapter = new MyRecyclerViewAdapter_gia_letti(mDataset);
+                //mRecyclerView.setAdapter(mAdapter);
 
             }
 
         }
     }
-}
-*/
+
+    }

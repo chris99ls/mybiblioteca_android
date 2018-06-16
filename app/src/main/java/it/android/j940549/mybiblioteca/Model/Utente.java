@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public class Utente implements Serializable{
     private String nome;
-    private String cognome;
+    private String cognome, username;
     private String nrtessera;
     private String email;
     private String password;
@@ -56,7 +56,7 @@ public class Utente implements Serializable{
         this.password = password;
     }
 
-    public int getIs_superuser(int is_superuser) {
+    public int getIs_superuser() {
         return this.is_superuser;
     }
 
@@ -64,11 +64,19 @@ public class Utente implements Serializable{
         this.is_superuser = is_superuser;
     }
 
-    public int getIs_staff(int is_staff) {
+    public int getIs_staff() {
         return this.is_staff;
     }
 
     public void setIs_staff(int is_staff) {
         this.is_staff = is_staff;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

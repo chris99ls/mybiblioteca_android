@@ -63,7 +63,7 @@ public class Fragment_In_Prestito extends Fragment {
         Fragment_In_Prestito fragment = new Fragment_In_Prestito();
         Bundle args = new Bundle();
         args.putSerializable("utente", utenteLogin);
-//        args.putSerializable("libriinprestito", libri_in_prestito);
+        //args.putSerializable("dataset", libri_in_prestito);
 
         fragment.setArguments(args);
         return fragment;
@@ -72,12 +72,13 @@ public class Fragment_In_Prestito extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDataset = new ArrayList<Libri_In_Prestito>();
+
         if (getArguments() != null) {
             this.utenteLogin = (Utente) getArguments().getSerializable("utente");
-            //this.mDataset= (ArrayList) getArguments().getSerializable("libriinprestito");
+          //  this.mDataset= (ArrayList) getArguments().getSerializable("dataset");
         }
         Log.i("log_tag_arg","argumets "+utenteLogin.getNrtessera());
-        mDataset = new ArrayList<Libri_In_Prestito>();
 
         caricaDati(utenteLogin.getNrtessera());
 
@@ -97,8 +98,8 @@ public class Fragment_In_Prestito extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-       // mAdapter = new MyRecyclerViewAdapter_in_prestito(getDataSet(),getActivity());
-        //mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new MyRecyclerViewAdapter_in_prestito(getDataSet(),getActivity());
+        mRecyclerView.setAdapter(mAdapter);
 
 
         return rootView;
@@ -147,6 +148,7 @@ public class Fragment_In_Prestito extends Fragment {
     private ArrayList<Libri_In_Prestito> getDataSet() {
         return mDataset;
     }
+
 
     public void caricaDati(String nrtessera) {
         Log.i("log_tag_argcar","arumets "+nrtessera);
@@ -231,9 +233,9 @@ public class Fragment_In_Prestito extends Fragment {
                     libro_in_prestito.setIsbn(json_data.getString("isbn"));
                     libro_in_prestito.setTitolo(json_data.getString("title"));
                     libro_in_prestito.setData_prestito(json_data.getString("dal"));
-
-                    mDataset.add(libro_in_prestito);
-
+                    if(json_data.getString("al")!=null) {
+                        mDataset.add(libro_in_prestito);
+                    }
 
 
                 }

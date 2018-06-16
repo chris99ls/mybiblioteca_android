@@ -63,7 +63,7 @@ public class Fragment_Gia_Letti extends Fragment {
         Fragment_Gia_Letti fragment = new Fragment_Gia_Letti();
         Bundle args = new Bundle();
         args.putSerializable("utente", utenteLogin);
-//        args.putSerializable("librigialetti", libri_gia_letti);
+//        args.putSerializable("dataset", libri_gia_letti);
 
         fragment.setArguments(args);
         return fragment;
@@ -72,12 +72,13 @@ public class Fragment_Gia_Letti extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDataset = new ArrayList<Libri_Prenotati>();
+
         if (getArguments() != null) {
             this.utenteLogin= (Utente) getArguments().getSerializable("utente");
-//            this.mDataset= (ArrayList) getArguments().getSerializable("librigialetti");
+  //          this.mDataset= (ArrayList) getArguments().getSerializable("dataset");
         }
         Log.i("log_tag_arg","argumets "+utenteLogin.getNrtessera());
-        mDataset = new ArrayList<Libri_Prenotati>();
 
         caricaDati(utenteLogin.getNrtessera());
 
@@ -95,8 +96,8 @@ public class Fragment_Gia_Letti extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        //mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet());
-        //mRecyclerView.setAdapter(mAdapter);
+        mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet(),getActivity());
+        mRecyclerView.setAdapter(mAdapter);
 
 
         return rootView;

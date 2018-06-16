@@ -39,7 +39,7 @@ import it.android.j940549.mybiblioteca.Crypto.Crypto_new;
 public class Add_new_UtenteActivity extends AppCompatActivity {
     private EditText editPassword, editEmail;
     private EditText editnomeUser;
-    private EditText editcognomeUser;
+    private EditText editcognomeUser, editUsernameUser;
     private EditText editPassword2;
     boolean registrato=false;
     public static final String TAG = "KeyStore";
@@ -53,7 +53,7 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
 
         editnomeUser = (EditText) findViewById(R.id.registra_nome_user);
         editcognomeUser = (EditText) findViewById(R.id.registra_cognome_user);
-
+        editUsernameUser = (EditText) findViewById(R.id.registra_cognome_user);
         editEmail=(EditText) findViewById(R.id.registraemail);
         editPassword = (EditText) findViewById(R.id.registrapassword);
         editPassword2 = (EditText) findViewById(R.id.registra2password);
@@ -66,7 +66,7 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
 
         String nomeuser = editnomeUser.getText().toString();
         String cognomeuser = editcognomeUser.getText().toString();
-
+        String username=editUsernameUser.getText().toString();
         String email=editEmail.getText().toString();
         String password = editPassword.getText().toString();
         String password2 = editPassword2.getText().toString();
@@ -103,7 +103,7 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
 
 
             Inserisci_new_Utente_InDB inserisci_new_utente_inDB=new Inserisci_new_Utente_InDB();
-            inserisci_new_utente_inDB.execute(nomeuser,cognomeuser,email,passwordCrypto);
+            inserisci_new_utente_inDB.execute(nomeuser,cognomeuser,username, email,passwordCrypto,"0");
 
 
         }else{
@@ -121,8 +121,10 @@ private class Inserisci_new_Utente_InDB extends AsyncTask<String,String,String> 
         ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
         nameValuePairs.add(new BasicNameValuePair("nome",params[0]));
         nameValuePairs.add(new BasicNameValuePair("cognome",params[1]));
-        nameValuePairs.add(new BasicNameValuePair("email",params[2]));
-        nameValuePairs.add(new BasicNameValuePair("password",params[3]));
+        nameValuePairs.add(new BasicNameValuePair("username",params[2]));
+        nameValuePairs.add(new BasicNameValuePair("email",params[3]));
+        nameValuePairs.add(new BasicNameValuePair("password",params[4]));
+        nameValuePairs.add(new BasicNameValuePair("is_staff",params[5]));
 
         Log.i("inserisciUtente", "dati" + nameValuePairs.toString());
         InputStream is = null;
@@ -165,6 +167,7 @@ private class Inserisci_new_Utente_InDB extends AsyncTask<String,String,String> 
         return result;
 
     }
+
 
     @Override
     protected void onProgressUpdate(String... values) {

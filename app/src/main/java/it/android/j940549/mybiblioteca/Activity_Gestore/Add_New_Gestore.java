@@ -1,5 +1,6 @@
 package it.android.j940549.mybiblioteca.Activity_Gestore;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -34,26 +35,26 @@ import java.security.UnrecoverableEntryException;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
-import it.android.j940549.mybiblioteca.Add_new_UtenteActivity;
 import it.android.j940549.mybiblioteca.Crypto.Crypto_new;
-import it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity;
 import it.android.j940549.mybiblioteca.R;
 
-public class New_Gestore extends Fragment {
+public class Add_New_Gestore extends Fragment {
     private EditText editPassword, editEmail;
     private EditText editnomeGes, editUsername;
     private EditText editcognomeGes;
     private EditText editPassword2;
     boolean registrato=false;
     public static final String TAG = "KeyStore";
+    private ProgressDialog progressDialog;
 
-    public New_Gestore() {
+
+    public Add_New_Gestore() {
         // Required empty public constructor
     }
 
     // TODO: Rename and change types and number of parameters
-    public static New_Gestore newInstance() {
-        New_Gestore fragment = new New_Gestore();
+    public static Add_New_Gestore newInstance() {
+        Add_New_Gestore fragment = new Add_New_Gestore();
         return fragment;
     }
 
@@ -73,7 +74,7 @@ public class New_Gestore extends Fragment {
 
         editnomeGes = (EditText) view.findViewById(R.id.registra_nome_user);
         editcognomeGes = (EditText) view.findViewById(R.id.registra_cognome_user);
-        editUsername = (EditText) view.findViewById(R.id.registra_cognome_user);
+        editUsername = (EditText) view.findViewById(R.id.registra_username_gestore);
         editEmail=(EditText) view.findViewById(R.id.registraemail);
         editPassword = (EditText) view.findViewById(R.id.registrapassword);
         editPassword2 = (EditText) view.findViewById(R.id.registra2password);
@@ -109,7 +110,7 @@ public class New_Gestore extends Fragment {
 
         String nomeuser = editnomeGes.getText().toString();
         String cognomeuser = editcognomeGes.getText().toString();
-        String username = editUsername.getText().toString();
+        String username = "m_"+editUsername.getText().toString();
         String email=editEmail.getText().toString();
         String password = editPassword.getText().toString();
         String password2 = editPassword2.getText().toString();
@@ -140,7 +141,7 @@ public class New_Gestore extends Fragment {
             //Log.d(TAG, "Signature: " + mSignatureStr);
 
 
-            New_Gestore.Inserisci_new_Gestore_InDB inserisci_new_gestore_inDB=new New_Gestore.Inserisci_new_Gestore_InDB();
+            Add_New_Gestore.Inserisci_new_Gestore_InDB inserisci_new_gestore_inDB=new Add_New_Gestore.Inserisci_new_Gestore_InDB();
             inserisci_new_gestore_inDB.execute(nomeuser,cognomeuser,username,email,passwordCrypto,"1");
 
 
@@ -151,6 +152,14 @@ public class New_Gestore extends Fragment {
     }
 
     private class Inserisci_new_Gestore_InDB extends AsyncTask<String,String,String> {
+        @Override
+        protected void onPreExecute() {
+            progressDialog = new ProgressDialog(getContext());
+            progressDialog.setMessage("caricamento dati in corso");
+            progressDialog.setCancelable(false);
+            progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
+        }
 
         @Override
         protected String doInBackground(String... params) {
@@ -170,7 +179,7 @@ public class New_Gestore extends Fragment {
             //http post
             try{
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/registra_utente.php");
+                HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/registra_gestore.php");
                 httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
                 HttpResponse response = httpclient.execute(httppost);
                 HttpEntity entity = response.getEntity();
@@ -231,7 +240,7 @@ public class New_Gestore extends Fragment {
                 Toast.makeText(getContext(), "Ops! registrazione non avvenuta", Toast.LENGTH_SHORT).show();
             }
 
-
+        progressDialog.dismiss();
 
         }
     }

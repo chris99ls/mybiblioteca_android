@@ -6,19 +6,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_gestione_catalogo"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_pila_libri_50x50"
             android:title="Gestione Catalogo" />
         <item
             android:id="@+id/nav_gestione_utenti"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_prestiti_50x50"
             android:title="Gestisci Utenti" />
         <item
             android:id="@+id/nav_inserisci"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_add_book_50x50"
             android:title="New Books" />
         <item
             android:id="@+id/nav_inserisci_Gestore"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_add_administratr_40x40"
             android:title="New Gestore" />
 
 

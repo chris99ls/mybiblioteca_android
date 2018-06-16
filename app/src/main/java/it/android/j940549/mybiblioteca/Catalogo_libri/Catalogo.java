@@ -40,6 +40,7 @@ public class Catalogo extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView mRecyclerViewpiuletti;
     private RecyclerView.Adapter mAdapter;
+    private RecyclerView.Adapter mAdapterpiuletti;
     private RecyclerView.LayoutManager mGridLayoutManager;
     private RecyclerView.LayoutManager mLinearLayoutManager;
     private ArrayList<Libro_catalogo> myDataset = new ArrayList<Libro_catalogo>();
@@ -100,8 +101,10 @@ public class Catalogo extends Fragment {
 
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter(myDataset, getActivity(),utenteLogin);
+        mAdapterpiuletti = new MyAdapter_piuletti(myDataset, getActivity(),utenteLogin);
+
         mRecyclerView.setAdapter(mAdapter);// Inflate the layout for this fragment
-        mRecyclerViewpiuletti.setAdapter(mAdapter);
+        mRecyclerViewpiuletti.setAdapter(mAdapterpiuletti);
 
         creaLibreria();
 
@@ -226,16 +229,19 @@ private class HttpGetTask extends AsyncTask<String,String,String> {
             Log.i("log_tag", "results... " + myDataset.size());
 
             mAdapter = new MyAdapter(myDataset,getActivity(),utenteLogin);
+            mAdapterpiuletti = new MyAdapter_piuletti(myDataset,getActivity(),utenteLogin);
             mRecyclerView.setAdapter(mAdapter);
-            mRecyclerViewpiuletti.setAdapter(mAdapter);
+            mRecyclerViewpiuletti.setAdapter(mAdapterpiuletti);
         }
 
         catch(JSONException e){
             Log.e("log_tag", "Error parsing data "+e.toString());
             myDataset.clear();
             mAdapter = new MyAdapter(myDataset,getActivity(),utenteLogin);
+            mAdapterpiuletti = new MyAdapter_piuletti(myDataset,getActivity(),utenteLogin);
+
             mRecyclerView.setAdapter(mAdapter);
-            mRecyclerViewpiuletti.setAdapter(mAdapter);
+            mRecyclerViewpiuletti.setAdapter(mAdapterpiuletti);
         }
 
     }

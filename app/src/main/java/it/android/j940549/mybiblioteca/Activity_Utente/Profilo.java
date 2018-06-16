@@ -67,10 +67,10 @@ public class Profilo extends Fragment {
         TextView email= view.findViewById(R.id.email_user);
 
         user_id.setText(utenteLogin.getCognome()+"."+utenteLogin.getNome());
-        nrtessera.setText(utenteLogin.getNrtessera());
-        nome.setText(utenteLogin.getNome());
-        congmome.setText(utenteLogin.getCognome());
-        email.setText(utenteLogin.getEmail());
+        nrtessera.setText("Nr Tessera: "+utenteLogin.getNrtessera());
+        nome.setText("Nome: "+utenteLogin.getNome());
+        congmome.setText("Cognome: "+utenteLogin.getCognome());
+        email.setText("Email: "+utenteLogin.getEmail());
 
         //you can set the title for your toolbar here for different fragments different titles
         getActivity().setTitle("Profilo");

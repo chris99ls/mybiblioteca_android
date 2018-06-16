@@ -1,5 +1,6 @@
 package it.android.j940549.mybiblioteca;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -43,7 +44,7 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
     private EditText editPassword2;
     boolean registrato=false;
     public static final String TAG = "KeyStore";
-
+    private ProgressDialog progressDialog;
     //private String USER="";
 
     @Override
@@ -53,7 +54,7 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
 
         editnomeUser = (EditText) findViewById(R.id.registra_nome_user);
         editcognomeUser = (EditText) findViewById(R.id.registra_cognome_user);
-        editUsernameUser = (EditText) findViewById(R.id.registra_cognome_user);
+        editUsernameUser = (EditText) findViewById(R.id.registra_username_utente);
         editEmail=(EditText) findViewById(R.id.registraemail);
         editPassword = (EditText) findViewById(R.id.registrapassword);
         editPassword2 = (EditText) findViewById(R.id.registra2password);
@@ -66,7 +67,7 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
 
         String nomeuser = editnomeUser.getText().toString();
         String cognomeuser = editcognomeUser.getText().toString();
-        String username=editUsernameUser.getText().toString();
+        String username="m_"+editUsernameUser.getText().toString();
         String email=editEmail.getText().toString();
         String password = editPassword.getText().toString();
         String password2 = editPassword2.getText().toString();
@@ -115,6 +116,14 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
 private class Inserisci_new_Utente_InDB extends AsyncTask<String,String,String> {
 
     @Override
+    protected void onPreExecute() {
+        progressDialog = new ProgressDialog(getBaseContext());
+        progressDialog.setMessage("caricamento dati in corso");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+    }
+        @Override
     protected String doInBackground(String... params) {
         String result = "";
         String stringaFinale = " ";
@@ -195,8 +204,8 @@ private class Inserisci_new_Utente_InDB extends AsyncTask<String,String,String> 
         }
 
 
-
+            progressDialog.dismiss();
     }
-}
+    }
 }
 

@@ -5,6 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".LoginGestoreFragment">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
     <LinearLayout
 
         android:layout_width="match_parent"
@@ -64,6 +67,8 @@
             android:src="@drawable/ic_fp_40px"
             android:id="@+id/purchase_button"
             android:layout_marginRight="4dp"
-            android:visibility="gone"/>
+            android:visibility="gone"
+            android:background="@android:color/white"/>
     </LinearLayout>
+    </ScrollView>
 </FrameLayout>

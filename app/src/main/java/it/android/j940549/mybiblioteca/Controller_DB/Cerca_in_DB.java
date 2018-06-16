@@ -1,6 +1,7 @@
 package it.android.j940549.mybiblioteca.Controller_DB;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -33,7 +34,7 @@ import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
         Activity myActivity;
         private RecyclerView mRecyclerView;
         private RecyclerView.Adapter mAdapter;
-
+        private ProgressDialog progressDialog;
         ArrayList<Libro_catalogo> myDataset = new ArrayList<>();
 
         public Cerca_in_DB(Activity myActivity,RecyclerView mRecyclerView, RecyclerView.Adapter mAdapter,ArrayList<Libro_catalogo>myDataset){
@@ -46,6 +47,12 @@ import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 
         @Override
         protected void onPreExecute() {
+            progressDialog = new ProgressDialog(myActivity);
+            progressDialog.setMessage("caricamento dati in corso");
+            progressDialog.setCancelable(false);
+            progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+            progressDialog.show();
+
             // Check network connection.
             if (isNetworkConnected() == false) {
                 // Cancel request.
@@ -168,7 +175,7 @@ import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
                 mRecyclerView.setAdapter(mAdapter);
 
             }
-
+    progressDialog.dismiss();
         }
 
 
@@ -182,24 +189,7 @@ import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
             String xfulltext = "fulltext=" + params[4];
 
             Url=Url+ xisbn + "&"+ xtitolo + "&"+ xautore + "&"+ xgenere + "&"+ xfulltext + "&";
-/*            if (!isbn.equals("")) {
-                Url = Url + xisbn + "&";
-            }
-            if (!titolo.equals("")) {
-                Url = Url + xtitolo + "&";
-            }
-            if (!autore.equals("")) {
-                Url = Url + xautore + "&";
-            }
-            if (!genere.equals("")) {
-                Url = Url + xgenere + "&";
-            }
-            if (!fulltext.equals("")) {
-                Url = Url + xfulltext + "&";
-            }*/
-            Url = Url.substring(0, Url.length() - 1);
 
-            //}
             return Url;
 
         }

@@ -16,14 +16,9 @@
 
 package it.android.j940549.mybiblioteca.FingerprintDialog;
 
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.SQLException;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,14 +38,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
-
-import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
 import it.android.j940549.mybiblioteca.Controller_DB.Cerca_Utente_in_DB_Auth_Finger;
-import it.android.j940549.mybiblioteca.Controller_DB.Cerca_pw_utente_in_DB;
+import it.android.j940549.mybiblioteca.LoginGestoreFragment;
 import it.android.j940549.mybiblioteca.LoginUtenteFragment;
 import it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity;
-import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
 
@@ -58,7 +49,7 @@ import it.android.j940549.mybiblioteca.R;
  * A dialog which uses fingerprint APIs to authenticate the user, and falls back to password
  * authentication if fingerprint is not available.
  */
-public class FingerprintAuthenticationDialogFragment extends DialogFragment
+public class FingerprintAuthenticationDialogFragmentGestore extends DialogFragment
         implements TextView.OnEditorActionListener, FingerprintUiHelper.Callback {
 
     private Button mCancelButton;
@@ -75,8 +66,8 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
     private FingerprintManager.CryptoObject mCryptoObject;
     private FingerprintUiHelper mFingerprintUiHelper;
     private Login_Ute_Ges_Activity mActivity;
-    private LoginUtenteFragment loginUtenteFragment;
-    private String user;
+    private LoginGestoreFragment loginGestoreFragment;
+    private String gestore;
     private InputMethodManager mInputMethodManager;
     private SharedPreferences mSharedPreferences;
 
@@ -84,7 +75,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPref = mActivity.getPreferences(Context.MODE_PRIVATE);
-        user= sharedPref.getString("nomeUtente", "");
+        gestore= sharedPref.getString("nomeGestore", "");
 
                 // Do not create a new Fragment when the Activity is re-created such as orientation changes.
         setRetainInstance(true);
@@ -165,7 +156,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
         super.onAttach(context);
 
         mActivity = (Login_Ute_Ges_Activity) getActivity();
-        loginUtenteFragment= mActivity.getLoginUtenteFragment();//getParentFragment();
+        loginGestoreFragment= mActivity.getLoginGestoreFragment();//getParentFragment();
         mInputMethodManager = context.getSystemService(InputMethodManager.class);
         mSharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
     }
@@ -212,12 +203,12 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
 
             if (mUseFingerprintFutureCheckBox.isChecked()) {
                 // Re-create the key so that fingerprints including new ones are validated.
-                loginUtenteFragment.createKey(Login_Ute_Ges_Activity.KEYNAME, true);
+                loginGestoreFragment.createKey(Login_Ute_Ges_Activity.KEYNAME, true);
                 mStage = Stage.FINGERPRINT;
             }
         }
         mPassword.setText("");
-        loginUtenteFragment.onPurchased(false /* without Fingerprint */, null);
+        loginGestoreFragment.onPurchased(false /* without Fingerprint */, null);
         dismiss();
     }
 
@@ -297,18 +288,18 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
         PASSWORD
     }
     public void failogin() {
-        Log.i("Log_tag", "username"+getUser());
+        Log.i("Log_tag", "username"+getGetore());
 
         Cerca_Utente_in_DB_Auth_Finger  cerca_pw_utente_in_db =new Cerca_Utente_in_DB_Auth_Finger(mActivity.getBaseContext());
-        cerca_pw_utente_in_db.execute("m_"+user,"");
+        cerca_pw_utente_in_db.execute("","m_"+gestore);
        // Utente utenteLogin=cerca_pw_utente_in_db.getUtente();
 
 
         }
-    public void setUser(String User){
-     user=User;
+    public void setGestore(String Gestore){
+     gestore=Gestore;
     }
-    public String getUser(){
-        return user;
+    public String getGetore(){
+        return gestore;
     }
 }

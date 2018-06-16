@@ -65,7 +65,7 @@ public class Login_Ute_Ges_Activity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_login__ute__ges_, menu);
+        //getMenuInflater().inflate(R.menu.menu_login__ute__ges_, menu);
         return true;
     }
 
@@ -79,8 +79,6 @@ public class Login_Ute_Ges_Activity extends AppCompatActivity {
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_registrati) {
 
-            Intent intent=new Intent(this,Add_new_UtenteActivity.class);
-            startActivity(intent);
             return true;
         }
 
@@ -107,11 +105,11 @@ public class Login_Ute_Ges_Activity extends AppCompatActivity {
             switch (position){
                 case 0:
                     setTitle("Login Utente");
-                    fragment=LoginUtenteFragment.newInstance("arg1","arg2");
+                    fragment=LoginUtenteFragment.newInstance();
                     break;
                 case 1:
                     setTitle("Login Gestore");
-                    fragment=LoginGestoreFragment.newInstance("arg1","arg2");
+                    fragment=LoginGestoreFragment.newInstance();
                 break;
             }
             // getItem is called to instantiate the fragment for the given page.

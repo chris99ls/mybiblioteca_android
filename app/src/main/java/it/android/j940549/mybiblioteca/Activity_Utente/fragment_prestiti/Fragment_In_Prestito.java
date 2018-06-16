@@ -98,7 +98,7 @@ public class Fragment_In_Prestito extends Fragment {
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        mAdapter = new MyRecyclerViewAdapter_in_prestito(getDataSet(),getActivity());
+        mAdapter = new MyRecyclerViewAdapter_in_prestito(getDataSet(),getActivity(),utenteLogin);
         mRecyclerView.setAdapter(mAdapter);
 
 
@@ -241,7 +241,7 @@ public class Fragment_In_Prestito extends Fragment {
                 }
                 Log.i("log_tag", "results... --inpre-"+mDataset);
 
-                mAdapter = new MyRecyclerViewAdapter_in_prestito(getDataSet(),getActivity());
+                mAdapter = new MyRecyclerViewAdapter_in_prestito(getDataSet(),getActivity(),utenteLogin);
                 mRecyclerView.setAdapter(mAdapter);
             }
 

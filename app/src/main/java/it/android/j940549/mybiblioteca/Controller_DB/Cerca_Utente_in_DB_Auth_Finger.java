@@ -1,13 +1,14 @@
 package it.android.j940549.mybiblioteca.Controller_DB;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -22,44 +23,32 @@ import java.net.MalformedURLException;
 import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
-import java.security.InvalidKeyException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.SignatureException;
-import java.security.UnrecoverableEntryException;
-import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
 import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
+import it.android.j940549.mybiblioteca.Activity_Gestore.MyAdapter_Gestisci_utenti;
 import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
-import it.android.j940549.mybiblioteca.Crypto.Crypto_new;
 import it.android.j940549.mybiblioteca.Model.Utente;
 
 
-public class Cerca_pw_utente_in_DB extends AsyncTask<String, Object, String> {
-    String username, pwcontrollo, pwUtenteCrypt, PWlogin,is_staff, is_superuser;
-    Context context;
-    ArrayList<Utente> listUtenti=new ArrayList<>();
-    Utente utenteLogin;
-    public static final String TAG = "KeyStore";
+public class Cerca_Utente_in_DB_Auth_Finger extends AsyncTask<String, Object, String> {
+    Context myContext;
+    private String utente;
+    private String gestore;
     private ProgressDialog progressDialog;
-    //EditText passwordLogin;
-
-    public Cerca_pw_utente_in_DB(Context context){
-
-        this.context=context;
-
+    public Cerca_Utente_in_DB_Auth_Finger(Context myContext ){
+        this.myContext=myContext;
     }
 
     @Override
     protected void onPreExecute() {
-            progressDialog = new ProgressDialog(context);
-            progressDialog.setMessage("caricamento dati in corso");
-            progressDialog.setCancelable(false);
-            progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-            progressDialog.show();
+        progressDialog = new ProgressDialog(myContext);
+        progressDialog.setMessage("caricamento dati in corso");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
 
-    // Check network connection.
+        // Check network connection.
         if (isNetworkConnected() == false) {
             // Cancel request.
             Log.i("Esito_Ricerca", "Not connected to the internet");
@@ -70,15 +59,20 @@ public class Cerca_pw_utente_in_DB extends AsyncTask<String, Object, String> {
 
     @Override
     protected String doInBackground(String ...param) {
-
-        this.username = "m_"+param[0];
-        this.pwcontrollo=param[1];
-        // Stop if cancelled
+        this.utente= param[0];
+        this.gestore=param[1];       // Stop if cancelled
         if (isCancelled()) {
             return null;
         }
-        String Url = "http://lisiangelovpn.ddns.net/mybiblioteca/check_login.php?username="+username;
+        Log.i("Log_tag", "ut"+utente+"   gs"+gestore);
 
+        String Url = "http://lisiangelovpn.ddns.net/mybiblioteca/carica_singolo_utente.php?";
+        if(gestore.equals("")) {
+            Url = Url + "username=" + utente;
+        }
+        if(utente.equals("")) {
+            Url = Url + "username=" + gestore;
+        }
         //String url_ricera= creaUrl_ricerca(parametri[0],parametri[1],parametri[2],parametri[3],parametri[4]);
 
         Log.i("Esito_Ricerca ::url ", Url);
@@ -135,7 +129,7 @@ public class Cerca_pw_utente_in_DB extends AsyncTask<String, Object, String> {
     }
     @Override
     protected void onPostExecute(String responseString) {
-       // listUtenti.clear();
+
         Log.i("log_tag", "parsing data on postExec " + responseString.toString());
 
         try {
@@ -146,90 +140,56 @@ public class Cerca_pw_utente_in_DB extends AsyncTask<String, Object, String> {
                 Log.i("log_tag", "ciclo parsing data on postExec .." + i);
 
                 JSONObject json_data = jArray.getJSONObject(i);
+
+
                 Utente utente= new Utente();
-                utente.setNrtessera(json_data.getString("id"));
                 utente.setNome(json_data.getString("first_name"));
                 utente.setCognome(json_data.getString("last_name"));
+                utente.setEmail(json_data.getString("email"));
+                utente.setIs_superuser(json_data.getInt("is_superuser"));
+                utente.setIs_staff(json_data.getInt("is_staff"));
+                utente.setNrtessera(json_data.getString("id"));
+
                 String user_name= json_data.getString("username");
                 if(user_name.contains("m_")){
                     user_name=user_name.substring(2,user_name.length());}
                 utente.setUsername(user_name);
-
-                utente.setEmail(json_data.getString("email"));
-                utente.setIs_staff(json_data.getInt("is_staff"));
-                utente.setIs_superuser(json_data.getInt("is_superuser"));
-                utente.setPassword(json_data.getString("password"));
+                Log.i("log_tag", "ciclo parsing data on postExec .." + utente.getUsername());
 
                 // Log.i("log_tag", "datobject inserito " + obj.getData() );
+                if(utente.getIs_staff()==0) {
 
-                listUtenti.add(utente);
+                    Intent vaiaUtenteNav = new Intent(myContext, UtenteNav.class);
+                    vaiaUtenteNav.putExtra("utente", (Serializable) utente);
+                    myContext.startActivity(vaiaUtenteNav);
+                    //  myActivity.finish();
+
+                }
+                if(utente.getIs_staff()==1){
+
+                    Intent vaiaGestoreNav = new Intent(myContext, GestoreNav.class);
+                    vaiaGestoreNav.putExtra("gestore", (Serializable) utente);
+                    myContext.startActivity(vaiaGestoreNav);
+                }
             }
-        } catch (JSONException e) {
-            Log.e("log_tag", "Error parsing data " + e.toString());
+
 
         }
-            pwUtenteCrypt =listUtenti.get(0).getPassword();
-            utenteLogin=listUtenti.get(0);
-            Log.i("log_tag", "results... " + listUtenti.size());
-            Log.i("log_tag", "passworddbCrypta......"+ pwUtenteCrypt);
-            Log.i("log_tag", "password......"+pwcontrollo);
-            Log.i("log_tag", "nr tessera ......"+utenteLogin.getNrtessera());
-        Log.i("log_tag", "user......"+utenteLogin.getUsername());
 
-            Crypto_new crypto=new Crypto_new(context);
-
-        boolean verified = false;
-            try {
-                if (pwUtenteCrypt != null) {
-                    verified = crypto.verifyData(pwcontrollo, pwUtenteCrypt);
-                }
-            } catch (KeyStoreException e) {
-                Log.w(TAG, "KeyStore not Initialized", e);
-            } catch (CertificateException e) {
-                Log.w(TAG, "Error occurred while loading certificates", e);
-            } catch (NoSuchAlgorithmException e) {
-                Log.w(TAG, "RSA not supported", e);
-            } catch (IOException e) {
-                Log.w(TAG, "IO Exception", e);
-            } catch (UnrecoverableEntryException e) {
-                Log.w(TAG, "KeyPair not recovered", e);
-            } catch (InvalidKeyException e) {
-                Log.w(TAG, "Invalid Key", e);
-            } catch (SignatureException e) {
-                Log.w(TAG, "Invalid Signature", e);
-            }
-
-           if (verified) {
-
-               if (utenteLogin.getIs_staff() == 1) {
-                   Intent vaiaGestoreNav = new Intent(context, GestoreNav.class);
-                   vaiaGestoreNav.putExtra("gestore", (Serializable) utenteLogin);
-                   context.startActivity(vaiaGestoreNav);
-
-               }
-               if (utenteLogin.getIs_staff() == 0) {
-
-
-                   Intent vaiaUtenteNav = new Intent(context, UtenteNav.class);
-                   vaiaUtenteNav.putExtra("utente", (Serializable) utenteLogin);
-                   context.startActivity(vaiaUtenteNav);
-                   //  myActivity.finish();
-               }
-               progressDialog.dismiss();
-           }else {
-            Toast.makeText(context, "utente o password errati", Toast.LENGTH_SHORT).show();
-               progressDialog.dismiss();
-            }
-
-
-
+        catch(JSONException e){
+            Log.e("log_tag", "Error parsing data "+e.toString());
+        }
+    progressDialog.dismiss();
     }
+
+
+
 
     protected boolean isNetworkConnected() {
         ConnectivityManager mConnectivityManager = null;
         // Instantiate mConnectivityManager if necessary
         if (mConnectivityManager == null) {
-            mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            mConnectivityManager = (ConnectivityManager) myContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         }
         // Is device connected to the Internet?
         NetworkInfo networkInfo = mConnectivityManager.getActiveNetworkInfo();
@@ -238,10 +198,6 @@ public class Cerca_pw_utente_in_DB extends AsyncTask<String, Object, String> {
         } else {
             return false;
         }
-    }
-
-    public Utente getUtenteLogin() {
-        return utenteLogin;
     }
 
 }

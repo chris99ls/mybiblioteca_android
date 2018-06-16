@@ -1,6 +1,7 @@
 package it.android.j940549.mybiblioteca.Controller_DB;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -35,7 +36,7 @@ public class Carica_Catalogo extends AsyncTask<String, Object, String> {
     private RecyclerView mRecyclerViewpiuletti;
     private RecyclerView.Adapter mAdapter;
     private Utente utenteLogin;
-
+    private ProgressDialog progressDialog;
     ArrayList<Libro_catalogo> myDataset = new ArrayList<>();
 
     public Carica_Catalogo(Activity myActivity, RecyclerView mRecyclerView,RecyclerView mRecyclerViewpiuletti,RecyclerView.Adapter mAdapter,  ArrayList<Libro_catalogo>myDataset, Utente utenteLogin){
@@ -58,6 +59,12 @@ public class Carica_Catalogo extends AsyncTask<String, Object, String> {
     @Override
     protected void onPreExecute() {
         // Check network connection.
+        progressDialog = new ProgressDialog(myActivity);
+        progressDialog.setMessage("caricamento dati in corso");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
         if (isNetworkConnected() == false) {
             // Cancel request.
             Log.i("Esito_Ricerca", "Not connected to the internet");
@@ -163,8 +170,9 @@ public class Carica_Catalogo extends AsyncTask<String, Object, String> {
                 }
 
             }
-
+        progressDialog.dismiss();
         }
+
     protected boolean isNetworkConnected() {
         ConnectivityManager mConnectivityManager = null;
         // Instantiate mConnectivityManager if necessary

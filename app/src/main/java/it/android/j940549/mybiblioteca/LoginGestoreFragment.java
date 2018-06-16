@@ -55,6 +55,7 @@ import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
 import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
 import it.android.j940549.mybiblioteca.Controller_DB.Cerca_pw_utente_in_DB;
 import it.android.j940549.mybiblioteca.FingerprintDialog.FingerprintAuthenticationDialogFragment;
+import it.android.j940549.mybiblioteca.FingerprintDialog.FingerprintAuthenticationDialogFragmentGestore;
 
 import static it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity.KEYNAME;
 
@@ -81,28 +82,15 @@ public class LoginGestoreFragment extends Fragment {
     private ImageButton fp_button;
     private CheckBox chkboxRicordami;
     private String token, user,sono_gestore;
-    private String mParam1,mParam2;
     private Activity myActivity;
 
     public LoginGestoreFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment LoginUtenteFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static LoginGestoreFragment newInstance(String param1, String param2) {
+    public static LoginGestoreFragment newInstance() {
         LoginGestoreFragment fragment = new LoginGestoreFragment();
-        Bundle args = new Bundle();
-        args.putString("arg1", param1);
-        args.putString("arg2", param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
@@ -110,8 +98,6 @@ public class LoginGestoreFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString("arg1");
-            mParam2 = getArguments().getString("arg2");
         }
         myActivity=getActivity();
     }
@@ -263,10 +249,10 @@ public class LoginGestoreFragment extends Fragment {
         }
         if(!user.equals("")&& cheked) {
             SharedPreferences sharedPref = myActivity.getPreferences(Context.MODE_PRIVATE);
-            String utente= sharedPref.getString("nomeUtente", "");
+            String utente= sharedPref.getString("nomeGestore", "");
             if(utente.equals("")) {
                 SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString("nomeUtente", user);
+                editor.putString("nomeGestore", user);
                 editor.putBoolean("chkbox",cheked);
                 editor.commit();
             }
@@ -276,13 +262,13 @@ public class LoginGestoreFragment extends Fragment {
         }else if (!user.equals("")&& !cheked){
             SharedPreferences sharedPref = myActivity.getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("nomeUtente", "");
+            editor.putString("nomeGestore", "");
             editor.putBoolean("chkbox",cheked);
             editor.commit();
         }else if(user.equals("")&& !cheked){
             SharedPreferences sharedPref = myActivity.getPreferences(Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString("nomeUtente", "");
+            editor.putString("nomeGestore", "");
             editor.putBoolean("chkbox",cheked);
             editor.commit();
         }
@@ -456,8 +442,8 @@ public class LoginGestoreFragment extends Fragment {
 
                                 // Show the fingerprint dialog. The user has the option to use the fingerprint with
                                 // crypto, or you can fall back to using a server-side verified password.
-                                FingerprintAuthenticationDialogFragment fragment
-                                        = new FingerprintAuthenticationDialogFragment();
+                                FingerprintAuthenticationDialogFragmentGestore fragment
+                                        = new FingerprintAuthenticationDialogFragmentGestore();
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     fragment.setCryptoObject(new FingerprintManager.CryptoObject(mCipher));
@@ -467,10 +453,10 @@ public class LoginGestoreFragment extends Fragment {
                                                 true);
                                 if (useFingerprintPreference) {
                                     fragment.setStage(
-                                            FingerprintAuthenticationDialogFragment.Stage.FINGERPRINT);
+                                            FingerprintAuthenticationDialogFragmentGestore.Stage.FINGERPRINT);
                                 } else {
                                     fragment.setStage(
-                                            FingerprintAuthenticationDialogFragment.Stage.PASSWORD);
+                                            FingerprintAuthenticationDialogFragmentGestore.Stage.PASSWORD);
                                 }
                                 fragment.show(myActivity.getFragmentManager(), DIALOG_FRAGMENT_TAG);
                             } else {
@@ -478,14 +464,14 @@ public class LoginGestoreFragment extends Fragment {
                                 // enrolled. Thus show the dialog to authenticate with their password first
                                 // and ask the user if they want to authenticate with fingerprints in the
                                 // future
-                                FingerprintAuthenticationDialogFragment fragment
-                                        = new FingerprintAuthenticationDialogFragment();
+                                FingerprintAuthenticationDialogFragmentGestore fragment
+                                        = new FingerprintAuthenticationDialogFragmentGestore();
 
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                                     fragment.setCryptoObject(new FingerprintManager.CryptoObject(mCipher));
                                 }
                                 fragment.setStage(
-                                        FingerprintAuthenticationDialogFragment.Stage.NEW_FINGERPRINT_ENROLLED);
+                                        FingerprintAuthenticationDialogFragmentGestore.Stage.NEW_FINGERPRINT_ENROLLED);
                                 fragment.show(myActivity.getFragmentManager(), DIALOG_FRAGMENT_TAG);
                             }
                         } catch (KeyPermanentlyInvalidatedException e) {
@@ -560,16 +546,6 @@ public class LoginGestoreFragment extends Fragment {
         //mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
 
 }
 

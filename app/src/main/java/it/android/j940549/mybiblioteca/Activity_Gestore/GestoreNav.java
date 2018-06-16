@@ -1,12 +1,9 @@
 package it.android.j940549.mybiblioteca.Activity_Gestore;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.Menu;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -79,7 +76,7 @@ public class GestoreNav extends AppCompatActivity
         switch (item.getItemId()) {
 
             case R.id.nav_inserisci_Gestore:
-                fragment = New_Gestore.newInstance();
+                fragment = Add_New_Gestore.newInstance();
 
                 break;
             case R.id.nav_gestione_catalogo:
@@ -99,7 +96,7 @@ public class GestoreNav extends AppCompatActivity
 
 
             default:
-                fragment =   Situazione_Prestiti.newInstance();
+                fragment =   Gestione_Utenti.newInstance();
 
                 break;
         }

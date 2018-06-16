@@ -66,9 +66,15 @@ public class MyRecyclerViewAdapter_gia_letti extends RecyclerView.Adapter<MyRecy
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.card_libro_gia_letti, parent, false);
-
+        View view =null;
+        if(mActivity.getTitle().equals("Prestiti")) {
+                view=LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card_libro_gia_letti, parent, false);
+        }
+        if(mActivity.getTitle().equals("Dettaglio_Utente")) {
+            view=LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.card_libro_gia_letti, parent, false);
+        }
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
     }

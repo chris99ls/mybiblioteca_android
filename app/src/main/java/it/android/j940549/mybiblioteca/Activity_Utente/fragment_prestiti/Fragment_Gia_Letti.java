@@ -41,6 +41,7 @@ public class Fragment_Gia_Letti extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
     private Utente utenteLogin;
+
     ArrayList mDataset;// = new ArrayList<Libri_Prenotati>();
 
 

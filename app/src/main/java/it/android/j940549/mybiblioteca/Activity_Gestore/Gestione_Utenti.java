@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import it.android.j940549.mybiblioteca.Activity_Esito_Ricerche.Esito_Ricerca;
 import it.android.j940549.mybiblioteca.Catalogo_libri.Catalogo;
 import it.android.j940549.mybiblioteca.Catalogo_libri.MyAdapter;
+import it.android.j940549.mybiblioteca.Controller_DB.Cerca_Utente_in_DB;
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
@@ -85,15 +86,16 @@ public class Gestione_Utenti extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-// do something on text submit
-//Toast.makeText(view.getContext(), newText, Toast.LENGTH_SHORT).show();
-            return false;
+                Cerca_Utente_in_DB cerca_in_db=new Cerca_Utente_in_DB(getActivity(),mRecyclerView,mAdapter);
+                cerca_in_db.execute(query);
+                return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-            // do something when text changes
-                //Toast.makeText(view.getContext(), newText, Toast.LENGTH_SHORT).show();
+                if (newText.equals("")){
+                    caricaListaUtenti();
+                }
                 return false;
             }
         });
@@ -201,7 +203,11 @@ public class Gestione_Utenti extends Fragment {
                     utente.setIs_superuser(json_data.getInt("is_superuser"));
                     utente.setIs_staff(json_data.getInt("is_staff"));
                     utente.setNrtessera(json_data.getString("id"));
-                    utente.setUsername(json_data.getString("username"));
+
+                    String user_name= json_data.getString("username");
+                    if(user_name.contains("m_")){
+                    user_name=user_name.substring(2,user_name.length());}
+                    utente.setUsername(user_name);
 
                     // Log.i("log_tag", "datobject inserito " + obj.getData() );
 

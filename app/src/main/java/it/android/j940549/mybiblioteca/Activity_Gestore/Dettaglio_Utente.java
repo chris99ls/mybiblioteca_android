@@ -2,8 +2,6 @@ package it.android.j940549.mybiblioteca.Activity_Gestore;
 
 import android.os.AsyncTask;
 import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 
@@ -12,14 +10,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -39,9 +34,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import it.android.j940549.mybiblioteca.Activity_Gestore.fragment_dettagli_utente.Fragment_Gia_Letti;
-import it.android.j940549.mybiblioteca.Activity_Gestore.fragment_dettagli_utente.Fragment_In_Prestito;
-import it.android.j940549.mybiblioteca.Activity_Gestore.fragment_dettagli_utente.Fragment_Prenotati;
+import it.android.j940549.mybiblioteca.Activity_Utente.fragment_prestiti.Fragment_Gia_Letti;
+import it.android.j940549.mybiblioteca.Activity_Utente.fragment_prestiti.Fragment_In_Prestito;
+import it.android.j940549.mybiblioteca.Activity_Utente.fragment_prestiti.Fragment_Prenotati;
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
@@ -63,20 +58,26 @@ public class Dettaglio_Utente extends AppCompatActivity {
      */
     private ViewPager mViewPager;
     private Utente utente;
-
+    private TextView txtutente,txtnrTessera;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dettaglio__utente);
-  //      utente= new Utente();
+
         utente= (Utente) getIntent().getSerializableExtra("utente");
-        TextView txtutente=findViewById(R.id.nomeutente_dettaglio);
-        TextView txtnrTessera=findViewById(R.id.nr_tessera_utente_dettaglio);
-        txtutente.setText(utente.getUsername());
-        txtnrTessera.setText(utente.getNrtessera());
+
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        txtutente=findViewById(R.id.nomeutente_dettaglio);
+        txtnrTessera=findViewById(R.id.nr_tessera_utente_dettaglio);
+
+        String nrtess="Tessera nr: ";
+
+        txtutente.setText(utente.getCognome()+" "+ utente.getNome());
+        txtnrTessera.setText(nrtess+utente.getNrtessera());
         // Create the adapter that will return a fragment for each of the three
         // primary sections of the activity.
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager());

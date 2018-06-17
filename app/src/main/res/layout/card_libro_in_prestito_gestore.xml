@@ -59,12 +59,13 @@
 
             <ImageButton
                 android:id="@+id/btn_reso_prestito"
-                android:layout_width="35dp"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_marginRight="10dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/ic_prestiti" />
+                android:src="@drawable/ic_prenotati_arrow"
+                android:background="@android:color/white"/>
         </LinearLayout>
     </LinearLayout>
     </android.support.v7.widget.CardView>

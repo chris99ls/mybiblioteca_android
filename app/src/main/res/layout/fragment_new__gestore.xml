@@ -74,7 +74,9 @@
                 android:textStyle="bold"
                 android:onClick="registraGestore"
                 android:textSize="20dp"
-                android:layout_gravity="bottom"/>
+                android:layout_gravity="bottom"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"/>
 
         </LinearLayout>
     </ScrollView>

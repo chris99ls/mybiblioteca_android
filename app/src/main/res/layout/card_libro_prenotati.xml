@@ -65,11 +65,12 @@
 
             <ImageButton
                 android:id="@+id/btn_canc_prenotato"
-                android:layout_width="35dp"
+                android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_alignParentEnd="true"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/cestino_rid" />
+                android:src="@drawable/cestino_rid"
+                android:background="@android:color/white"/>
         </LinearLayout>
     </LinearLayout>
     </android.support.v7.widget.CardView>

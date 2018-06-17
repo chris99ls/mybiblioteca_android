@@ -10,11 +10,11 @@
             android:title="Catalogo" />
         <item
             android:id="@+id/nav_ricerca"
-            android:icon="@drawable/cerca"
+            android:icon="@drawable/cerca_old"
             android:title="Ricerca" />
         <item
             android:id="@+id/nav_prestiti"
-            android:icon="@drawable/ic_prestiti_50x50"
+            android:icon="@drawable/ic_prestiti"
             android:title="Prestiti" />
         <item
             android:id="@+id/nav_profilo"

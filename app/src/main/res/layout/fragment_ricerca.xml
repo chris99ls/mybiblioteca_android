@@ -28,7 +28,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/scan_codebar"
-            android:layout_alignParentEnd="true"/>
+            android:layout_alignParentEnd="true"
+            android:background="@android:color/background_light"/>
         </RelativeLayout>
 
         <EditText
@@ -69,6 +70,8 @@
         android:layout_gravity="right"
         android:text="Cerca"
         android:textStyle="bold"
-        android:textSize="20dp"/>
+        android:textSize="20dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"/>
     </LinearLayout>
 </FrameLayout>

@@ -10,7 +10,7 @@
             android:title="Gestione Catalogo" />
         <item
             android:id="@+id/nav_gestione_utenti"
-            android:icon="@drawable/ic_prestiti_50x50"
+            android:icon="@drawable/ic_prestiti"
             android:title="Gestisci Utenti" />
         <item
             android:id="@+id/nav_inserisci"

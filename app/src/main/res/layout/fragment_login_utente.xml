@@ -19,7 +19,7 @@
             android:src="@drawable/ic_add_utente_40x40"
             android:id="@+id/add_new_utente"
             android:layout_marginRight="10dp"
-            android:background="@android:color/white"
+            android:background="@android:color/background_light"
             android:layout_gravity="right"/>
         <LinearLayout
             android:id="@+id/login_form"

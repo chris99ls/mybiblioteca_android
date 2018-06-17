@@ -31,8 +31,23 @@
                     app:cardCornerRadius="10dp"
                     app:contentPadding="10dp">
                     <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/avatar_utente"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_user"
+                        android:layout_margin="20dp"/>
+
+                    <LinearLayout
+                        android:id="@+id/dati_utente"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignRight="@+id/avatar_utente"
                         android:orientation="vertical">
 
                     <TextView
@@ -40,14 +55,17 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="20dp"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:textColor="@color/colorPrimaryDark"/>
 
                     <TextView
                         android:id="@+id/nr_tessera"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_margin="20dp"
-                        android:textSize="20dp" />
+                        android:textSize="20dp"
+                        android:textColor="@color/colorPrimaryDark"/>
+                    </LinearLayout>
                     </LinearLayout>
                 </android.support.v7.widget.CardView>
 

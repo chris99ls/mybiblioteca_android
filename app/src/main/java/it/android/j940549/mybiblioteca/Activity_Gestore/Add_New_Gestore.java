@@ -158,7 +158,7 @@ public class Add_New_Gestore extends Fragment {
             progressDialog.setMessage("caricamento dati in corso");
             progressDialog.setCancelable(false);
             progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-            progressDialog.show();
+         //   progressDialog.show();
         }
 
         @Override

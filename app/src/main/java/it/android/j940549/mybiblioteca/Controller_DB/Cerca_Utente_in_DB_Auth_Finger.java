@@ -46,7 +46,7 @@ public class Cerca_Utente_in_DB_Auth_Finger extends AsyncTask<String, Object, St
         progressDialog.setMessage("caricamento dati in corso");
         progressDialog.setCancelable(false);
         progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+       // progressDialog.show();
 
         // Check network connection.
         if (isNetworkConnected() == false) {

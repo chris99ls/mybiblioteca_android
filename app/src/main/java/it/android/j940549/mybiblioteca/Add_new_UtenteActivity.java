@@ -121,7 +121,7 @@ private class Inserisci_new_Utente_InDB extends AsyncTask<String,String,String> 
         progressDialog.setMessage("caricamento dati in corso");
         progressDialog.setCancelable(false);
         progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+//        progressDialog.show();
     }
         @Override
     protected String doInBackground(String... params) {

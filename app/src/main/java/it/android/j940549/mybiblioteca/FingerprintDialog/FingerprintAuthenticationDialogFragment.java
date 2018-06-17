@@ -16,14 +16,9 @@
 
 package it.android.j940549.mybiblioteca.FingerprintDialog;
 
-import android.app.Activity;
 import android.app.DialogFragment;
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.SQLException;
 import android.hardware.fingerprint.FingerprintManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,14 +38,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.Serializable;
-
-import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
 import it.android.j940549.mybiblioteca.Controller_DB.Cerca_Utente_in_DB_Auth_Finger;
-import it.android.j940549.mybiblioteca.Controller_DB.Cerca_pw_utente_in_DB;
 import it.android.j940549.mybiblioteca.LoginUtenteFragment;
 import it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity;
-import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
 
@@ -299,7 +289,7 @@ public class FingerprintAuthenticationDialogFragment extends DialogFragment
     public void failogin() {
         Log.i("Log_tag", "username"+getUser());
 
-        Cerca_Utente_in_DB_Auth_Finger  cerca_pw_utente_in_db =new Cerca_Utente_in_DB_Auth_Finger(mActivity.getBaseContext());
+        Cerca_Utente_in_DB_Auth_Finger  cerca_pw_utente_in_db =new Cerca_Utente_in_DB_Auth_Finger(mActivity);
         cerca_pw_utente_in_db.execute("m_"+user,"");
        // Utente utenteLogin=cerca_pw_utente_in_db.getUtente();
 

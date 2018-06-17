@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import it.android.j940549.mybiblioteca.Controller_DB.Carica_gia_letti;
 import it.android.j940549.mybiblioteca.Model.Libri_Prenotati;
 import it.android.j940549.mybiblioteca.Model.Libri_gia_letti;
 import it.android.j940549.mybiblioteca.Model.Utente;
@@ -41,30 +42,19 @@ public class Fragment_Gia_Letti extends Fragment {
     private RecyclerView.LayoutManager mLayoutManager;
     private static String LOG_TAG = "CardViewActivity";
     private Utente utenteLogin;
-
-    ArrayList mDataset;// = new ArrayList<Libri_Prenotati>();
-
+    ArrayList mDataset;
 
 
     public Fragment_Gia_Letti() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @ param param1 Parameter 1.
-     * @ param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_Situazione_Prenotati.
-     */
     // TODO: Rename and change types and number of parameters
 
-    public static Fragment_Gia_Letti newInstance(Utente utenteLogin){//},ArrayList<Libri_gia_letti> libri_gia_letti) {
+    public static Fragment_Gia_Letti newInstance(Utente utenteLogin){
         Fragment_Gia_Letti fragment = new Fragment_Gia_Letti();
         Bundle args = new Bundle();
         args.putSerializable("utente", utenteLogin);
-//        args.putSerializable("dataset", libri_gia_letti);
 
         fragment.setArguments(args);
         return fragment;
@@ -77,11 +67,9 @@ public class Fragment_Gia_Letti extends Fragment {
 
         if (getArguments() != null) {
             this.utenteLogin= (Utente) getArguments().getSerializable("utente");
-  //          this.mDataset= (ArrayList) getArguments().getSerializable("dataset");
         }
         Log.i("log_tag_arg","argumets "+utenteLogin.getNrtessera());
 
-        caricaDati(utenteLogin.getNrtessera());
 
     }
 
@@ -96,6 +84,7 @@ public class Fragment_Gia_Letti extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        caricaDati(utenteLogin.getNrtessera());
 
         mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet(),getActivity());
         mRecyclerView.setAdapter(mAdapter);
@@ -114,13 +103,8 @@ public class Fragment_Gia_Letti extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-/*        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-  */  }
+
+  }
 
     @Override
     public void onDetach() {
@@ -151,106 +135,8 @@ public class Fragment_Gia_Letti extends Fragment {
     public void caricaDati(String nrtessera) {
         Log.i("log_tag_argcar","arumets "+nrtessera);
 
-//        mDataset.removeAll(mDataset);
-        Fragment_Gia_Letti.HttpGetTaskGiavisti task3 = new Fragment_Gia_Letti.HttpGetTaskGiavisti();
-
-        task3.execute(nrtessera);
+        Carica_gia_letti carica_gia_letti= new Carica_gia_letti(getActivity(),mRecyclerView,mAdapter);
+        carica_gia_letti.execute(nrtessera);
     }
 
-
-    private class HttpGetTaskGiavisti extends AsyncTask<String,String,String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String result = "";
-            String stringaFinale = " ";
-            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("nrtessera",params[0]));
-
-
-            InputStream is = null;
-
-            //http post
-            try{
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/giavisti_utente.php");
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity entity = response.getEntity();
-                is = entity.getContent();
-            }catch(Exception e){
-                Log.e("TEST", "Errore nella connessione http "+e.toString());
-            }
-            if(is != null) {
-                //converto la risposta in stringa
-                try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    is.close();
-
-                    result = sb.toString();
-                } catch (Exception e) {
-                    Log.e("TEST", "Errore nel convertire il risultato " + e.toString());
-                }
-
-                System.out.println(result);
-
-            }
-            else{//is è null e non ho avuto risposta
-
-            }
-
-            return result;
-
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            // aggiorno la textview con il risultato ottenuto
-            Log.i("log_tag", "parsing data on postExec giavisti"+result.toString());
-
-            try{
-
-                Log.i("log_tag", "dato da parsare in json "+result);
-                JSONArray jArray = new JSONArray(result);
-                for(int i=0;i<jArray.length();i++){
-                    Log.i("log_tag", "ciclo parsing data on postExec .."+i);
-
-                    JSONObject json_data = jArray.getJSONObject(i);
-                    Libri_gia_letti libro_gia_letti = new Libri_gia_letti();
-                    libro_gia_letti.setPatch_img(json_data.getString("tumbnail"));
-                    libro_gia_letti.setIsbn(json_data.getString("isbn"));
-                    libro_gia_letti.setTitolo(json_data.getString("title"));
-
-
-                    mDataset.add(libro_gia_letti);
-
-
-                }
-                Log.i("log_tag", "results... gialet" + mDataset.size());
-
-                mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet(),getActivity());
-                mRecyclerView.setAdapter(mAdapter);
-            }
-
-            catch(JSONException e){
-                Log.e("log_tag", "Error parsing data "+e.toString());
-
-                mDataset.clear();
-                //mAdapter = new MyRecyclerViewAdapter_gia_letti(mDataset);
-                //mRecyclerView.setAdapter(mAdapter);
-
-            }
-
-        }
-    }
 }

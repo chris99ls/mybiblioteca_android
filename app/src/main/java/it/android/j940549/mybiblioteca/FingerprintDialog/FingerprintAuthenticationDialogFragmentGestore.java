@@ -290,7 +290,7 @@ public class FingerprintAuthenticationDialogFragmentGestore extends DialogFragme
     public void failogin() {
         Log.i("Log_tag", "username"+getGetore());
 
-        Cerca_Utente_in_DB_Auth_Finger  cerca_pw_utente_in_db =new Cerca_Utente_in_DB_Auth_Finger(mActivity.getBaseContext());
+        Cerca_Utente_in_DB_Auth_Finger  cerca_pw_utente_in_db =new Cerca_Utente_in_DB_Auth_Finger(mActivity);
         cerca_pw_utente_in_db.execute("","m_"+gestore);
        // Utente utenteLogin=cerca_pw_utente_in_db.getUtente();
 

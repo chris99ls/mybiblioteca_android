@@ -47,7 +47,7 @@ public class GestoreNav extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment =   Gestione_Utenti.newInstance();
+        Fragment fragment =   Gestione_Utenti_frag.newInstance();
 
         //inserisci il fragment rimpiazzando i frgment esitente
         fragmentManager = getSupportFragmentManager();
@@ -76,15 +76,15 @@ public class GestoreNav extends AppCompatActivity
         switch (item.getItemId()) {
 
             case R.id.nav_inserisci_Gestore:
-                fragment = Add_New_Gestore.newInstance();
+                fragment = Add_New_Gestore_frag.newInstance();
 
                 break;
             case R.id.nav_gestione_catalogo:
-                fragment = Gestisci_Catalogo.newInstance();
+                fragment = Gestisci_Catalogo_frag.newInstance();
 
                 break;
             case R.id.nav_gestione_utenti:
-                fragment = Gestione_Utenti.newInstance();
+                fragment = Gestione_Utenti_frag.newInstance();
 
                 break;
 
@@ -96,7 +96,7 @@ public class GestoreNav extends AppCompatActivity
 
 
             default:
-                fragment =   Gestione_Utenti.newInstance();
+                fragment =   Gestione_Utenti_frag.newInstance();
 
                 break;
         }
@@ -155,23 +155,7 @@ public class GestoreNav extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         selectDrawerItem(item);
-/*        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_ricerca) {
-            // Handle the camera action
-        } else if (id == R.id.nav_prestiti) {
-
-        } else if (id == R.id.nav_profilo) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
         return true;
     }
 }

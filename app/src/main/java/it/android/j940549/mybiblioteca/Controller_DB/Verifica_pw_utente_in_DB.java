@@ -36,7 +36,7 @@ import it.android.j940549.mybiblioteca.Crypto.Crypto_new;
 import it.android.j940549.mybiblioteca.Model.Utente;
 
 
-public class Cerca_pw_utente_in_DB extends AsyncTask<String, Object, String> {
+public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> {
     String username, pwcontrollo, pwUtenteCrypt, PWlogin,is_staff, is_superuser;
     Context context;
     ArrayList<Utente> listUtenti=new ArrayList<>();
@@ -45,7 +45,7 @@ public class Cerca_pw_utente_in_DB extends AsyncTask<String, Object, String> {
     private ProgressDialog progressDialog;
     //EditText passwordLogin;
 
-    public Cerca_pw_utente_in_DB(Context context){
+    public Verifica_pw_utente_in_DB(Context context){
 
         this.context=context;
 

@@ -88,12 +88,8 @@ public class Dettaglio_Utente extends AppCompatActivity {
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
-//        TabLayout tabLayout = (TabLayout) view.findViewById(R.id.tabs_prestiti);
         tabLayout.setupWithViewPager(mViewPager);
 
-       /* mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-        tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
-*/
 
 
     }
@@ -168,7 +164,7 @@ public class Dettaglio_Utente extends AppCompatActivity {
                 case 0:
                     return "Libri Prenotati";
                 case 1:
-                    return "Libri In prestito";
+                    return "Libri in prestito";
                 case 2:
                     return "Libri già letti";
 

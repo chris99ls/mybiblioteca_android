@@ -31,11 +31,9 @@ public class MyRecyclerViewAdapter_gia_letti extends RecyclerView.Adapter<MyRecy
     private static String LOG_TAG = "MyRecyclerViewAdapter";
     private ArrayList<Libri_gia_letti> mDataset;
     private Activity mActivity;
-    //    private static MyClickListener myClickListener;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder{
-    //        implements View
-  //          .OnClickListener {
+
         TextView isbn;
         TextView titolo;
         ImageView img;
@@ -46,18 +44,11 @@ public class MyRecyclerViewAdapter_gia_letti extends RecyclerView.Adapter<MyRecy
             titolo= (TextView) itemView.findViewById(R.id.titolo_libro);
             img=itemView.findViewById(R.id.copertina_libro);
             Log.i(LOG_TAG, "Adding Listener");
-           // itemView.setOnClickListener(this);
         }
 
-        /*@Override
-        public void onClick(View v) {
-            myClickListener.onItemClick(getAdapterPosition(), v);
-        }*/
+
     }
 
-    /*public void setOnItemClickListener(MyClickListener myClickListener) {
-        this.myClickListener = myClickListener;
-    }*/
 
     public MyRecyclerViewAdapter_gia_letti(ArrayList<Libri_gia_letti> myDataset, Activity activity) {
         mDataset = myDataset;
@@ -95,13 +86,11 @@ public class MyRecyclerViewAdapter_gia_letti extends RecyclerView.Adapter<MyRecy
                     .skipMemoryCache(true)
                     .into(holder.img);
 
-//         image= BitmapFactory.decodeStream(url.openStream());
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-       // holder.img.setImageBitmap(image);
     }
 
     public void addItem(Libri_gia_letti dataObj, int index) {
@@ -119,7 +108,5 @@ public class MyRecyclerViewAdapter_gia_letti extends RecyclerView.Adapter<MyRecy
         return mDataset.size();
     }
 
-    /*public interface MyClickListener {
-        public void onItemClick(int position, View v);
-    }*/
+
 }

@@ -6,13 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.fingerprint.FingerprintManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.preference.PreferenceManager;
 import android.security.KeyPairGeneratorSpec;
 import android.security.keystore.KeyGenParameterSpec;
@@ -23,8 +19,6 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,21 +27,9 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
-import android.widget.ToggleButton;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.math.BigInteger;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.ProtocolException;
-import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.KeyPair;
@@ -59,7 +41,6 @@ import java.security.NoSuchProviderException;
 import java.security.UnrecoverableKeyException;
 import java.security.cert.CertificateException;
 import java.security.interfaces.RSAPublicKey;
-import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.crypto.BadPaddingException;
@@ -70,9 +51,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.security.auth.x500.X500Principal;
 
-import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
-import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
-import it.android.j940549.mybiblioteca.Controller_DB.Cerca_pw_utente_in_DB;
+import it.android.j940549.mybiblioteca.Controller_DB.Verifica_pw_utente_in_DB;
 import it.android.j940549.mybiblioteca.FingerprintDialog.FingerprintAuthenticationDialogFragment;
 import it.android.j940549.mybiblioteca.Model.Utente;
 
@@ -536,7 +515,7 @@ private class PurchaseButtonClickListener implements View.OnClickListener {
 
         if(!user.equals("")&&!password.equals("")) {
 
-            Cerca_pw_utente_in_DB cerca_pw_utente_in_db = new Cerca_pw_utente_in_DB(getContext());
+            Verifica_pw_utente_in_DB cerca_pw_utente_in_db = new Verifica_pw_utente_in_DB(getContext());
             cerca_pw_utente_in_db.execute(user,password);
 
         }else{

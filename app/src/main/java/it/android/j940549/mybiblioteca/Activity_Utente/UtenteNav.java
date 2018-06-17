@@ -1,11 +1,8 @@
 package it.android.j940549.mybiblioteca.Activity_Utente;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import it.android.j940549.mybiblioteca.Catalogo_libri.Catalogo;
 import it.android.j940549.mybiblioteca.Model.Utente;
@@ -59,11 +55,6 @@ public class UtenteNav extends AppCompatActivity
 
     }
 
-   /* @Override
-    public void onSavedInstanceState(Bundle outState){
-        super.onSaveInstanceState(outState);
-        outState.putSerializable("utente", utenteLogin);
-    }*/
 
     private void setupDrawerContent(NavigationView navigationView) {
         navigationView.setNavigationItemSelectedListener( new NavigationView.OnNavigationItemSelectedListener(){
@@ -79,8 +70,6 @@ public class UtenteNav extends AppCompatActivity
     public void selectDrawerItem(MenuItem item) {
 
         Fragment fragment=null;
-//        Fragment fragment= BlankFragment.newInstance(alunno,annosc);
-        Class fragmentClass;
 
 
 
@@ -92,26 +81,26 @@ public class UtenteNav extends AppCompatActivity
                     break;
 
                 case R.id.nav_ricerca:
-                    fragment = Ricerca.newInstance(utenteLogin);
+                    fragment = Ricerca_frag.newInstance(utenteLogin);
 
                     break;
 
 
                 case R.id.nav_prestiti:
 
-                    fragment = Prestiti.newInstance(utenteLogin);
+                    fragment = Prestiti_frag.newInstance(utenteLogin);
                     break;
 
                 case R.id.nav_profilo:
 
-                    fragment = Profilo.newInstance(utenteLogin);
+                    fragment = Profilo_frag.newInstance(utenteLogin);
                     break;
 
 
 
 
                 default:
-                    fragment =   Ricerca.newInstance(utenteLogin);
+                    fragment =   Ricerca_frag.newInstance(utenteLogin);
 
                     break;
             }
@@ -170,23 +159,7 @@ public class UtenteNav extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         selectDrawerItem(item);
-/*        // Handle navigation view item clicks here.
-        int id = item.getItemId();
 
-        if (id == R.id.nav_ricerca) {
-            // Handle the camera action
-        } else if (id == R.id.nav_prestiti) {
-
-        } else if (id == R.id.nav_profilo) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);*/
         return true;
     }
 }

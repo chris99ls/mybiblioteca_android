@@ -35,6 +35,7 @@ import java.security.cert.CertificateException;
 import java.util.ArrayList;
 
 
+import it.android.j940549.mybiblioteca.Controller_DB.Inserisci_new_Utente_inDB;
 import it.android.j940549.mybiblioteca.Crypto.Crypto_new;
 
 public class Add_new_UtenteActivity extends AppCompatActivity {
@@ -76,11 +77,6 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
             Crypto_new crypto=new Crypto_new(getBaseContext());
 
 
-/*            passwordCrypto=crypto.encrypt(password);
-                Log.i("registrami",password);
-            Log.i("registrami",passwordCrypto);
-            passwordCrypto=password;
-  */
             Log.w(TAG, "password da ciptare..."+password);
 
             try {
@@ -103,7 +99,7 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
                 //Log.d(TAG, "Signature: " + mSignatureStr);
 
 
-            Inserisci_new_Utente_InDB inserisci_new_utente_inDB=new Inserisci_new_Utente_InDB();
+            Inserisci_new_Utente_inDB inserisci_new_utente_inDB=new Inserisci_new_Utente_inDB(this);
             inserisci_new_utente_inDB.execute(nomeuser,cognomeuser,username, email,passwordCrypto,"0");
 
 
@@ -113,99 +109,5 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
 
     }
 
-private class Inserisci_new_Utente_InDB extends AsyncTask<String,String,String> {
-
-    @Override
-    protected void onPreExecute() {
-        progressDialog = new ProgressDialog(getBaseContext());
-        progressDialog.setMessage("caricamento dati in corso");
-        progressDialog.setCancelable(false);
-        progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-//        progressDialog.show();
-    }
-        @Override
-    protected String doInBackground(String... params) {
-        String result = "";
-        String stringaFinale = " ";
-        ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-        nameValuePairs.add(new BasicNameValuePair("nome",params[0]));
-        nameValuePairs.add(new BasicNameValuePair("cognome",params[1]));
-        nameValuePairs.add(new BasicNameValuePair("username",params[2]));
-        nameValuePairs.add(new BasicNameValuePair("email",params[3]));
-        nameValuePairs.add(new BasicNameValuePair("password",params[4]));
-        nameValuePairs.add(new BasicNameValuePair("is_staff",params[5]));
-
-        Log.i("inserisciUtente", "dati" + nameValuePairs.toString());
-        InputStream is = null;
-
-        //http post
-        try{
-            HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/registra_utente.php");
-            httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-            HttpResponse response = httpclient.execute(httppost);
-            HttpEntity entity = response.getEntity();
-            is = entity.getContent();
-        }catch(Exception e){
-            Log.e("TEST", "Errore nella connessione http "+e.toString());
-        }
-        if(is != null) {
-            //converto la risposta in stringa
-            try {
-                BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                StringBuilder sb = new StringBuilder();
-                String line = null;
-                while ((line = reader.readLine()) != null) {
-                    sb.append(line + "\n");
-                }
-                is.close();
-
-                result = sb.toString();
-            } catch (Exception e) {
-                Log.e("TEST", "Errore nel convertire il risultato " + e.toString());
-            }
-
-            Log.i("inserisciUtente", "risultato " + result);
-            //System.out.println(result);
-
-        }
-        else{//is è null e non ho avuto risposta
-
-        }
-
-        return result;
-
-    }
-
-
-    @Override
-    protected void onProgressUpdate(String... values) {
-
-    }
-
-    @Override
-    protected void onPostExecute(String result) {
-        // aggiorno la textview con il risultato ottenuto
-        Log.i("inserisciUtente_post", "risultato "+result.toString());
-        if(result.toString().contains("successfully")) {
-            registrato=true;
-        }else{
-            registrato=false;
-        }
-
-        if (registrato == true) {
-            Intent vaiaLogin = new Intent(getBaseContext(), Login_Ute_Ges_Activity.class);
-            //vaiaMenu.putExtra("user", user);
-            startActivity(vaiaLogin);
-            // USER=user;
-            finish();
-        } else {
-            Toast.makeText(getBaseContext(), "Ops! registrazione non avvenuta", Toast.LENGTH_SHORT).show();
-        }
-
-
-            progressDialog.dismiss();
-    }
-    }
 }
 

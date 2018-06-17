@@ -38,6 +38,7 @@ import java.net.URL;
 import java.util.ArrayList;
 
 import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
+import it.android.j940549.mybiblioteca.Controller_DB.Restituisci_Libro;
 import it.android.j940549.mybiblioteca.Model.Libri_In_Prestito;
 import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
@@ -49,11 +50,8 @@ public class MyRecyclerViewAdapter_in_prestito extends RecyclerView.Adapter<MyRe
     private static Activity mActivity;
     private Utente utenteLogin;
 
-    //    private static MyClickListener myClickListener;
 
     public static class DataObjectHolder extends RecyclerView.ViewHolder{
-    //        implements View
-  //          .OnClickListener {
         TextView isbn;{}
         TextView titolo,dal;
         ImageView img;
@@ -69,18 +67,11 @@ public class MyRecyclerViewAdapter_in_prestito extends RecyclerView.Adapter<MyRe
                 btn = itemView.findViewById(R.id.btn_reso_prestito);
 
                 Log.i(LOG_TAG, "Adding Listener");
-                // itemView.setOnClickListener(this);
             }
         }
-        /*@Override
-        public void onClick(View v) {
-            myClickListener.onItemClick(getAdapterPosition(), v);
-        }*/
+
     }
 
-    /*public void setOnItemClickListener(MyClickListener myClickListener) {
-        this.myClickListener = myClickListener;
-    }*/
 
     public MyRecyclerViewAdapter_in_prestito(ArrayList<Libri_In_Prestito> myDataset,Activity activity, Utente utenteLogin) {
         mDataset = myDataset;
@@ -90,14 +81,15 @@ public class MyRecyclerViewAdapter_in_prestito extends RecyclerView.Adapter<MyRe
 
     @Override
     public DataObjectHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.i("log_tag", mActivity.getTitle().toString());
         View view =null;
         if(mActivity.getTitle().equals("Prestiti")) {
-            view = LayoutInflater.from(parent.getContext())
+            view = LayoutInflater.from(mActivity.getBaseContext())
                     .inflate(R.layout.card_libro_in_prestito, parent, false);
         }
 
         if(mActivity.getTitle().equals("Dettaglio_Utente")) {
-            view = LayoutInflater.from(parent.getContext())
+            view = LayoutInflater.from(mActivity.getBaseContext())
                     .inflate(R.layout.card_libro_in_prestito_gestore, parent, false);
         }
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
@@ -134,8 +126,8 @@ public class MyRecyclerViewAdapter_in_prestito extends RecyclerView.Adapter<MyRe
             @Override
             public void onClick(View view) {
 
-                MyRecyclerViewAdapter_in_prestito.HttpGetTaskReso reso= new MyRecyclerViewAdapter_in_prestito.HttpGetTaskReso();
-                reso.execute(utenteLogin.getNrtessera(),isbn);
+                Restituisci_Libro restituisci_libro= new Restituisci_Libro(mActivity);
+                restituisci_libro.execute(utenteLogin.getNrtessera(),isbn);
             }
 
         });
@@ -158,78 +150,5 @@ public class MyRecyclerViewAdapter_in_prestito extends RecyclerView.Adapter<MyRe
         return mDataset.size();
     }
 
-    private class HttpGetTaskReso extends AsyncTask<String,String,String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String result = "";
-            String stringaFinale = " ";
-            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("nrtessera",params[0]));
-            nameValuePairs.add(new BasicNameValuePair("isbn", params[1]));
-
-
-            InputStream is = null;
-
-            //http post
-            try{
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/restituisci_book.php");
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity entity = response.getEntity();
-                is = entity.getContent();
-            }catch(Exception e){
-                Log.e("TEST", "Errore nella connessione http "+e.toString());
-            }
-            if(is != null) {
-                //converto la risposta in stringa
-                try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    is.close();
-
-                    result = sb.toString();
-                } catch (Exception e) {
-                    Log.e("TEST", "Errore nel convertire il risultato " + e.toString());
-                }
-
-                System.out.println(result);
-
-            }
-            else{//is è null e non ho avuto risposta
-
-            }
-
-            return result;
-
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            // aggiorno la textview con il risultato ottenuto
-            Log.i("log_tag", "result presta..."+result.toString());
-
-            if(result.contains("successfully")){
-                Intent refresh = new Intent(mActivity, GestoreNav.class);
-                //refresh.putExtra("utente", utenteLogin);
-                mActivity.startActivity(refresh);
-                mActivity.finish();
-                //              mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet(),getActivity());
-//                mRecyclerView.setAdapter(mAdapter);
-            }
-
-        }
-
-    }
 
 }

@@ -36,13 +36,13 @@ public class Cerca_Utente_in_DB extends AsyncTask<String, Object, String> {
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private ProgressDialog progressDialog;
-    ArrayList<Utente> myDataset = new ArrayList<>();
+    ArrayList<Utente> myDataset;
 
     public Cerca_Utente_in_DB(Activity myActivity, RecyclerView mRecyclerView, RecyclerView.Adapter mAdapter){
         this.myActivity=myActivity;
         this.mRecyclerView=mRecyclerView;
         this.mAdapter=mAdapter;
-        //this.myDataset=myDataset;
+        myDataset= new ArrayList<>();
 
     }
 

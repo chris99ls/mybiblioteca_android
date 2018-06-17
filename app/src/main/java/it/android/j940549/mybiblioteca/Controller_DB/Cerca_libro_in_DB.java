@@ -29,7 +29,7 @@ import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 
 
 
-    public class Cerca_in_DB extends AsyncTask<String, Object, String> {
+    public class Cerca_libro_in_DB extends AsyncTask<String, Object, String> {
         String isbn, titolo, autore, genere, fulltext;
         Activity myActivity;
         private RecyclerView mRecyclerView;
@@ -37,7 +37,7 @@ import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
         private ProgressDialog progressDialog;
         ArrayList<Libro_catalogo> myDataset = new ArrayList<>();
 
-        public Cerca_in_DB(Activity myActivity,RecyclerView mRecyclerView, RecyclerView.Adapter mAdapter,ArrayList<Libro_catalogo>myDataset){
+        public Cerca_libro_in_DB(Activity myActivity, RecyclerView mRecyclerView, RecyclerView.Adapter mAdapter, ArrayList<Libro_catalogo>myDataset){
             this.myActivity=myActivity;
             this.mRecyclerView=mRecyclerView;
             this.mAdapter=mAdapter;
@@ -161,7 +161,7 @@ import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
                     if(myActivity.getTitle().equals("Esito_Ricerca")) {
                         mAdapter = new MyAdapter_x_ricerca(myDataset, myActivity);
                     }
-                    if(myActivity.getTitle().equals("Gestisci_Catalogo")) {
+                    if(myActivity.getTitle().equals("Gestisci_Catalogo_frag")) {
                         mAdapter = new MyAdapter_Gestisci_catalogo(myDataset,myActivity);
                     }
                     mRecyclerView.setAdapter(mAdapter);

@@ -32,17 +32,17 @@ import it.android.j940549.mybiblioteca.Model.Utente;
 
 
 public class Cerca_Utente_in_DB_Auth_Finger extends AsyncTask<String, Object, String> {
-    Context myContext;
+    Activity myActivity;
     private String utente;
     private String gestore;
     private ProgressDialog progressDialog;
-    public Cerca_Utente_in_DB_Auth_Finger(Context myContext ){
-        this.myContext=myContext;
+    public Cerca_Utente_in_DB_Auth_Finger(Activity myContext ){
+        this.myActivity=myContext;
     }
 
     @Override
     protected void onPreExecute() {
-        progressDialog = new ProgressDialog(myContext);
+        progressDialog = new ProgressDialog(myActivity);
         progressDialog.setMessage("caricamento dati in corso");
         progressDialog.setCancelable(false);
         progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
@@ -159,17 +159,17 @@ public class Cerca_Utente_in_DB_Auth_Finger extends AsyncTask<String, Object, St
                 // Log.i("log_tag", "datobject inserito " + obj.getData() );
                 if(utente.getIs_staff()==0) {
 
-                    Intent vaiaUtenteNav = new Intent(myContext, UtenteNav.class);
+                    Intent vaiaUtenteNav = new Intent(myActivity, UtenteNav.class);
                     vaiaUtenteNav.putExtra("utente", (Serializable) utente);
-                    myContext.startActivity(vaiaUtenteNav);
+                    myActivity.startActivity(vaiaUtenteNav);
                     //  myActivity.finish();
 
                 }
                 if(utente.getIs_staff()==1){
 
-                    Intent vaiaGestoreNav = new Intent(myContext, GestoreNav.class);
+                    Intent vaiaGestoreNav = new Intent(myActivity, GestoreNav.class);
                     vaiaGestoreNav.putExtra("gestore", (Serializable) utente);
-                    myContext.startActivity(vaiaGestoreNav);
+                    myActivity.startActivity(vaiaGestoreNav);
                 }
             }
 
@@ -189,7 +189,7 @@ public class Cerca_Utente_in_DB_Auth_Finger extends AsyncTask<String, Object, St
         ConnectivityManager mConnectivityManager = null;
         // Instantiate mConnectivityManager if necessary
         if (mConnectivityManager == null) {
-            mConnectivityManager = (ConnectivityManager) myContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+            mConnectivityManager = (ConnectivityManager) myActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         }
         // Is device connected to the Internet?
         NetworkInfo networkInfo = mConnectivityManager.getActiveNetworkInfo();

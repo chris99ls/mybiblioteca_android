@@ -16,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import it.android.j940549.mybiblioteca.Activity_Esito_Ricerche.Esito_Ricerca;
 import it.android.j940549.mybiblioteca.Model.Utente;
@@ -25,7 +24,7 @@ import it.android.j940549.mybiblioteca.R;
 import static android.app.Activity.RESULT_OK;
 
 
-public class Ricerca extends Fragment {
+public class Ricerca_frag extends Fragment {
 
     static final String ACTION_SCAN="com.google.zxing.client.android.SCAN";
     private TextView txt_isbn;
@@ -35,13 +34,13 @@ public class Ricerca extends Fragment {
     private TextView txt_fulltext;
     private Utente utenteLogin;
 
-    public Ricerca() {
+    public Ricerca_frag() {
         // Required empty public constructor
     }
 
 
-    public static Ricerca newInstance(Utente utenteLogin) {
-        Ricerca fragment = new Ricerca();
+    public static Ricerca_frag newInstance(Utente utenteLogin) {
+        Ricerca_frag fragment = new Ricerca_frag();
         Bundle args = new Bundle();
         args.putSerializable("utente", utenteLogin);
         fragment.setArguments(args);

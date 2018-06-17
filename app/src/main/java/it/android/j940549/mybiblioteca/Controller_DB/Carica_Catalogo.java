@@ -44,10 +44,10 @@ public class Carica_Catalogo extends AsyncTask<String, Object, String> {
         this.mRecyclerView=mRecyclerView;
         this.utenteLogin=utenteLogin;
 
-        if(myActivity.getTitle().equals("Catalogo")){
+        if(myActivity.getTitle().equals("UtenteNav")||myActivity.getTitle().equals("Catalogo")){
 
         this.mRecyclerViewpiuletti=mRecyclerViewpiuletti;}
-        if(myActivity.getTitle().equals("Gestisci_Catalogo")){
+        if(myActivity.getTitle().equals("Gestisci Catalogo")){
 
             this.mRecyclerViewpiuletti=mRecyclerView;}
 
@@ -145,12 +145,12 @@ public class Carica_Catalogo extends AsyncTask<String, Object, String> {
 
                 }
                 Log.i("log_tag", "results... " + myDataset.size());
-                if(myActivity.getTitle().equals("Catalogo")) {
+                if(myActivity.getTitle().equals("UtenteNav")||myActivity.getTitle().equals("Catalogo")) {
                     mAdapter = new MyAdapter(myDataset, myActivity,utenteLogin);
                     mRecyclerView.setAdapter(mAdapter);
                     mRecyclerViewpiuletti.setAdapter(mAdapter);
                 }
-                if(myActivity.getTitle().equals("Gestisci_Catalogo")) {
+                if(myActivity.getTitle().equals("Gestisci Catalogo")) {
                     mAdapter = new MyAdapter_Gestisci_catalogo(myDataset,myActivity);
                     mRecyclerView.setAdapter(mAdapter);
                 }
@@ -159,12 +159,12 @@ public class Carica_Catalogo extends AsyncTask<String, Object, String> {
             catch(JSONException e){
                 Log.e("log_tag", "Error parsing data "+e.toString());
                 myDataset.clear();
-                if(myActivity.getTitle().equals("Catalogo")) {
+                if(myActivity.getTitle().equals("UtenteNav")||myActivity.getTitle().equals("Catalogo")) {
                     mAdapter = new MyAdapter(myDataset, myActivity,utenteLogin);
                     mRecyclerView.setAdapter(mAdapter);
                     mRecyclerViewpiuletti.setAdapter(mAdapter);
                 }
-                if(myActivity.getTitle().equals("Gestisci_Catalogo")) {
+                if(myActivity.getTitle().equals("Gestisci Catalogo")) {
                     mAdapter = new MyAdapter_Gestisci_catalogo(myDataset,myActivity);
                     mRecyclerView.setAdapter(mAdapter);
                 }

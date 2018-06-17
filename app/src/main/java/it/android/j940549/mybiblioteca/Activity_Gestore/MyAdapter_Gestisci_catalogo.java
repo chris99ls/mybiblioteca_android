@@ -45,11 +45,6 @@ public class MyAdapter_Gestisci_catalogo extends RecyclerView.Adapter<MyAdapter_
             tumbnail = (ImageView) view.findViewById(R.id.copertina_libro);
         }
 
-      /*  @Override
-        public void onClick(View view) {
-            Toast.makeText(view.getContext(), "This is my Toast message!",
-                    Toast.LENGTH_LONG).show();
-        }*/
     }
 
 
@@ -109,7 +104,5 @@ public class MyAdapter_Gestisci_catalogo extends RecyclerView.Adapter<MyAdapter_
     public int getItemCount() {
         return booksList.size();
     }
-    public void vaiaDettagli(String isbn){
 
-    }
 }

@@ -1,13 +1,11 @@
-package it.android.j940549.mybiblioteca.Catalogo_libri;
+package it.android.j940549.mybiblioteca.Activity_Gestore;
 
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,45 +33,35 @@ import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
 
-public class Catalogo extends Fragment {
+public class Gestisci_Catalogo_frag extends Fragment {
 
     private SearchView searchView;
     private RecyclerView mRecyclerView;
-    private RecyclerView mRecyclerViewpiuletti;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.Adapter mAdapterpiuletti;
     private RecyclerView.LayoutManager mGridLayoutManager;
-    private RecyclerView.LayoutManager mLinearLayoutManager;
     private ArrayList<Libro_catalogo> myDataset = new ArrayList<Libro_catalogo>();
-    private Utente utenteLogin;
+    private String utente;
 
 
-    public Catalogo() {
+
+
+    public Gestisci_Catalogo_frag() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     *
-     * @return A new instance of fragment Gestisci_Catalogo_frag.
-     */
     // TODO: Rename and change types and number of parameters
-    public static Catalogo newInstance(Utente utenteLogin) {
-        Catalogo fragment = new Catalogo();
-        Bundle args = new Bundle();
-        args.putSerializable("utente", utenteLogin);
+    public static Gestisci_Catalogo_frag newInstance() {
+        Gestisci_Catalogo_frag fragment = new Gestisci_Catalogo_frag();
 
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        creaLibreria();
         if (getArguments() != null) {
-            utenteLogin = (Utente) getArguments().getSerializable("utente");
+            utente = getArguments().getString("utente");
 
         }
     }
@@ -81,33 +69,21 @@ public class Catalogo extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        final View view = inflater.inflate(R.layout.fragment_catalogo, container, false);
+        final View view = inflater.inflate(R.layout.fragment_gestisci_catalogo, container, false);
 
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_catalogo);
-        mRecyclerViewpiuletti = (RecyclerView) view.findViewById(R.id.recycler_view_catalogo_piuletti);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerViewpiuletti.setHasFixedSize(true);
 
         // use a grid layout manager
-        mGridLayoutManager = new GridLayoutManager(getContext(), 2);
+        mGridLayoutManager = new GridLayoutManager(getContext(),2);
         mRecyclerView.setLayoutManager(mGridLayoutManager);
 
-        // use a linear layout manager
-        mLinearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.HORIZONTAL, false);
-        mRecyclerViewpiuletti.setLayoutManager(mLinearLayoutManager);
-
         // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(myDataset, getActivity(),utenteLogin);
-        mAdapterpiuletti = new MyAdapter_piuletti(myDataset, getActivity(),utenteLogin);
-
+        mAdapter = new MyAdapter_Gestisci_catalogo(myDataset,getActivity());
         mRecyclerView.setAdapter(mAdapter);// Inflate the layout for this fragment
-        mRecyclerViewpiuletti.setAdapter(mAdapterpiuletti);
+     //   mRecyclerViewpiuletti.setAdapter(mAdapter);
 
         creaLibreria();
-
 
         searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
         CharSequence query = searchView.getQuery(); // get the query string currently in the text field
@@ -136,15 +112,12 @@ public class Catalogo extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //you can set the title for your toolbar here for different fragments different titles
-        getActivity().setTitle("Catalogo");
-
+        getActivity().setTitle("Gestisci Catalogo");
     }
-
     private void creaLibreria() {
-        Carica_Catalogo carica_catalogo= new Carica_Catalogo(getActivity(),mRecyclerView,mRecyclerViewpiuletti,mAdapter,myDataset,utenteLogin);
+        Carica_Catalogo carica_catalogo=new Carica_Catalogo(getActivity(),mRecyclerView,mRecyclerView,mAdapter,myDataset,new Utente());
         carica_catalogo.execute();
     }
-
 
 
 }

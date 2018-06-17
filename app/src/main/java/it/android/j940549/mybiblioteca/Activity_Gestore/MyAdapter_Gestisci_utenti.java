@@ -29,9 +29,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import it.android.j940549.mybiblioteca.Activity_Utente.Prestiti;
-import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
-import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
@@ -198,9 +195,7 @@ public class MyAdapter_Gestisci_utenti extends RecyclerView.Adapter<MyAdapter_Ge
 
             catch(JSONException e){
                 Log.e("log_tag", "Error parsing data "+e.toString());
-                /*myDataset.clear();
-                mAdapter = new MyAdapter_Gestisci_catalogo(myDataset,getActivity());
-                mRecyclerView.setAdapter(mAdapter);*/
+
             }
 
         }

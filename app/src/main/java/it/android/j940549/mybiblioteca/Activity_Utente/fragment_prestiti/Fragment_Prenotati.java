@@ -29,6 +29,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import it.android.j940549.mybiblioteca.Controller_DB.Carica_prenotati;
 import it.android.j940549.mybiblioteca.Model.Libri_Prenotati;
 import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
@@ -39,30 +40,18 @@ public class Fragment_Prenotati extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private Utente utenteLogin;
-    ArrayList mDataset;// = new ArrayList<Libri_Prenotati>();
-
-
-
+    ArrayList mDataset;
 
     public Fragment_Prenotati() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @ param param1 Parameter 1.
-     * @ param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_Situazione_Prenotati.
-     */
     // TODO: Rename and change types and number of parameters
 
     public static Fragment_Prenotati newInstance(Utente utenteLogin){//},ArrayList<Libri_Prenotati> libri_prenotati) {
         Fragment_Prenotati fragment = new Fragment_Prenotati();
         Bundle args = new Bundle();
         args.putSerializable("utente", utenteLogin);
-//        args.putSerializable("dataset", libri_prenotati);
 
         fragment.setArguments(args);
         return fragment;
@@ -75,13 +64,9 @@ public class Fragment_Prenotati extends Fragment {
 
         if (getArguments() != null) {
             this.utenteLogin = (Utente) getArguments().getSerializable("utente");
-  //          this.mDataset= (ArrayList) getArguments().getSerializable("dataset");
+
         }
         Log.i("log_tag_arg","argumets "+utenteLogin.getNrtessera());
-
-
-      caricaDati(utenteLogin.getNrtessera());
-
 
 
     }
@@ -97,6 +82,7 @@ public class Fragment_Prenotati extends Fragment {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(getContext());
         mRecyclerView.setLayoutManager(mLayoutManager);
+        caricaDati(utenteLogin.getNrtessera());
 
         mAdapter = new MyRecyclerViewAdapter_Prenotati(getDataSet(),getActivity(),utenteLogin);
         mRecyclerView.setAdapter(mAdapter);
@@ -107,26 +93,20 @@ public class Fragment_Prenotati extends Fragment {
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
-      /*  if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }*/
+
+
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-/*        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-  */  }
+
+  }
 
     @Override
     public void onDetach() {
         super.onDetach();
-   //     mListener = null;
+
     }
 
     /**
@@ -152,107 +132,10 @@ public class Fragment_Prenotati extends Fragment {
     public void caricaDati(String nrtessera) {
         Log.i("log_tag_argcar","arumets "+nrtessera);
 
-//        mDataset.removeAll(mDataset);
-        Fragment_Prenotati.HttpGetTaskPrenotati task1 = new Fragment_Prenotati.HttpGetTaskPrenotati();
-
-        task1.execute(nrtessera);
-    }
+        Carica_prenotati carica_prenotati= new Carica_prenotati(getActivity(),mRecyclerView,mAdapter,utenteLogin);
+        carica_prenotati.execute(nrtessera);
 
 
-    private class HttpGetTaskPrenotati extends AsyncTask<String,String,String> {
-
-        @Override
-        protected String doInBackground(String... params) {
-            String result = "";
-            String stringaFinale = " ";
-            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("nrtessera",params[0]));
-
-
-            InputStream is = null;
-
-            //http post
-            try{
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/prenotati_utente.php");
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity entity = response.getEntity();
-                is = entity.getContent();
-            }catch(Exception e){
-                Log.e("TEST", "Errore nella connessione http "+e.toString());
-            }
-            if(is != null) {
-                //converto la risposta in stringa
-                try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    is.close();
-
-                    result = sb.toString();
-                } catch (Exception e) {
-                    Log.e("TEST", "Errore nel convertire il risultato " + e.toString());
-                }
-
-                System.out.println(result);
-
-            }
-            else{//is è null e non ho avuto risposta
-
-            }
-
-            return result;
-
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            // aggiorno la textview con il risultato ottenuto
-            Log.i("log_tag", "parsing data on postExec prenotati"+result.toString());
-
-            try{
-
-                Log.i("log_tag", "dato da parsare in json "+result);
-                JSONArray jArray = new JSONArray(result);
-                for(int i=0;i<jArray.length();i++){
-                    Log.i("log_tag", "ciclo parsing data on postExec .."+i);
-
-                    JSONObject json_data = jArray.getJSONObject(i);
-
-                    Libri_Prenotati libro_prenotato = new Libri_Prenotati();
-                    libro_prenotato.setPatch_img(json_data.getString("tumbnail"));
-                    libro_prenotato.setIsbn(json_data.getString("isbn"));
-                    libro_prenotato.setTitolo(json_data.getString("title"));
-
-
-                    mDataset.add(libro_prenotato);
-                }
-
-
-                Log.i("log_tag", "results... prenot" + mDataset.size());
-
-                mAdapter = new MyRecyclerViewAdapter_Prenotati(getDataSet(),getActivity(),utenteLogin);
-                mRecyclerView.setAdapter(mAdapter);
-            }
-
-            catch(JSONException e){
-                Log.e("log_tag", "Error parsing data "+e.toString());
-                mDataset.clear();
-                //mAdapter = new MyRecyclerViewAdapter_gia_letti(mDataset);
-                //mRecyclerView.setAdapter(mAdapter);
-
-            }
-
-        }
     }
 
 }

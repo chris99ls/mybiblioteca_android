@@ -32,7 +32,7 @@ public class MyAdapter_x_ricerca extends RecyclerView.Adapter<MyAdapter_x_ricerc
     private ArrayList<Libro_catalogo> booksList;
     private Activity myActivity;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {//implements View.OnClickListener{
+    public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView titolo, autore, isbn;
         public ImageView tumbnail;
 
@@ -45,11 +45,6 @@ public class MyAdapter_x_ricerca extends RecyclerView.Adapter<MyAdapter_x_ricerc
 
         }
 
-      /*  @Override
-        public void onClick(View view) {
-            Toast.makeText(view.getContext(), "This is my Toast message!",
-                    Toast.LENGTH_LONG).show();
-        }*/
     }
 
 
@@ -95,13 +90,12 @@ public class MyAdapter_x_ricerca extends RecyclerView.Adapter<MyAdapter_x_ricerc
                     .diskCacheStrategy(DiskCacheStrategy.NONE)
                     .skipMemoryCache(true)
                     .into(holder.tumbnail);
-            //bitmap= BitmapFactory.decodeStream(url.openStream());
+
         } catch (MalformedURLException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-//        holder.tumbnail.setImageBitmap(bitmap);
 
     }
 
@@ -109,7 +103,5 @@ public class MyAdapter_x_ricerca extends RecyclerView.Adapter<MyAdapter_x_ricerc
     public int getItemCount() {
         return booksList.size();
     }
-    public void vaiaDettagli(String isbn){
 
-    }
 }

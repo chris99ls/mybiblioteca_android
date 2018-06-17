@@ -1,7 +1,5 @@
 package it.android.j940549.mybiblioteca.Activity_Utente;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,14 +12,14 @@ import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
 
-public class Profilo extends Fragment {
+public class Profilo_frag extends Fragment {
 
     // TODO: Rename and change types of parameters
     private Utente utenteLogin;
 
 
 
-    public Profilo() {
+    public Profilo_frag() {
         // Required empty public constructor
     }
 
@@ -29,11 +27,11 @@ public class Profilo extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @return A new instance of fragment Profilo.
+     * @return A new instance of fragment Profilo_frag.
      */
     // TODO: Rename and change types and number of parameters
-    public static Profilo newInstance(Utente utenteLogin) {
-        Profilo fragment = new Profilo();
+    public static Profilo_frag newInstance(Utente utenteLogin) {
+        Profilo_frag fragment = new Profilo_frag();
         Bundle args = new Bundle();
         args.putSerializable("utente", utenteLogin);
         fragment.setArguments(args);

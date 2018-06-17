@@ -3,7 +3,6 @@ package it.android.j940549.mybiblioteca;
 import android.app.Activity;
 import android.app.KeyguardManager;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.hardware.fingerprint.FingerprintManager;
 import android.net.Uri;
@@ -51,10 +50,7 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.security.auth.x500.X500Principal;
 
-import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
-import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
-import it.android.j940549.mybiblioteca.Controller_DB.Cerca_pw_utente_in_DB;
-import it.android.j940549.mybiblioteca.FingerprintDialog.FingerprintAuthenticationDialogFragment;
+import it.android.j940549.mybiblioteca.Controller_DB.Verifica_pw_utente_in_DB;
 import it.android.j940549.mybiblioteca.FingerprintDialog.FingerprintAuthenticationDialogFragmentGestore;
 
 import static it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity.KEYNAME;
@@ -81,7 +77,7 @@ public class LoginGestoreFragment extends Fragment {
     private EditText editnomeUser;
     private ImageButton fp_button;
     private CheckBox chkboxRicordami;
-    private String token, user,sono_gestore;
+    private String user;
     private Activity myActivity;
 
     public LoginGestoreFragment() {
@@ -108,9 +104,6 @@ public class LoginGestoreFragment extends Fragment {
         final View view=inflater.inflate(R.layout.fragment_login_gestore, container, false);
         // Inflate the layout for this fragment
 
-
-
-
         editnomeUser = (EditText) view.findViewById(R.id.user);
         editPassword = (EditText) view.findViewById(R.id.password);
         chkboxRicordami = (CheckBox) view.findViewById(R.id.chkboxRicordami);
@@ -121,7 +114,7 @@ public class LoginGestoreFragment extends Fragment {
                 loginGestore(view);
             }
         });
-//    getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         leggiUtenteinPreferenze();
 
         chkboxRicordami.setOnCheckedChangeListener(new CheckBox.OnCheckedChangeListener() {
@@ -224,7 +217,7 @@ public class LoginGestoreFragment extends Fragment {
     }
     private void leggiUtenteinPreferenze(){
         SharedPreferences sharedPref = myActivity.getPreferences(Context.MODE_PRIVATE);
-        String utente= sharedPref.getString("nomeUtente", "");
+        String utente= sharedPref.getString("nomeGestore", "");
         boolean check=sharedPref.getBoolean("chkbox", false);
 
         if(check||!utente.equals("")){
@@ -500,15 +493,12 @@ public class LoginGestoreFragment extends Fragment {
         Log.i("login", user);
         Log.i("login", password);
 
-//        Crypto crypto=new Crypto(getContext());
-
-        //      String PWcontrollo =crypto.encrypt(password);
 
         Log.i("login", password);
 
         if(!user.equals("")&&!password.equals("")) {
 
-            Cerca_pw_utente_in_DB cerca_pw_utente_in_db = new Cerca_pw_utente_in_DB(getContext());
+            Verifica_pw_utente_in_DB cerca_pw_utente_in_db = new Verifica_pw_utente_in_DB(getContext());
             cerca_pw_utente_in_db.execute(user,password);
 
         }else{

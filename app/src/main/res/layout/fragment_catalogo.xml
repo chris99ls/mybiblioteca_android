@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Catalogo_libri.Gestisci_Catalogo">-->
+    tools:context=".Catalogo_libri.Gestisci_Catalogo_frag">-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -27,7 +27,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:text="I PIU' LETTI" />
+            android:text="I PIU' LETTI"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_catalogo_piuletti"
@@ -41,7 +43,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            android:text="TUTTI I TITOLI" />
+            android:text="TUTTI I TITOLI"
+            android:textSize="16dp"
+            android:textColor="@color/colorPrimaryDark"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view_catalogo"

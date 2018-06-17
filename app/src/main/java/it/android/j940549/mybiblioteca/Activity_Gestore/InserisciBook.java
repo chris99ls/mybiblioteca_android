@@ -2,13 +2,10 @@ package it.android.j940549.mybiblioteca.Activity_Gestore;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.FragmentManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -24,7 +21,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -52,7 +48,6 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import it.android.j940549.mybiblioteca.Activity_Esito_Ricerche.Esito_Ricerca;
 import it.android.j940549.mybiblioteca.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -82,9 +77,7 @@ public class InserisciBook extends Fragment {
     // TODO: Rename and change types and number of parameters
     public static InserisciBook newInstance() {
         InserisciBook fragment = new InserisciBook();
-        /*Bundle args = new Bundle();
-        args.putString("utente", utente);
-        fragment.setArguments(args);*/
+
         return fragment;
     }
 
@@ -133,7 +126,7 @@ public class InserisciBook extends Fragment {
                 InserisciInDB inserisciInDB = new InserisciInDB();
                 inserisciInDB.execute(titolo, autore, subject, descrizione, image_link, isbn);
                 if (resultInsert.contains("successfully")) {
-                    Fragment fragment =   Gestisci_Catalogo.newInstance();
+                    Fragment fragment =   Gestisci_Catalogo_frag.newInstance();
 
                     //inserisci il fragment rimpiazzando i frgment esitente
                     android.support.v4.app.FragmentManager fragmentManager = getActivity().getSupportFragmentManager();

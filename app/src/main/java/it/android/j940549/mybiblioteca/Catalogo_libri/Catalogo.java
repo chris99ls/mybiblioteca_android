@@ -29,6 +29,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 import it.android.j940549.mybiblioteca.Controller_DB.Carica_Catalogo;
+import it.android.j940549.mybiblioteca.Controller_DB.Carica_Catalogo_piu_letti;
 import it.android.j940549.mybiblioteca.Controller_DB.Cerca_libro_in_DB;
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 import it.android.j940549.mybiblioteca.Model.Utente;
@@ -41,7 +42,7 @@ public class Catalogo extends Fragment {
     private RecyclerView mRecyclerView;
     private RecyclerView mRecyclerViewpiuletti;
     private RecyclerView.Adapter mAdapter;
-    private RecyclerView.Adapter mAdapterpiuletti;
+    private MyAdapter_piuletti mAdapterpiuletti;
     private RecyclerView.LayoutManager mGridLayoutManager;
     private RecyclerView.LayoutManager mLinearLayoutManager;
     private ArrayList<Libro_catalogo> myDataset = new ArrayList<Libro_catalogo>();
@@ -141,9 +142,12 @@ public class Catalogo extends Fragment {
     }
 
     private void creaLibreria() {
-        Carica_Catalogo carica_catalogo= new Carica_Catalogo(getActivity(),mRecyclerView,mRecyclerViewpiuletti,mAdapter,myDataset,utenteLogin);
+        Carica_Catalogo carica_catalogo= new Carica_Catalogo(getActivity(),mRecyclerView,mAdapter,utenteLogin);
         carica_catalogo.execute();
+        Carica_Catalogo_piu_letti carica_catalogo_piu_leti= new Carica_Catalogo_piu_letti(getActivity(),mRecyclerViewpiuletti,mAdapterpiuletti,utenteLogin);
+        carica_catalogo_piu_leti.execute();
     }
+
 
 
 

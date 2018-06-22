@@ -25,24 +25,26 @@ import java.util.ArrayList;
 
 import it.android.j940549.mybiblioteca.Activity_Gestore.MyAdapter_Gestisci_catalogo;
 import it.android.j940549.mybiblioteca.Catalogo_libri.MyAdapter;
+import it.android.j940549.mybiblioteca.Catalogo_libri.MyAdapter_piuletti;
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 import it.android.j940549.mybiblioteca.Model.Utente;
 
 
-public class Carica_Catalogo extends AsyncTask<String, Object, String> {
+public class Carica_Catalogo_piu_letti extends AsyncTask<String, Object, String> {
     String isbn, titolo, autore, genere, fulltext;
     Activity myActivity;
-    private RecyclerView mRecyclerView;
-    private RecyclerView.Adapter mAdapter;
+    private RecyclerView mRecyclerViewpiuletti;
+    private MyAdapter_piuletti mAdapter;
     private Utente utenteLogin;
     private ProgressDialog progressDialog;
     ArrayList<Libro_catalogo> myDataset = new ArrayList<>();
 
-    public Carica_Catalogo(Activity myActivity, RecyclerView mRecyclerView,RecyclerView.Adapter mAdapter,  Utente utenteLogin){
+    public Carica_Catalogo_piu_letti(Activity myActivity, RecyclerView mRecyclerViewpiuletti, MyAdapter_piuletti mAdapter, Utente utenteLogin){
         this.myActivity=myActivity;
-        this.mRecyclerView=mRecyclerView;
         this.utenteLogin=utenteLogin;
+        this.mRecyclerViewpiuletti=mRecyclerViewpiuletti;
         this.mAdapter=mAdapter;
+        //this.myDataset=myDataset;
 
     }
 
@@ -73,7 +75,7 @@ public class Carica_Catalogo extends AsyncTask<String, Object, String> {
             //http post
             try{
                 HttpClient httpclient = new DefaultHttpClient();
-                HttpGet httpGet= new HttpGet("http://lisiangelovpn.ddns.net/mybiblioteca/catalogo.php");
+                HttpGet httpGet= new HttpGet("http://lisiangelovpn.ddns.net/mybiblioteca/catalogo_piu_letti.php");
                 HttpResponse response = httpclient.execute(httpGet);
                 HttpEntity entity = response.getEntity();
                 inputStream = entity.getContent();
@@ -135,27 +137,18 @@ public class Carica_Catalogo extends AsyncTask<String, Object, String> {
 
                 }
                 Log.i("log_tag", "results... " + myDataset.size());
-                if(myActivity.getTitle().equals("UtenteNav")||myActivity.getTitle().equals("Catalogo")) {
-                    mAdapter = new MyAdapter(myDataset, myActivity,utenteLogin);
-                    mRecyclerView.setAdapter(mAdapter);
-                }
-                if(myActivity.getTitle().equals("Gestisci Catalogo")) {
-                    mAdapter = new MyAdapter_Gestisci_catalogo(myDataset,myActivity);
-                    mRecyclerView.setAdapter(mAdapter);
-                }
+
+                    mAdapter = new MyAdapter_piuletti(myDataset, myActivity,utenteLogin);
+                    mRecyclerViewpiuletti.setAdapter(mAdapter);
+
             }
 
             catch(JSONException e){
                 Log.e("log_tag", "Error parsing data "+e.toString());
                 myDataset.clear();
-                if(myActivity.getTitle().equals("UtenteNav")||myActivity.getTitle().equals("Catalogo")) {
-                    mAdapter = new MyAdapter(myDataset, myActivity,utenteLogin);
-                    mRecyclerView.setAdapter(mAdapter);
-                }
-                if(myActivity.getTitle().equals("Gestisci Catalogo")) {
-                    mAdapter = new MyAdapter_Gestisci_catalogo(myDataset,myActivity);
-                    mRecyclerView.setAdapter(mAdapter);
-                }
+
+                    mAdapter = new MyAdapter_piuletti(myDataset, myActivity,utenteLogin);
+                    mRecyclerViewpiuletti.setAdapter(mAdapter);
 
             }
         progressDialog.dismiss();

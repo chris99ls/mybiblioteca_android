@@ -72,7 +72,6 @@ public class MyAdapter_Gestisci_utenti extends RecyclerView.Adapter<MyAdapter_Ge
                 TextView nrtessera  =view.findViewById(R.id.nr_tessera);
                 String str_nr_tessera=nrtessera.getText().toString();
                 String nr_tessera= str_nr_tessera.substring(str_nr_tessera.indexOf("nr. tessera: ")+13,str_nr_tessera.length());
-                Toast.makeText(myActivity, "click"+nr_tessera, Toast.LENGTH_SHORT).show();
 
                 caricaDatiUtente(nr_tessera);
 

@@ -115,7 +115,7 @@ public class Gestisci_Catalogo_frag extends Fragment {
         getActivity().setTitle("Gestisci Catalogo");
     }
     private void creaLibreria() {
-        Carica_Catalogo carica_catalogo=new Carica_Catalogo(getActivity(),mRecyclerView,mRecyclerView,mAdapter,myDataset,new Utente());
+        Carica_Catalogo carica_catalogo=new Carica_Catalogo(getActivity(),mRecyclerView,mAdapter,new Utente());
         carica_catalogo.execute();
     }
 

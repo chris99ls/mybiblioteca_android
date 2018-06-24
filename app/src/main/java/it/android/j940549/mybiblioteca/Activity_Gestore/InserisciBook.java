@@ -48,6 +48,7 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import it.android.j940549.mybiblioteca.Activity_Esito_Ricerche.Esito_Ricerca;
 import it.android.j940549.mybiblioteca.R;
 
 import static android.app.Activity.RESULT_OK;
@@ -67,7 +68,7 @@ public class InserisciBook extends Fragment {
     private String utente="UtenteXX";
     private EditText txtview_isbn,txtview_descrizione,txtview_titolo,txtview_autore,txtview_genere;
     private ConnectivityManager mConnectivityManager;
-    private String image_link, resultInsert;
+    private String image_link, resultInsert,isbn_da_ricercaGoogle;
     private ImageView imageView;   // private OnFragmentInteractionListener mListener;
 
     public InserisciBook() {
@@ -75,20 +76,28 @@ public class InserisciBook extends Fragment {
     }
 
     // TODO: Rename and change types and number of parameters
-    public static InserisciBook newInstance() {
+    public static InserisciBook newInstance( String isbn_daRicercaGoogle) {
         InserisciBook fragment = new InserisciBook();
 
+            Bundle args = new Bundle();
+            args.putSerializable("isbn_da_ricercaGoogle", isbn_daRicercaGoogle);
+            fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        isbn_da_ricercaGoogle="";
         if (getArguments() != null) {
-            utente = getArguments().getString("utente");
+            isbn_da_ricercaGoogle= getArguments().getString("isbn_da_ricercaGoogle");
 
         }
         resultInsert="";
+        if(!isbn_da_ricercaGoogle.equals("")){
+            CaricaDatidaGoogleBook caricaDatidaGogleBook=new CaricaDatidaGoogleBook();
+            caricaDatidaGogleBook.execute(isbn_da_ricercaGoogle);
+        }
     }
 
     @Override
@@ -103,6 +112,8 @@ public class InserisciBook extends Fragment {
         txtview_autore=(EditText)view.findViewById(R.id.autore_libro);
         txtview_genere=(EditText)view.findViewById(R.id.genere_libro);
         imageView=view.findViewById(R.id.copertina_libro);
+
+        //istanzia e gestisci onclick di btn_scanner
         ImageButton btn_scan_codbar=(ImageButton) view.findViewById(R.id.btn_scan_codebar);
         btn_scan_codbar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,6 +122,27 @@ public class InserisciBook extends Fragment {
                 scanBar(v);
             }
         });
+
+        //istanzia e gestisci onclick di btn_cerca_titolos GoogleBooksscanner
+        ImageButton btn_cerca_titolo_onGoogleBooks=(ImageButton) view.findViewById(R.id.btn_cerca_x_titolo);
+        btn_cerca_titolo_onGoogleBooks.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(getContext(), Esito_Ricerca.class);
+                intent.putExtra("isbn","");
+                intent.putExtra("autore","");
+                intent.putExtra("genere","");
+                intent.putExtra("fulltext","");
+
+                intent.putExtra("titolo",txtview_titolo.getText().toString());
+                intent.putExtra("ricerca","google");
+                startActivity(intent);
+            }
+        });
+
+
+        //istanzia e gestisci onclic di btn_inserisc
         Button btn_inserisci=(Button) view.findViewById(R.id.btn_inserisci);
         btn_inserisci.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -137,6 +169,8 @@ public class InserisciBook extends Fragment {
         });
         return view;
     }
+
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -293,7 +327,7 @@ public class InserisciBook extends Fragment {
             }
             else{
                 try{
-
+                    txtview_isbn.setText(isbn_da_ricercaGoogle);
                     JSONArray arr = responseJson.getJSONArray("items");
                     JSONObject volumeInfo=arr.getJSONObject(0).getJSONObject("volumeInfo");
                     titolo= volumeInfo.getString("title");

@@ -22,6 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
+import it.android.j940549.mybiblioteca.Activity_Gestore.InserisciBook;
 import it.android.j940549.mybiblioteca.Catalogo_libri.Dettaglio_libro;
 
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
@@ -58,6 +60,9 @@ public class MyAdapter_x_ricerca extends RecyclerView.Adapter<MyAdapter_x_ricerc
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.card_libro_x_ricerca, parent, false);
+
+        Log.i("log_tag", "myActivity"+myActivity.getTitle());
+        if(myActivity.getTitle().equals("Esito_Ricerca")){
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,13 +70,26 @@ public class MyAdapter_x_ricerca extends RecyclerView.Adapter<MyAdapter_x_ricerc
                 String isbn_libro=isbn.getText().toString();
                 Intent vaiaDettagli=new Intent(view.getContext(), Dettaglio_libro.class);
                 vaiaDettagli.putExtra("isbn",isbn_libro);
-                Bundle bundle=new Bundle();
-                bundle.putString("isbn",isbn_libro);
-                    ContextCompat.startActivity(view.getContext(),vaiaDettagli,bundle);
+                myActivity.startActivity(vaiaDettagli);
                 //finish();
 
             }
         });
+        }else{
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    TextView isbn=view.findViewById(R.id.isbn_libro);
+                    String isbn_libro=isbn.getText().toString();
+                    Intent vaiaInserisciBook=new Intent(view.getContext(), GestoreNav.class);
+                    vaiaInserisciBook.putExtra("isbn",isbn_libro);
+                    vaiaInserisciBook.putExtra("qualeFragment","InserisciBook");
+                    myActivity.startActivity(vaiaInserisciBook);
+                    myActivity.finish();
+                }
+            });
+        }
+
         return new MyViewHolder(itemView);
     }
 

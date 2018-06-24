@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.widget.Switch;
 
 import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
@@ -19,6 +20,8 @@ public class GestoreNav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     DrawerLayout mDrawer;
     FragmentManager fragmentManager;
+    String qualeFragment="";
+    String isbn_daRicercaGoogle="";
     private Utente gestoreLogin;
 
 
@@ -26,11 +29,18 @@ public class GestoreNav extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gestore_nav);
+        qualeFragment="";
 
         if(savedInstanceState!=null){
             gestoreLogin= (Utente) savedInstanceState.getSerializable("gestore");
+            qualeFragment="";
         }else {
             gestoreLogin=(Utente) getIntent().getSerializableExtra("gestore");
+            qualeFragment=getIntent().getExtras().getString("qualeFragment");
+            if(qualeFragment.equals("InserisciBook")){
+                isbn_daRicercaGoogle=getIntent().getExtras().get("isbn").toString();
+
+            }
         }
 
 
@@ -47,11 +57,26 @@ public class GestoreNav extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Fragment fragment =   Gestione_Utenti_frag.newInstance();
+        Fragment fragment =null;
+                switch(qualeFragment){
+                    case "InserisciBook":
+                        fragment=InserisciBook.newInstance(isbn_daRicercaGoogle);
+                        break;
+                    case "Gestisci_catalogo":
+                        fragment=Gestisci_Catalogo_frag.newInstance();
+                        break;
+                    case "Add_New_gestore":
+                        fragment=Add_New_Gestore_frag.newInstance();
+                        break;
+                        default:
+                            fragment=Gestione_Utenti_frag.newInstance();
+
+                }
 
         //inserisci il fragment rimpiazzando i frgment esitente
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flContent_gestore, fragment).commit();
+
     }
 
     private void setupDrawerContent(NavigationView navigationView) {
@@ -89,7 +114,7 @@ public class GestoreNav extends AppCompatActivity
                 break;
 
             case R.id.nav_inserisci:
-                fragment = InserisciBook.newInstance();
+                fragment = InserisciBook.newInstance("");
 
                 break;
 

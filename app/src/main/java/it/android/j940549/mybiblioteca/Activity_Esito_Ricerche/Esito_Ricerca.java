@@ -10,6 +10,7 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import it.android.j940549.mybiblioteca.Controller_DB.Cerca_libro_in_DB;
+import it.android.j940549.mybiblioteca.Controller_DB.Cerca_titolo_inGoogleBooks;
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 import it.android.j940549.mybiblioteca.R;
 
@@ -18,7 +19,7 @@ public class Esito_Ricerca extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Libro_catalogo> myDataset= new ArrayList<Libro_catalogo>();
-    private String isbn,titolo,autore,genere,fulltext;
+    private String isbn,titolo,autore,genere,fulltext, tipoRicerca;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,7 @@ public class Esito_Ricerca extends AppCompatActivity {
         autore=getIntent().getExtras().get("autore").toString();
         genere=getIntent().getExtras().get("genere").toString();
         fulltext=getIntent().getExtras().get("fulltext").toString();
+        tipoRicerca=getIntent().getExtras().get("ricerca").toString();
 
         setContentView(R.layout.activity_esito__ricerca);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -49,15 +51,24 @@ public class Esito_Ricerca extends AppCompatActivity {
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter_x_ricerca(myDataset,this);
         mRecyclerView.setAdapter(mAdapter);
-        eseguiRicerca();
+        if(tipoRicerca.equals("google")){
+            setTitle("Esito da GoogleBooks");
+        }
+        eseguiRicerca(tipoRicerca);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
-    private void eseguiRicerca(){
-    Cerca_libro_in_DB cerca_in_db =new Cerca_libro_in_DB(this,mRecyclerView,mAdapter,myDataset);
-    cerca_in_db.execute(isbn,titolo,autore,genere,fulltext);
+    private void eseguiRicerca(String tipoRicerca){
 
+        if(!tipoRicerca.equals("google")) {
+
+            Cerca_libro_in_DB cerca_in_db = new Cerca_libro_in_DB(this, mRecyclerView, mAdapter, myDataset);
+            cerca_in_db.execute(isbn, titolo, autore, genere, fulltext);
+        }else{
+            Cerca_titolo_inGoogleBooks cerca_on_googleBooks = new Cerca_titolo_inGoogleBooks(this, mRecyclerView, mAdapter);
+            cerca_on_googleBooks.execute(titolo);
+        }
     }
 
 

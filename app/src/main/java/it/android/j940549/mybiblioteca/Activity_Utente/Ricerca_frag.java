@@ -88,6 +88,7 @@ public class Ricerca_frag extends Fragment {
                 intent.putExtra("autore",txt_autore.getText().toString());
                 intent.putExtra("genere",txt_genere.getText().toString());
                 intent.putExtra("fulltext",txt_fulltext.getText().toString());
+                intent.putExtra("ricerca","in_db");
 
                 startActivity(intent);
                // getActivity().finish();

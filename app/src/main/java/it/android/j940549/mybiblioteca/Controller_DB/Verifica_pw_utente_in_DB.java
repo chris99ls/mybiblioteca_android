@@ -204,6 +204,8 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
                if (utenteLogin.getIs_staff() == 1) {
                    Intent vaiaGestoreNav = new Intent(context, GestoreNav.class);
                    vaiaGestoreNav.putExtra("gestore", (Serializable) utenteLogin);
+                   vaiaGestoreNav.putExtra("qualeFragment",  "Gestione_Utenti");
+
                    context.startActivity(vaiaGestoreNav);
 
                }

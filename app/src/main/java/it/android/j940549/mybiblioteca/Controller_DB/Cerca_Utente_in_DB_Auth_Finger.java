@@ -169,6 +169,8 @@ public class Cerca_Utente_in_DB_Auth_Finger extends AsyncTask<String, Object, St
 
                     Intent vaiaGestoreNav = new Intent(myActivity, GestoreNav.class);
                     vaiaGestoreNav.putExtra("gestore", (Serializable) utente);
+                    vaiaGestoreNav.putExtra("qualeFragment",  "Gestione_Utenti");
+
                     myActivity.startActivity(vaiaGestoreNav);
                 }
             }

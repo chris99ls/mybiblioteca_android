@@ -21,17 +21,21 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+import it.android.j940549.mybiblioteca.Activity_Gestore.Dettaglio_Utente;
 import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
 import it.android.j940549.mybiblioteca.Model.Libri_gia_letti;
+import it.android.j940549.mybiblioteca.Model.Utente;
 
 public class Restituisci_Libro extends AsyncTask<String,String,String> {
 
     Activity myActivity;
+    Utente utenteLogin;
     private ProgressDialog progressDialog;
 
 
-    public Restituisci_Libro (Activity myActivity){
+    public Restituisci_Libro (Activity myActivity, Utente utenteLogin){
         this.myActivity=myActivity;
+        this.utenteLogin=utenteLogin;
 
     }
     @Override
@@ -105,12 +109,13 @@ public class Restituisci_Libro extends AsyncTask<String,String,String> {
         Log.i("log_tag", "result presta..."+result.toString());
 
         if(result.contains("successfully")){
-            Intent refresh = new Intent(myActivity, GestoreNav.class);
-            refresh.putExtra("qualeFragment","Gestisci_utenti");
+            Intent refresh = new Intent(myActivity, Dettaglio_Utente.class);
+            refresh.putExtra("utente",utenteLogin);
             myActivity.startActivity(refresh);
             myActivity.finish();
 
         }
+        progressDialog.dismiss();
 
     }
 

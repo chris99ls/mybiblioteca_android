@@ -498,7 +498,7 @@ public class LoginGestoreFragment extends Fragment {
 
         if(!user.equals("")&&!password.equals("")) {
 
-            Verifica_pw_utente_in_DB cerca_pw_utente_in_db = new Verifica_pw_utente_in_DB(getContext());
+            Verifica_pw_utente_in_DB cerca_pw_utente_in_db = new Verifica_pw_utente_in_DB(getActivity());
             cerca_pw_utente_in_db.execute(user,password);
 
         }else{

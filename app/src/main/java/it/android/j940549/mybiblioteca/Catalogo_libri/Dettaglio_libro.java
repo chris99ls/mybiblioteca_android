@@ -38,6 +38,7 @@ import java.util.ArrayList;
 
 import it.android.j940549.mybiblioteca.Activity_Gestore.Dettaglio_Utente;
 import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
+import it.android.j940549.mybiblioteca.Controller_DB.Prenota_book;
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
 import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
@@ -50,6 +51,7 @@ public class Dettaglio_libro extends AppCompatActivity {
     TextView descrizione_txt;
     Button btn_prenotalibro;
     Utente utenteLogin;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +69,7 @@ public class Dettaglio_libro extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Dettaglio_libro.HttpGetTaskprenota prenotato_libro=new Dettaglio_libro.HttpGetTaskprenota();
+                Prenota_book prenotato_libro=new Prenota_book(Dettaglio_libro.this);
                 prenotato_libro.execute(utenteLogin.getNrtessera(),isbn);
             }
         });
@@ -75,7 +77,6 @@ public class Dettaglio_libro extends AppCompatActivity {
         setTitle("Dettaglio Libro");
         caricadato(isbn);
     }
-
 
 
     private void caricadato(String isbn){
@@ -191,78 +192,6 @@ public class Dettaglio_libro extends AppCompatActivity {
         }
     }
 
-    private class HttpGetTaskprenota extends AsyncTask<String,String,String> {
 
-        @Override
-        protected String doInBackground(String... params) {
-            String result = "";
-            String stringaFinale = " ";
-            ArrayList<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-            nameValuePairs.add(new BasicNameValuePair("nrtessera",params[0]));
-            nameValuePairs.add(new BasicNameValuePair("isbn", params[1]));
-
-
-            InputStream is = null;
-
-            //http post
-            try{
-                HttpClient httpclient = new DefaultHttpClient();
-                HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/prenota_book.php");
-                httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
-                HttpResponse response = httpclient.execute(httppost);
-                HttpEntity entity = response.getEntity();
-                is = entity.getContent();
-            }catch(Exception e){
-                Log.e("TEST", "Errore nella connessione http "+e.toString());
-            }
-            if(is != null) {
-                //converto la risposta in stringa
-                try {
-                    BufferedReader reader = new BufferedReader(new InputStreamReader(is, "iso-8859-1"), 8);
-                    StringBuilder sb = new StringBuilder();
-                    String line = null;
-                    while ((line = reader.readLine()) != null) {
-                        sb.append(line + "\n");
-                    }
-                    is.close();
-
-                    result = sb.toString();
-                } catch (Exception e) {
-                    Log.e("TEST", "Errore nel convertire il risultato " + e.toString());
-                }
-
-                System.out.println(result);
-
-            }
-            else{//is è null e non ho avuto risposta
-
-            }
-
-            return result;
-
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-
-        }
-
-        @Override
-        protected void onPostExecute(String result) {
-            // aggiorno la textview con il risultato ottenuto
-            Log.i("log_tag", "parsing data on postExec giavisti"+result.toString());
-
-            if(result.contains("successfully")){
-                Intent refresh = new Intent(getBaseContext(), UtenteNav.class);
-                refresh.putExtra("utente", utenteLogin);
-                startActivity(refresh);
-                finish();
-                //              mAdapter = new MyRecyclerViewAdapter_gia_letti(getDataSet(),getActivity());
-//                mRecyclerView.setAdapter(mAdapter);
-            }
-
-        }
-
-    }
 }
 

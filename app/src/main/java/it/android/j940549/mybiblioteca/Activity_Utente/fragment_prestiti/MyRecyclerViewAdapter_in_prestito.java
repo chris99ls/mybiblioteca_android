@@ -126,7 +126,7 @@ public class MyRecyclerViewAdapter_in_prestito extends RecyclerView.Adapter<MyRe
             @Override
             public void onClick(View view) {
 
-                Restituisci_Libro restituisci_libro= new Restituisci_Libro(mActivity);
+                Restituisci_Libro restituisci_libro= new Restituisci_Libro(mActivity,utenteLogin);
                 restituisci_libro.execute(utenteLogin.getNrtessera(),isbn);
             }
 

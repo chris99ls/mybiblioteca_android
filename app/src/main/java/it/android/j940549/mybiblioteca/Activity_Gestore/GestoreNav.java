@@ -36,11 +36,15 @@ public class GestoreNav extends AppCompatActivity
             qualeFragment="";
         }else {
             gestoreLogin=(Utente) getIntent().getSerializableExtra("gestore");
-            qualeFragment=getIntent().getExtras().getString("qualeFragment");
-            if(qualeFragment.equals("InserisciBook")){
-                isbn_daRicercaGoogle=getIntent().getExtras().get("isbn").toString();
+try {
+    qualeFragment = getIntent().getExtras().getString("qualeFragment");
+    if (qualeFragment.equals("InserisciBook")) {
+        isbn_daRicercaGoogle = getIntent().getExtras().get("isbn").toString();
 
-            }
+    }
+}catch (Exception e){
+
+}
         }
 
 

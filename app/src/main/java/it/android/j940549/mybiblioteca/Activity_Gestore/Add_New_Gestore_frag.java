@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -57,13 +58,19 @@ public class Add_New_Gestore_frag extends Fragment {
         // Inflate the layout for this fragment
         View view=inflater.inflate(R.layout.fragment_new__gestore, container, false);
 
-        editnomeGes = (EditText) view.findViewById(R.id.registra_nome_user);
-        editcognomeGes = (EditText) view.findViewById(R.id.registra_cognome_user);
+        editnomeGes = (EditText) view.findViewById(R.id.registra_nome_gestore);
+        editcognomeGes = (EditText) view.findViewById(R.id.registra_cognome_gestore);
         editUsername = (EditText) view.findViewById(R.id.registra_username_gestore);
         editEmail=(EditText) view.findViewById(R.id.registraemail);
         editPassword = (EditText) view.findViewById(R.id.registrapassword);
         editPassword2 = (EditText) view.findViewById(R.id.registra2password);
-
+        Button btn_registraGestore= view.findViewById(R.id.registrati);
+        btn_registraGestore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                registraGestore(view);
+            }
+        });
         return view;
     }
 

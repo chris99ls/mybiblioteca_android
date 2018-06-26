@@ -2,7 +2,6 @@ package it.android.j940549.mybiblioteca.Controller_DB;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -20,22 +19,18 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-import it.android.j940549.mybiblioteca.Activity_Gestore.Dettaglio_Utente;
-import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
-import it.android.j940549.mybiblioteca.Model.Utente;
-
-public class Consegna_prenotato extends AsyncTask<String,String,String> {
+public class Prenota_book extends AsyncTask<String,String,String> {
     Activity myActivity;
     private ProgressDialog progressDialog;
-    private Utente utenteLogin;
 
-    public Consegna_prenotato  (Activity myActivity, Utente utenteLogin){
+
+    public Prenota_book (Activity myActivity){
         this.myActivity=myActivity;
-        this.utenteLogin=utenteLogin;
 
     }
     @Override
     protected void onPreExecute() {
+        // Check network connection.
         progressDialog = new ProgressDialog(myActivity);
         progressDialog.setMessage("caricamento dati in corso");
         progressDialog.setCancelable(false);
@@ -43,6 +38,7 @@ public class Consegna_prenotato extends AsyncTask<String,String,String> {
         progressDialog.show();
 
     }
+
 
     @Override
     protected String doInBackground(String... params) {
@@ -58,7 +54,7 @@ public class Consegna_prenotato extends AsyncTask<String,String,String> {
         //http post
         try{
             HttpClient httpclient = new DefaultHttpClient();
-            HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/presta_book.php");
+            HttpPost httppost = new HttpPost("http://lisiangelovpn.ddns.net/mybiblioteca/prenota_book.php");
             httppost.setEntity(new UrlEncodedFormEntity(nameValuePairs));
             HttpResponse response = httpclient.execute(httppost);
             HttpEntity entity = response.getEntity();
@@ -101,17 +97,12 @@ public class Consegna_prenotato extends AsyncTask<String,String,String> {
     @Override
     protected void onPostExecute(String result) {
         // aggiorno la textview con il risultato ottenuto
-        Log.i("log_tag", "result presta..."+result.toString());
+        Log.i("log_tag", "parsing data on postExec giavisti"+result.toString());
 
         if(result.contains("successfully")){
-            Intent refresh = new Intent(myActivity, Dettaglio_Utente.class);
-            refresh.putExtra("utente",utenteLogin);
-            myActivity.startActivity(refresh);
             myActivity.finish();
-
         }
-
+        progressDialog.dismiss();
     }
 
 }
-

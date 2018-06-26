@@ -20,18 +20,27 @@ public class UtenteNav extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private DrawerLayout mDrawer;
     private Utente utenteLogin;
-
+    private String qualeFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_utente_nav);
+        qualeFragment="";
 
         if(savedInstanceState!=null){
             utenteLogin= (Utente) savedInstanceState.getSerializable("utente");
         }else {
             utenteLogin=(Utente) getIntent().getSerializableExtra("utente");
+            try {
+                qualeFragment = getIntent().getExtras().getString("qualeFragment");
+
+            }catch (Exception e){
+
+            }
+
         }
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -47,7 +56,25 @@ public class UtenteNav extends AppCompatActivity
 
 
         Fragment fragment;
-        fragment= Catalogo.newInstance(utenteLogin);
+
+        switch(qualeFragment){
+            case "Prestiti":
+                fragment=Prestiti_frag.newInstance(utenteLogin);
+                break;
+            case "Ricerca":
+                fragment=Ricerca_frag.newInstance(utenteLogin);
+                break;
+            case "Profilo":
+                fragment=Profilo_frag.newInstance(utenteLogin);
+                break;
+            case "Catalogo":
+                fragment=Catalogo.newInstance(utenteLogin);
+                break;
+
+            default:
+                fragment=Catalogo.newInstance(utenteLogin);
+
+        }
 
         //inserisci il fragment rimpiazzando i frgment esitente
         FragmentManager fragmentManager = getSupportFragmentManager();

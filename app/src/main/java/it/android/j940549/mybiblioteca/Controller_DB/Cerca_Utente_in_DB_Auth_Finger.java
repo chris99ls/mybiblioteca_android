@@ -161,8 +161,10 @@ public class Cerca_Utente_in_DB_Auth_Finger extends AsyncTask<String, Object, St
 
                     Intent vaiaUtenteNav = new Intent(myActivity, UtenteNav.class);
                     vaiaUtenteNav.putExtra("utente", (Serializable) utente);
+                    vaiaUtenteNav.putExtra("qualeFragment", "Catalogo");
+
                     myActivity.startActivity(vaiaUtenteNav);
-                    //  myActivity.finish();
+                    myActivity.finish();
 
                 }
                 if(utente.getIs_staff()==1){
@@ -172,6 +174,7 @@ public class Cerca_Utente_in_DB_Auth_Finger extends AsyncTask<String, Object, St
                     vaiaGestoreNav.putExtra("qualeFragment",  "Gestione_Utenti");
 
                     myActivity.startActivity(vaiaGestoreNav);
+                    myActivity.finish();
                 }
             }
 

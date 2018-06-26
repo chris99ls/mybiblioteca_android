@@ -1,5 +1,6 @@
 package it.android.j940549.mybiblioteca.Controller_DB;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -38,22 +39,22 @@ import it.android.j940549.mybiblioteca.Model.Utente;
 
 public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> {
     String username, pwcontrollo, pwUtenteCrypt, PWlogin, is_staff, is_superuser;
-    Context context;
+    Activity myActivity;
     ArrayList<Utente> listUtenti = new ArrayList<>();
     Utente utenteLogin;
     public static final String TAG = "KeyStore";
     private ProgressDialog progressDialog;
     //EditText passwordLogin;
 
-    public Verifica_pw_utente_in_DB(Context context) {
+    public Verifica_pw_utente_in_DB(Activity myActivity) {
 
-        this.context = context;
+        this.myActivity = myActivity;
 
     }
 
     @Override
     protected void onPreExecute() {
-        progressDialog = new ProgressDialog(context);
+        progressDialog = new ProgressDialog(myActivity);
         progressDialog.setMessage("caricamento dati in corso");
         progressDialog.setCancelable(false);
         progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
@@ -170,55 +171,31 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
             Log.e("log_tag", "Error parsing data " + e.toString());
 
         }
-//            pwUtenteCrypt =listUtenti.get(0).getPassword();
-        utenteLogin = listUtenti.get(0);
-  /*          Log.i("log_tag", "results... " + listUtenti.size());
-            Log.i("log_tag", "passworddbCrypta......"+ pwUtenteCrypt);
-            Log.i("log_tag", "password......"+pwcontrollo);
-            Log.i("log_tag", "nr tessera ......"+utenteLogin.getNrtessera());
-        Log.i("log_tag", "user......"+utenteLogin.getUsername());
 
-            Crypto_new crypto=new Crypto_new(context);
+                 if (listUtenti.size()>0) {
+                     utenteLogin = listUtenti.get(0);
 
-        boolean verified = false;
-            try {
-                if (pwUtenteCrypt != null) {
-                    verified = crypto.verifyData(pwcontrollo, pwUtenteCrypt);
-                }
-            } catch (KeyStoreException e) {
-                Log.w(TAG, "KeyStore not Initialized", e);
-            } catch (CertificateException e) {
-                Log.w(TAG, "Error occurred while loading certificates", e);
-            } catch (NoSuchAlgorithmException e) {
-                Log.w(TAG, "RSA not supported", e);
-            } catch (IOException e) {
-                Log.w(TAG, "IO Exception", e);
-            } catch (UnrecoverableEntryException e) {
-                Log.w(TAG, "KeyPair not recovered", e);
-            } catch (InvalidKeyException e) {
-                Log.w(TAG, "Invalid Key", e);
-            } catch (SignatureException e) {
-                Log.w(TAG, "Invalid Signature", e);
-            }
-*/
-        //         if (verified) {
+                     if (utenteLogin.getIs_staff() == 1) {
+                         Intent vaiaGestoreNav = new Intent(myActivity, GestoreNav.class);
+                         vaiaGestoreNav.putExtra("gestore", (Serializable) utenteLogin);
+                         vaiaGestoreNav.putExtra("qualeFragment", "Gestione_Utenti");
 
-        if (utenteLogin.getIs_staff() == 1) {
-            Intent vaiaGestoreNav = new Intent(context, GestoreNav.class);
-            vaiaGestoreNav.putExtra("gestore", (Serializable) utenteLogin);
-            vaiaGestoreNav.putExtra("qualeFragment", "Gestione_Utenti");
+                         myActivity.startActivity(vaiaGestoreNav);
 
-            context.startActivity(vaiaGestoreNav);
-
-        }
-        if (utenteLogin.getIs_staff() == 0) {
+                     }
+                     if (utenteLogin.getIs_staff() == 0) {
 
 
-            Intent vaiaUtenteNav = new Intent(context, UtenteNav.class);
-            vaiaUtenteNav.putExtra("utente", (Serializable) utenteLogin);
-            context.startActivity(vaiaUtenteNav);
-            //  myActivity.finish();
-        }
+                         Intent vaiaUtenteNav = new Intent(myActivity, UtenteNav.class);
+                         vaiaUtenteNav.putExtra("utente", (Serializable) utenteLogin);
+                         vaiaUtenteNav.putExtra("qualeFragment", "Catalogo");
+
+                         myActivity.startActivity(vaiaUtenteNav);
+                          myActivity.finish();
+                     }
+                 } else{
+            Toast.makeText(myActivity,"Utente o Password errati",Toast.LENGTH_SHORT).show();
+                      }
         progressDialog.dismiss();
     }
            /*else {
@@ -234,7 +211,7 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
         ConnectivityManager mConnectivityManager = null;
         // Instantiate mConnectivityManager if necessary
         if (mConnectivityManager == null) {
-            mConnectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            mConnectivityManager = (ConnectivityManager) myActivity.getSystemService(Context.CONNECTIVITY_SERVICE);
         }
         // Is device connected to the Internet?
         NetworkInfo networkInfo = mConnectivityManager.getActiveNetworkInfo();

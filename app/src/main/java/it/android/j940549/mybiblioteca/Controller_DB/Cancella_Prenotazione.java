@@ -105,6 +105,7 @@ public class Cancella_Prenotazione extends AsyncTask<String,String,String> {
         if(result.contains("successfully")){
             Intent refresh = new Intent(myActivity, UtenteNav.class);
             refresh.putExtra("utente", utenteLogin);
+            refresh.putExtra("qualeFragment","Prestiti");
             myActivity.startActivity(refresh);
             myActivity.finish();
         }

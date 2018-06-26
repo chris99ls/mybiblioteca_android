@@ -104,6 +104,7 @@ public class Consegna_prenotato extends AsyncTask<String,String,String> {
 
         if(result.contains("successfully")){
             Intent refresh = new Intent(myActivity, GestoreNav.class);
+            refresh.putExtra("qualeFragment","Gestisci_utenti");
             myActivity.startActivity(refresh);
             myActivity.finish();
 

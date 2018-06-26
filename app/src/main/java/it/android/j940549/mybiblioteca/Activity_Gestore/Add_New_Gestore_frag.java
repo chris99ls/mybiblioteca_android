@@ -93,9 +93,9 @@ public class Add_New_Gestore_frag extends Fragment {
         String email=editEmail.getText().toString();
         String password = editPassword.getText().toString();
         String password2 = editPassword2.getText().toString();
-        String passwordCrypto="";
+        //String passwordCrypto="";
         if(password.equals(password2)) {
-            Crypto_new crypto=new Crypto_new(getContext());
+          /*  Crypto_new crypto=new Crypto_new(getContext());
 
 
             Log.w(TAG, "password da ciptare..."+password);
@@ -119,12 +119,13 @@ public class Add_New_Gestore_frag extends Fragment {
             }
             //Log.d(TAG, "Signature: " + mSignatureStr);
 
-
+*/
             Inserisci_new_Gestore_InDB inserisci_new_gestore_inDB=new Inserisci_new_Gestore_InDB(getActivity());
-            inserisci_new_gestore_inDB.execute(nomeuser,cognomeuser,username,email,passwordCrypto,"1");
+            inserisci_new_gestore_inDB.execute(nomeuser,cognomeuser,username,email,password,"1");
 
 
-        }else{
+        }
+        else{
             Toast.makeText(getActivity(), "le due password non coincidono", Toast.LENGTH_SHORT).show();
         }
 

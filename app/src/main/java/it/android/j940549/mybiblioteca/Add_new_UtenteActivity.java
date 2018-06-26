@@ -72,9 +72,9 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
         String email=editEmail.getText().toString();
         String password = editPassword.getText().toString();
         String password2 = editPassword2.getText().toString();
-        String passwordCrypto="";
+        //String passwordCrypto="";
         if(password.equals(password2)) {
-            Crypto_new crypto=new Crypto_new(getBaseContext());
+          /*  Crypto_new crypto=new Crypto_new(getBaseContext());
 
 
             Log.w(TAG, "password da ciptare..."+password);
@@ -97,10 +97,10 @@ public class Add_new_UtenteActivity extends AppCompatActivity {
                     Log.w(TAG, "Error occurred while loading certificates", e);
                 }
                 //Log.d(TAG, "Signature: " + mSignatureStr);
-
+*/
 
             Inserisci_new_Utente_inDB inserisci_new_utente_inDB=new Inserisci_new_Utente_inDB(this);
-            inserisci_new_utente_inDB.execute(nomeuser,cognomeuser,username, email,passwordCrypto,"0");
+            inserisci_new_utente_inDB.execute(nomeuser,cognomeuser,username, email,password,"0");
 
 
         }else{

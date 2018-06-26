@@ -75,7 +75,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 vaiaDettagli.putExtra("isbn",isbn_libro);
                 vaiaDettagli.putExtra("utente",utenteLogin);
                 myActivity.startActivity(vaiaDettagli);
-                //finish();
+                //myActivity.finish();
 
             }
         });

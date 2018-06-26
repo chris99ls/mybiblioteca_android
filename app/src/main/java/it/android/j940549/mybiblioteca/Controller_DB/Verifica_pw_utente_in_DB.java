@@ -37,29 +37,29 @@ import it.android.j940549.mybiblioteca.Model.Utente;
 
 
 public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> {
-    String username, pwcontrollo, pwUtenteCrypt, PWlogin,is_staff, is_superuser;
+    String username, pwcontrollo, pwUtenteCrypt, PWlogin, is_staff, is_superuser;
     Context context;
-    ArrayList<Utente> listUtenti=new ArrayList<>();
+    ArrayList<Utente> listUtenti = new ArrayList<>();
     Utente utenteLogin;
     public static final String TAG = "KeyStore";
     private ProgressDialog progressDialog;
     //EditText passwordLogin;
 
-    public Verifica_pw_utente_in_DB(Context context){
+    public Verifica_pw_utente_in_DB(Context context) {
 
-        this.context=context;
+        this.context = context;
 
     }
 
     @Override
     protected void onPreExecute() {
-            progressDialog = new ProgressDialog(context);
-            progressDialog.setMessage("caricamento dati in corso");
-            progressDialog.setCancelable(false);
-            progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
-            progressDialog.show();
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("caricamento dati in corso");
+        progressDialog.setCancelable(false);
+        progressDialog.setProgress(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
 
-    // Check network connection.
+        // Check network connection.
         if (isNetworkConnected() == false) {
             // Cancel request.
             Log.i("Esito_Ricerca", "Not connected to the internet");
@@ -69,16 +69,16 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
     }
 
     @Override
-    protected String doInBackground(String ...param) {
+    protected String doInBackground(String... param) {
 
-        this.username = "m_"+param[0];
-        this.pwcontrollo=param[1];
+        this.username = "m_" + param[0];
+        this.pwcontrollo = param[1];
         // Stop if cancelled
         if (isCancelled()) {
             return null;
         }
-        String Url = "http://lisiangelovpn.ddns.net/mybiblioteca/check_login.php?username="+username;
-
+//        String Url = "http://lisiangelovpn.ddns.net/mybiblioteca/check_login.php?username=" + username;
+        String Url = "http://lisiangelovpn.ddns.net/mybiblioteca/check_login.php?username=" + username+"&password="+pwcontrollo;
         //String url_ricera= creaUrl_ricerca(parametri[0],parametri[1],parametri[2],parametri[3],parametri[4]);
 
         Log.i("Esito_Ricerca ::url ", Url);
@@ -133,9 +133,10 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
         }
         //return myDataset;
     }
+
     @Override
     protected void onPostExecute(String responseString) {
-       // listUtenti.clear();
+        // listUtenti.clear();
         Log.i("log_tag", "parsing data on postExec " + responseString.toString());
 
         try {
@@ -146,19 +147,20 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
                 Log.i("log_tag", "ciclo parsing data on postExec .." + i);
 
                 JSONObject json_data = jArray.getJSONObject(i);
-                Utente utente= new Utente();
+                Utente utente = new Utente();
                 utente.setNrtessera(json_data.getString("id"));
                 utente.setNome(json_data.getString("first_name"));
                 utente.setCognome(json_data.getString("last_name"));
-                String user_name= json_data.getString("username");
-                if(user_name.contains("m_")){
-                    user_name=user_name.substring(2,user_name.length());}
+                String user_name = json_data.getString("username");
+                if (user_name.contains("m_")) {
+                    user_name = user_name.substring(2, user_name.length());
+                }
                 utente.setUsername(user_name);
 
                 utente.setEmail(json_data.getString("email"));
                 utente.setIs_staff(json_data.getInt("is_staff"));
                 utente.setIs_superuser(json_data.getInt("is_superuser"));
-                utente.setPassword(json_data.getString("password"));
+                //   utente.setPassword(json_data.getString("password"));
 
                 // Log.i("log_tag", "datobject inserito " + obj.getData() );
 
@@ -168,9 +170,9 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
             Log.e("log_tag", "Error parsing data " + e.toString());
 
         }
-            pwUtenteCrypt =listUtenti.get(0).getPassword();
-            utenteLogin=listUtenti.get(0);
-            Log.i("log_tag", "results... " + listUtenti.size());
+//            pwUtenteCrypt =listUtenti.get(0).getPassword();
+        utenteLogin = listUtenti.get(0);
+  /*          Log.i("log_tag", "results... " + listUtenti.size());
             Log.i("log_tag", "passworddbCrypta......"+ pwUtenteCrypt);
             Log.i("log_tag", "password......"+pwcontrollo);
             Log.i("log_tag", "nr tessera ......"+utenteLogin.getNrtessera());
@@ -198,34 +200,35 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
             } catch (SignatureException e) {
                 Log.w(TAG, "Invalid Signature", e);
             }
+*/
+        //         if (verified) {
 
-           if (verified) {
+        if (utenteLogin.getIs_staff() == 1) {
+            Intent vaiaGestoreNav = new Intent(context, GestoreNav.class);
+            vaiaGestoreNav.putExtra("gestore", (Serializable) utenteLogin);
+            vaiaGestoreNav.putExtra("qualeFragment", "Gestione_Utenti");
 
-               if (utenteLogin.getIs_staff() == 1) {
-                   Intent vaiaGestoreNav = new Intent(context, GestoreNav.class);
-                   vaiaGestoreNav.putExtra("gestore", (Serializable) utenteLogin);
-                   vaiaGestoreNav.putExtra("qualeFragment",  "Gestione_Utenti");
+            context.startActivity(vaiaGestoreNav);
 
-                   context.startActivity(vaiaGestoreNav);
-
-               }
-               if (utenteLogin.getIs_staff() == 0) {
+        }
+        if (utenteLogin.getIs_staff() == 0) {
 
 
-                   Intent vaiaUtenteNav = new Intent(context, UtenteNav.class);
-                   vaiaUtenteNav.putExtra("utente", (Serializable) utenteLogin);
-                   context.startActivity(vaiaUtenteNav);
-                   //  myActivity.finish();
-               }
-               progressDialog.dismiss();
-           }else {
+            Intent vaiaUtenteNav = new Intent(context, UtenteNav.class);
+            vaiaUtenteNav.putExtra("utente", (Serializable) utenteLogin);
+            context.startActivity(vaiaUtenteNav);
+            //  myActivity.finish();
+        }
+        progressDialog.dismiss();
+    }
+           /*else {
             Toast.makeText(context, "utente o password errati", Toast.LENGTH_SHORT).show();
                progressDialog.dismiss();
-            }
+            }*/
+
+   // }
 
 
-
-    }
 
     protected boolean isNetworkConnected() {
         ConnectivityManager mConnectivityManager = null;

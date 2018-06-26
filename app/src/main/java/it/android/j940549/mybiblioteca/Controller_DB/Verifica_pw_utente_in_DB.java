@@ -181,6 +181,7 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
                          vaiaGestoreNav.putExtra("qualeFragment", "Gestione_Utenti");
 
                          myActivity.startActivity(vaiaGestoreNav);
+                         myActivity.finish();
 
                      }
                      if (utenteLogin.getIs_staff() == 0) {

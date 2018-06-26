@@ -1,8 +1,10 @@
 package it.android.j940549.mybiblioteca.Activity_Gestore;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.Menu;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Switch;
 
+import it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity;
 import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
@@ -168,8 +171,27 @@ try {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            super.onBackPressed();
+//            super.onBackPressed();
+            AlertDialog alertDialog=new AlertDialog.Builder(this)
+            .setMessage("sei sicuro di voler uscire?")
+            .setCancelable(false)
+            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    })
+            .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            })
+                    .create();
+                    alertDialog.show();
+
         }
+
     }
 
     @Override
@@ -187,4 +209,5 @@ try {
 
         return true;
     }
+
 }

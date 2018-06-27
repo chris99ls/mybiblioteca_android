@@ -6,9 +6,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-
 import java.util.ArrayList;
-
 import it.android.j940549.mybiblioteca.Controller_DB.Cerca_libro_in_DB;
 import it.android.j940549.mybiblioteca.Controller_DB.Cerca_titolo_inGoogleBooks;
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
@@ -34,9 +32,7 @@ public class Esito_Ricerca extends AppCompatActivity {
         setContentView(R.layout.activity_esito__ricerca);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        Log.i("mylibreria","dataset_prima"+myDataset.size());
 
-        Log.i("mylibreria","dataset_dopocrea"+myDataset.size());
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_view_esito_ricerca);
 
         // use this setting to improve performance if you know that changes
@@ -51,6 +47,7 @@ public class Esito_Ricerca extends AppCompatActivity {
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter_x_ricerca(myDataset,this);
         mRecyclerView.setAdapter(mAdapter);
+
         if(tipoRicerca.equals("google")){
             setTitle("Esito da GoogleBooks");
         }
@@ -63,7 +60,7 @@ public class Esito_Ricerca extends AppCompatActivity {
 
         if(!tipoRicerca.equals("google")) {
 
-            Cerca_libro_in_DB cerca_in_db = new Cerca_libro_in_DB(this, mRecyclerView, mAdapter, myDataset);
+            Cerca_libro_in_DB cerca_in_db = new Cerca_libro_in_DB(this, mRecyclerView, mAdapter);
             cerca_in_db.execute(isbn, titolo, autore, genere, fulltext);
         }else{
             Cerca_titolo_inGoogleBooks cerca_on_googleBooks = new Cerca_titolo_inGoogleBooks(this, mRecyclerView, mAdapter);

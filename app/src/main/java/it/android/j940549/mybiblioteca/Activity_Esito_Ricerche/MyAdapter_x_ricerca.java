@@ -53,7 +53,7 @@ public class MyAdapter_x_ricerca extends RecyclerView.Adapter<MyAdapter_x_ricerc
     public MyAdapter_x_ricerca(ArrayList<Libro_catalogo> booksList, Activity myActivity) {
         this.booksList = booksList;
         this.myActivity=myActivity;
-        Log.i("mylibreria","dataset.size--"+getItemCount());
+
     }
 
     @Override

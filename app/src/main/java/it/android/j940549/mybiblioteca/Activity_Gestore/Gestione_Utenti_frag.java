@@ -54,6 +54,8 @@ public class Gestione_Utenti_frag extends Fragment {
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_gestisci_utenti, container, false);
 
+        //settaggi del widget di ricerca utenti
+
         searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
         CharSequence query = searchView.getQuery(); // get the query string currently in the text field
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -75,6 +77,8 @@ public class Gestione_Utenti_frag extends Fragment {
                 return false;
             }
         });
+
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.recycler_view_utenti);
 
         // use this setting to improve performance if you know that changes
@@ -92,7 +96,6 @@ public class Gestione_Utenti_frag extends Fragment {
 
         caricaListaUtenti();
 
-        //   mRecyclerViewpiuletti.setAdapter(mAdapter);
         return view;
     }
 

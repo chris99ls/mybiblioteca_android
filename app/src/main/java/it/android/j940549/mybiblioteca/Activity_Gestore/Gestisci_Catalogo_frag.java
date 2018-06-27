@@ -40,7 +40,6 @@ public class Gestisci_Catalogo_frag extends Fragment {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mGridLayoutManager;
     private ArrayList<Libro_catalogo> myDataset = new ArrayList<Libro_catalogo>();
-    private String utente;
 
 
 
@@ -61,7 +60,6 @@ public class Gestisci_Catalogo_frag extends Fragment {
         super.onCreate(savedInstanceState);
 //        creaLibreria();
         if (getArguments() != null) {
-            utente = getArguments().getString("utente");
 
         }
     }
@@ -85,13 +83,15 @@ public class Gestisci_Catalogo_frag extends Fragment {
 
         creaLibreria();
 
+        //setaggi del widget di ricerca dei libri nel catalogo
+
         searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
         CharSequence query = searchView.getQuery(); // get the query string currently in the text field
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                Cerca_libro_in_DB cerca_in_db=new Cerca_libro_in_DB(getActivity(),mRecyclerView,mAdapter,myDataset);
+                Cerca_libro_in_DB cerca_in_db=new Cerca_libro_in_DB(getActivity(),mRecyclerView,mAdapter);
                 cerca_in_db.execute("",query,"","","");
                 return false;
             }

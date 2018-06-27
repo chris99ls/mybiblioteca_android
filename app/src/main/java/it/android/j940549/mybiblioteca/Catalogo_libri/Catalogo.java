@@ -116,7 +116,7 @@ public class Catalogo extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                Cerca_libro_in_DB cerca_in_db=new Cerca_libro_in_DB(getActivity(),mRecyclerView,mAdapter,myDataset);
+                Cerca_libro_in_DB cerca_in_db=new Cerca_libro_in_DB(getActivity(),mRecyclerView,mAdapter);
                 cerca_in_db.execute("",query,"","","");
                 return false;
             }

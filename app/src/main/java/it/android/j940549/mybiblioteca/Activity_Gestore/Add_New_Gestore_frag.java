@@ -30,7 +30,6 @@ public class Add_New_Gestore_frag extends Fragment {
     private EditText editnomeGes, editUsername;
     private EditText editcognomeGes;
     private EditText editPassword2;
-    boolean registrato=false;
     public static final String TAG = "KeyStore";
 
 
@@ -100,36 +99,11 @@ public class Add_New_Gestore_frag extends Fragment {
         String email=editEmail.getText().toString();
         String password = editPassword.getText().toString();
         String password2 = editPassword2.getText().toString();
-        //String passwordCrypto="";
+
         if(password.equals(password2)) {
-          /*  Crypto_new crypto=new Crypto_new(getContext());
 
-
-            Log.w(TAG, "password da ciptare..."+password);
-
-            try {
-                passwordCrypto=crypto.signData(password);
-            } catch (KeyStoreException e) {
-                Log.w(TAG, "KeyStore not Initialized", e);
-            } catch (UnrecoverableEntryException e) {
-                Log.w(TAG, "KeyPair not recovered", e);
-            } catch (NoSuchAlgorithmException e) {
-                Log.w(TAG, "RSA not supported", e);
-            } catch (InvalidKeyException e) {
-                Log.w(TAG, "Invalid Key", e);
-            } catch (SignatureException e) {
-                Log.w(TAG, "Invalid Signature", e);
-            } catch (IOException e) {
-                Log.w(TAG, "IO Exception", e);
-            } catch (CertificateException e) {
-                Log.w(TAG, "Error occurred while loading certificates", e);
-            }
-            //Log.d(TAG, "Signature: " + mSignatureStr);
-
-*/
             Inserisci_new_Gestore_InDB inserisci_new_gestore_inDB=new Inserisci_new_Gestore_InDB(getActivity());
             inserisci_new_gestore_inDB.execute(nomeuser,cognomeuser,username,email,password,"1");
-
 
         }
         else{

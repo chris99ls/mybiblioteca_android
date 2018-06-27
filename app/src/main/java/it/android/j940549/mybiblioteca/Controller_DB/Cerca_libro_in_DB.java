@@ -37,11 +37,11 @@ import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
         private ProgressDialog progressDialog;
         ArrayList<Libro_catalogo> myDataset = new ArrayList<>();
 
-        public Cerca_libro_in_DB(Activity myActivity, RecyclerView mRecyclerView, RecyclerView.Adapter mAdapter, ArrayList<Libro_catalogo>myDataset){
+        public Cerca_libro_in_DB(Activity myActivity, RecyclerView mRecyclerView, RecyclerView.Adapter mAdapter){
             this.myActivity=myActivity;
             this.mRecyclerView=mRecyclerView;
             this.mAdapter=mAdapter;
-            this.myDataset=myDataset;
+
 
         }
 

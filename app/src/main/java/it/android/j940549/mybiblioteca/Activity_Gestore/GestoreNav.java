@@ -34,20 +34,21 @@ public class GestoreNav extends AppCompatActivity
         setContentView(R.layout.activity_gestore_nav);
         qualeFragment="";
 
+        //leggi da intent quale fragment inserire per primo
         if(savedInstanceState!=null){
             gestoreLogin= (Utente) savedInstanceState.getSerializable("gestore");
             qualeFragment="";
         }else {
             gestoreLogin=(Utente) getIntent().getSerializableExtra("gestore");
-try {
-    qualeFragment = getIntent().getExtras().getString("qualeFragment");
-    if (qualeFragment.equals("InserisciBook")) {
-        isbn_daRicercaGoogle = getIntent().getExtras().get("isbn").toString();
+        try {
+            qualeFragment = getIntent().getExtras().getString("qualeFragment");
+            if (qualeFragment.equals("InserisciBook")) {
+                isbn_daRicercaGoogle = getIntent().getExtras().get("isbn").toString();
 
-    }
-}catch (Exception e){
+                }
+            }catch (Exception e){
 
-}
+            }
         }
 
 
@@ -172,7 +173,7 @@ try {
             drawer.closeDrawer(GravityCompat.START);
         } else {
 
-//            super.onBackPressed();
+        //essendo l'ultima activity dello stack chiedi se vuole uscire deall'app;
             AlertDialog.Builder builder=new AlertDialog.Builder(this)
                     .setMessage("sei sicuro di voler uscire?")
                     .setCancelable(false)

@@ -134,7 +134,6 @@ public class InserisciBook extends Fragment {
                 intent.putExtra("autore","");
                 intent.putExtra("genere","");
                 intent.putExtra("fulltext","");
-
                 intent.putExtra("titolo",txtview_titolo.getText().toString());
                 intent.putExtra("ricerca","google");
                 startActivity(intent);

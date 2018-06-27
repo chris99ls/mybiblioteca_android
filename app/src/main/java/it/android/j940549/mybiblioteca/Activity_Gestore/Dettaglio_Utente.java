@@ -59,13 +59,13 @@ public class Dettaglio_Utente extends AppCompatActivity {
     private ViewPager mViewPager;
     private Utente utente;
     private TextView txtutente,txtnrTessera;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dettaglio__utente);
 
         utente= (Utente) getIntent().getSerializableExtra("utente");
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -89,8 +89,6 @@ public class Dettaglio_Utente extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
 
         tabLayout.setupWithViewPager(mViewPager);
-
-
 
     }
 
@@ -164,9 +162,9 @@ public class Dettaglio_Utente extends AppCompatActivity {
                 case 0:
                     return "Libri Prenotati";
                 case 1:
-                    return "Libri in prestito";
+                    return "Libri in Prestito";
                 case 2:
-                    return "Libri già letti";
+                    return "Libri già Letti";
 
             }
             return null;

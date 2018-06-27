@@ -515,7 +515,7 @@ private class PurchaseButtonClickListener implements View.OnClickListener {
 
         if(!user.equals("")&&!password.equals("")) {
 
-            Verifica_pw_utente_in_DB cerca_pw_utente_in_db = new Verifica_pw_utente_in_DB(getActivity());
+            Verifica_pw_utente_in_DB cerca_pw_utente_in_db = new Verifica_pw_utente_in_DB(getActivity(),0);
             cerca_pw_utente_in_db.execute(user,password);
 
         }else{

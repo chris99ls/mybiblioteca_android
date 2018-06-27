@@ -174,13 +174,13 @@ public class UtenteNav extends AppCompatActivity
         } else {
 
 //            super.onBackPressed();
-            AlertDialog alertDialog=new AlertDialog.Builder(this)
+            AlertDialog.Builder builder=new AlertDialog.Builder(this)
                     .setMessage("sei sicuro di voler uscire?")
                     .setCancelable(false)
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
+                            UtenteNav.this.onSuperBackPressed();
                         }
                     })
                     .setNegativeButton("No", new DialogInterface.OnClickListener() {
@@ -188,13 +188,15 @@ public class UtenteNav extends AppCompatActivity
                         public void onClick(DialogInterface dialogInterface, int i) {
                             dialogInterface.cancel();
                         }
-                    })
-                    .create();
-            alertDialog.show();
+                    });
+                    AlertDialog alert= builder.create();
+            alert.show();
 
         }
+    }
 
-
+    public  void onSuperBackPressed(){
+        super.onBackPressed();
     }
 
     @Override

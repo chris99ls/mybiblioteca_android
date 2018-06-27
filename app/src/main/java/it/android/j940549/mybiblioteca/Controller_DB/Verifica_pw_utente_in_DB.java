@@ -34,11 +34,13 @@ import java.util.ArrayList;
 import it.android.j940549.mybiblioteca.Activity_Gestore.GestoreNav;
 import it.android.j940549.mybiblioteca.Activity_Utente.UtenteNav;
 import it.android.j940549.mybiblioteca.Crypto.Crypto_new;
+import it.android.j940549.mybiblioteca.Login_Ute_Ges_Activity;
 import it.android.j940549.mybiblioteca.Model.Utente;
 
 
 public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> {
-    String username, pwcontrollo, pwUtenteCrypt, PWlogin, is_staff, is_superuser;
+    String username, pwcontrollo;
+    int frag_utente_gestore;
     Activity myActivity;
     ArrayList<Utente> listUtenti = new ArrayList<>();
     Utente utenteLogin;
@@ -46,9 +48,10 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
     private ProgressDialog progressDialog;
     //EditText passwordLogin;
 
-    public Verifica_pw_utente_in_DB(Activity myActivity) {
+    public Verifica_pw_utente_in_DB(Activity myActivity, int frag_utente_gestore) {
 
         this.myActivity = myActivity;
+        this.frag_utente_gestore=frag_utente_gestore;
 
     }
 
@@ -176,35 +179,37 @@ public class Verifica_pw_utente_in_DB extends AsyncTask<String, Object, String> 
                      utenteLogin = listUtenti.get(0);
 
                      if (utenteLogin.getIs_staff() == 1) {
-                         Intent vaiaGestoreNav = new Intent(myActivity, GestoreNav.class);
-                         vaiaGestoreNav.putExtra("gestore", (Serializable) utenteLogin);
-                         vaiaGestoreNav.putExtra("qualeFragment", "Gestione_Utenti");
+                         if (frag_utente_gestore == 1) {
+                             Intent vaiaGestoreNav = new Intent(myActivity, GestoreNav.class);
+                             vaiaGestoreNav.putExtra("gestore", (Serializable) utenteLogin);
+                             vaiaGestoreNav.putExtra("qualeFragment", "Gestione_Utenti");
 
-                         myActivity.startActivity(vaiaGestoreNav);
-                         myActivity.finish();
-
+                             myActivity.startActivity(vaiaGestoreNav);
+                             myActivity.finish();
+                         } else {
+                             Toast.makeText(myActivity, "il tuo non  è un accounts utente", Toast.LENGTH_SHORT).show();
+                         }
                      }
                      if (utenteLogin.getIs_staff() == 0) {
 
+                         if (frag_utente_gestore == 0) {
+                             Intent vaiaUtenteNav = new Intent(myActivity, UtenteNav.class);
+                             vaiaUtenteNav.putExtra("utente", (Serializable) utenteLogin);
+                             vaiaUtenteNav.putExtra("qualeFragment", "Catalogo");
 
-                         Intent vaiaUtenteNav = new Intent(myActivity, UtenteNav.class);
-                         vaiaUtenteNav.putExtra("utente", (Serializable) utenteLogin);
-                         vaiaUtenteNav.putExtra("qualeFragment", "Catalogo");
+                             myActivity.startActivity(vaiaUtenteNav);
+                             myActivity.finish();
+                         } else {
+                             Toast.makeText(myActivity, "il tuo non  è un accounts di Staff", Toast.LENGTH_SHORT).show();
 
-                         myActivity.startActivity(vaiaUtenteNav);
-                          myActivity.finish();
+                         }
                      }
                  } else{
             Toast.makeText(myActivity,"Utente o Password errati",Toast.LENGTH_SHORT).show();
                       }
         progressDialog.dismiss();
     }
-           /*else {
-            Toast.makeText(context, "utente o password errati", Toast.LENGTH_SHORT).show();
-               progressDialog.dismiss();
-            }*/
 
-   // }
 
 
 

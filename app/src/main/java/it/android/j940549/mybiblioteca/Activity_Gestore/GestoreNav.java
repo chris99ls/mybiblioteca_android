@@ -171,27 +171,31 @@ try {
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
+
 //            super.onBackPressed();
-            AlertDialog alertDialog=new AlertDialog.Builder(this)
-            .setMessage("sei sicuro di voler uscire?")
-            .setCancelable(false)
-            .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            AlertDialog.Builder builder=new AlertDialog.Builder(this)
+                    .setMessage("sei sicuro di voler uscire?")
+                    .setCancelable(false)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
+                            GestoreNav.this.onSuperBackPressed();
                         }
                     })
-            .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            })
-                    .create();
-                    alertDialog.show();
+                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    });
+            AlertDialog alert= builder.create();
+            alert.show();
 
         }
+    }
 
+    public  void onSuperBackPressed(){
+        super.onBackPressed();
     }
 
     @Override

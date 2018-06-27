@@ -480,12 +480,6 @@ public class LoginGestoreFragment extends Fragment {
 
 
 
-
-
-
-
-
-
     public void loginGestore(View v) {
 
         String user = editnomeUser.getText().toString();
@@ -498,7 +492,7 @@ public class LoginGestoreFragment extends Fragment {
 
         if(!user.equals("")&&!password.equals("")) {
 
-            Verifica_pw_utente_in_DB cerca_pw_utente_in_db = new Verifica_pw_utente_in_DB(getActivity());
+            Verifica_pw_utente_in_DB cerca_pw_utente_in_db = new Verifica_pw_utente_in_DB(getActivity(), 1);
             cerca_pw_utente_in_db.execute(user,password);
 
         }else{

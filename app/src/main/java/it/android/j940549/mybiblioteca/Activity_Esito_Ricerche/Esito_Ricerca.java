@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import it.android.j940549.mybiblioteca.Controller_DB.Cerca_libro_in_DB;
 import it.android.j940549.mybiblioteca.Controller_DB.Cerca_titolo_inGoogleBooks;
 import it.android.j940549.mybiblioteca.Model.Libro_catalogo;
+import it.android.j940549.mybiblioteca.Model.Utente;
 import it.android.j940549.mybiblioteca.R;
 
 public class Esito_Ricerca extends AppCompatActivity {
@@ -18,10 +19,12 @@ public class Esito_Ricerca extends AppCompatActivity {
     private RecyclerView.LayoutManager mLayoutManager;
     private ArrayList<Libro_catalogo> myDataset= new ArrayList<Libro_catalogo>();
     private String isbn,titolo,autore,genere,fulltext, tipoRicerca;
+    private Utente utenteLogin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        utenteLogin=new Utente();
         isbn=getIntent().getExtras().get("isbn").toString();
         titolo=getIntent().getExtras().get("titolo").toString();
         autore=getIntent().getExtras().get("autore").toString();
@@ -60,7 +63,7 @@ public class Esito_Ricerca extends AppCompatActivity {
 
         if(!tipoRicerca.equals("google")) {
 
-            Cerca_libro_in_DB cerca_in_db = new Cerca_libro_in_DB(this, mRecyclerView, mAdapter);
+            Cerca_libro_in_DB cerca_in_db = new Cerca_libro_in_DB(this, mRecyclerView, mAdapter,utenteLogin);
             cerca_in_db.execute(isbn, titolo, autore, genere, fulltext);
         }else{
             Cerca_titolo_inGoogleBooks cerca_on_googleBooks = new Cerca_titolo_inGoogleBooks(this, mRecyclerView, mAdapter);

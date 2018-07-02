@@ -91,7 +91,7 @@ public class Gestisci_Catalogo_frag extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                Cerca_libro_in_DB cerca_in_db=new Cerca_libro_in_DB(getActivity(),mRecyclerView,mAdapter);
+                Cerca_libro_in_DB cerca_in_db=new Cerca_libro_in_DB(getActivity(),mRecyclerView,mAdapter,new Utente());
                 cerca_in_db.execute("",query,"","","");
                 return false;
             }

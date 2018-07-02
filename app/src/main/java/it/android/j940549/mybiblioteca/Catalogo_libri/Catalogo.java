@@ -111,13 +111,13 @@ public class Catalogo extends Fragment {
 
 
         searchView = (SearchView) view.findViewById(R.id.searchView); // inititate a search view
-        CharSequence query = searchView.getQuery(); // get the query string currently in the text field
+        final CharSequence mquery = searchView.getQuery(); // get the query string currently in the text field
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
 
-                Cerca_libro_in_DB cerca_in_db=new Cerca_libro_in_DB(getActivity(),mRecyclerView,mAdapter);
-                cerca_in_db.execute("",query,"","","");
+                Cerca_libro_in_DB cerca_in_db=new Cerca_libro_in_DB(getActivity(),mRecyclerView,mAdapter,utenteLogin);
+                cerca_in_db.execute("","","","",mquery.toString());
                 return false;
             }
 
